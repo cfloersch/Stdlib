@@ -1,0 +1,184 @@
+xpertss.text
+
+   StringPrepException can go and be replaced by SyntaxException or ParseException
+
+   Get rid of FastDateFormat... And cache
+
+   Completely rework MapMessageFormat to make it more efficient and thread-safe
+
+   Consider building a thread-safe immutable NumberFormatter.
+
+   Complete work on DateFormatter
+
+      To parse general time zone names I need to load a set of Long names to
+      timezone id, and short names to timezone id for a given locale. That
+      mapping should be locale specific. For example CST would map to China
+      Standard Time with a china locale while it would map to Central Standard
+      Time with a US/Canada/Central/South America locales.
+
+      Ideally I would take these keys and create a Trie where I could navigate
+      down the tree character by character until I reach a dead end (error case)
+      or I reach a node with a mapping. The mapping of course would allow me to
+      get the Timezone by ID which I could then use to set zone offset and dst
+      offset on the calendar.
+
+      Some how I need to load these resource bundles and parse them into Trie
+      and cache them during rules creation and pass the appropriate one for
+      style = SHORT or style = LONG for the given locale.
+
+
+
+      DateFormatter
+      DateFormatter[en_US, America/New_York, eeee, nnnn d, yyyy h:mm:ss a z] = 35182 micros
+      DateFormatter[en_US, America/New_York, nnnn d, yyyy h:mm:ss a z] = 181 micros
+      DateFormatter[en_US, America/New_York, nnn d, yyyy h:mm:ss a] = 173 micros
+      DateFormatter[en_US, America/New_York, n/d/yy h:mm a] = 1603 micros
+
+      The above just doesn't make any sense. Why does the simplest format take longer to
+      parse than the two that preceded it. I can say that two new classes are loaded to
+      handle two digit years and unpadded months. Other than that we are talking about
+      13 rules for the 173 micros pattern and 11 rules for the 1603 micros pattern.
+
+
+
+
+
+      RFC 2822
+         Must use English words for Abbreviated day and Abbreviated Month
+         Must use +/- 4 Digit Offset (no colon)
+         Seconds are optional
+         hour/minute/second are always zero padded if less than 10
+         year is always 4 digits
+         Leading Day of week abbreviation along with following comma are optional
+         Day number can be one or two digits
+
+      RFC 1123
+         Day number can be one or two digits
+         Year parse can be 2 or 4 digit, format is always 4 digit
+         Timezones are formatted as +/- 4 digit offset no colon
+         Timezones may be parsed as above or GMT, UT, EST, EDT, etc..
+         No military timezones (RFC822 specified them wrong)
+         At least support Z for military timezone = GMT
+         Leading Day of week abbreviation along with following comma are optional
+         Hour/minute/second are always 2 digit
+         Seconds are optional
+         English abbreviated Months are always used
+
+      RFC 822
+         Get rid of this one. The main difference is that it only supports 2 digit years
+
+
+      NOTE RFC822 was replaced by RFC2822
+         RFC822 allowed the us of EST/EDT etc where the new spec dictates offset
+         numerics
+
+         RFC822 dictated 2 digit years while RFC1123 updated this to support 4
+         digit years.
+
+         RFC1123 requires output using numeric zone offsets but must support
+         named zone input (CST, etc.. Noted that military zones were incorrect
+         in the RFC822 spec).
+
+
+
+
+
+
+
+
+
+
+
+Maybe impl a DateStyle class (similar to BooleanStyle) which impls some of the standard
+date formats.
+   http://www.w3.org/TR/NOTE-datetime
+   http://www.hackcraft.net/web/datetime/
+   ISO 8601, RFC-2822, RFC-1123 updates RFC-822
+
+
+
+
+
+
+Modify parse methods to accept CharSequence rather than String
+   Bytes.parse()
+   Shorts.parse()
+   Dates.parse()
+   etc...
+
+
+
+
+
+
+NioUtils
+   subset(ByteBuffer buf, int start, int end)
+   Returns back a view of the buffer with start set as its position and end as its limit.
+   Should work with both direct and indirect buffers
+
+
+What do I want to do with PhaseBarrier?
+
+    Clean up javadocs on PhaseBarrier. Add awaitTermination() method which waits until there are no
+    parties remaining. Test the hell out of it. Possibly remove the parent/child functionality.
+
+    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException
+
+
+
+
+
+
+
+
+Are there any other methods I should add to Consumers? Maybe something that links Consumer
+and Function or Consumer and Predicate?
+
+   onlyIf(Predicate) -> Allows a consumer to be registered to output only if the predicate
+                        holds true
+   transformFor(Function) -> Allows the consumer input to be transformed before being
+                        delivered
+
+   These should be possible already without me creating wrapper methods.. If I impl them
+   I would probably just name the methods compose..
+
+
+
+
+
+
+
+
+
+Set/Map I would love to have a means to create any impl Concurrent, CopyOnWrite, Hash, LinkedHash,
+etc and apply as a property that it use identity vs equals() comparison. It might also be nice if
+we could specify if values/keys are weak or soft references.
+
+
+
+
+
+
+Complete work on caching system. Needs to be capable of supporting maximumSize, weak/soft values,
+and weak keys.
+
+
+
+
+
+
+
+
+
+I would love to find a way to build my TimeProvider so I don't always have to call get() first.
+That should be internalized into the class. At the same time I would like to have the ability to
+inject a time provider impl into my classes. The current one allows me to inject one even if the
+class that uses it is beyond my reach of control. it also allows me to swap it out mid stream
+rather than at construction time. However, Timeprovider.get().millisTime() is a bit verbose to
+include over and over again in the code. So far I haven't written much that takes a TimeProvider
+via constructor. cachingSupplier is an exception.
+
+
+
+
+I kind of like the idea of Clock as implemented in the new java.time package

@@ -1,0 +1,150 @@
+/**
+ * Created By: cfloersch
+ * Date: 1/18/14
+ * Copyright 2013 XpertSoftware
+ */
+package xpertss.lang;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+/**
+ * Static utility methods pertaining to instances of {@link Throwable}.
+ */
+public final class Throwables {
+
+   private Throwables() { }
+
+   /**
+    * Propagates {@code throwable} as-is if it is an instance of {@link RuntimeException}
+    * or {@link Error}, or else as a last resort, wraps it in a {@code RuntimeException}
+    * then propagate.
+    * <p>
+    * Example usage:
+    * <pre>
+    *   T doSomething() {
+    *     try {
+    *       return someMethodThatCouldThrowAnything();
+    *     } catch (IKnowWhatToDoWithThisException e) {
+    *       return handle(e);
+    *     } catch (Throwable t) {
+    *       Throwables.propagate(t);
+    *     }
+    *   }
+    * </pre>
+    *
+    * @param throwable the Throwable to propagate
+    * @throws RuntimeException If the given throwable must be wrapped to propagate
+    */
+   public static void propagate(Throwable throwable)
+   {
+      if(throwable instanceof Error) {
+         throw (Error) throwable;
+      } else if(throwable instanceof RuntimeException) {
+         throw (RuntimeException) throwable;
+      } else if(throwable == null) {
+         throw new NullPointerException();
+      }
+      throw new RuntimeException(throwable);
+   }
+
+
+   /**
+    * Returns the innermost cause of {@code throwable}. The first throwable in a chain
+    * provides context from when the error or exception was initially detected. Example
+    * usage:
+    * <pre>
+    *   assertEquals("Unable to assign a customer id",
+    *       Throwables.getRootCause(e).getMessage());
+    * </pre>
+    */
+   public static Throwable getRootCause(Throwable t)
+   {
+      while(t.getCause() != null) t = t.getCause();
+      return t;
+   }
+
+
+   /**
+    * Iterates through the causal chain of the given {@link Throwable} and returns the
+    * first instance of the requested type. If the requested type is not found this
+    * will return {@code null}.
+    * <p/>
+    * This implementation will return the element only if it is an exact match of the
+    * request type. It does not return instances of the requested type.
+    *
+    * @param t The source throwable
+    * @param type The exception/error type to return
+    * @return The first exception/error of the given type or {@code null}.
+    */
+   public static <T> T getFirstOfType(Throwable t, Class<T> type)
+   {
+      while(t != null && t.getClass() !=  type) t = t.getCause();
+      return type.cast(t);
+   }
+
+
+
+   /**
+    * Returns an abbreviated version of the stack trace where only the first
+    * five stack frames per exception are output without their package name
+    * prefixes.
+    * <pre>
+    *    IOException - sample IO fault
+    *        ErrorsTest.testShortStackTrace(line:17)
+    *        NativeMethodAccessorImpl.invoke0(Native Method)
+    *        NativeMethodAccessorImpl.invoke(line:57)
+    *        DelegatingMethodAccessorImpl.invoke(line:43)
+    *        Method.invoke(line:601)
+    * </pre>
+    * This can be useful for those who want to log stack trace information
+    * without filling up their disk or in cases where compactness are critical
+    * like network logging facilities.
+    * <p/>
+    * In cases where the throwable contains a root cause this will only output
+    * the stack frames of the root cause itself, not all of its wrappers.
+    */
+   public static String toShortString(Throwable t)
+   {
+      while(t.getCause() != null) t = t.getCause();
+      StringBuilder buf = new StringBuilder();
+      buf.append(stripPackage(t.getClass().getName()));
+      if(!Strings.isEmpty(t.getMessage()))
+         buf.append(" - ").append(t.getMessage());
+      StackTraceElement[] ste = t.getStackTrace();
+      for(int i = 0; i < Math.min(ste.length, 5); i++) {
+         buf.append(System.getProperty("line.separator"));
+         buf.append("   ").append(stripPackage(ste[i].getClassName()));
+         buf.append(".").append(ste[i].getMethodName());
+         if(ste[i].isNativeMethod()) {
+            buf.append("(Native Method)");
+         } else if(ste[0].getLineNumber() >= 0) {
+            buf.append("(line:").append(ste[i].getLineNumber()).append(")");
+         } else
+            buf.append("(Unknown Source)");
+      }
+      return buf.toString();
+   }
+
+   /**
+    * Converts the given {@link Throwable} into a string containing the full stack
+    * trace as if {@link Throwable#printStackTrace()} had been called.
+    */
+   public static String toString(Throwable t)
+   {
+      StringWriter sw = new StringWriter();
+      t.printStackTrace(new PrintWriter(sw, true));
+      return sw.toString();
+   }
+
+
+
+
+   private static String stripPackage(String name)
+   {
+      return name.substring(name.lastIndexOf('.') + 1);
+   }
+
+
+
+}
