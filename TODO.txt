@@ -1,3 +1,19 @@
+NioUtils
+   subset(ByteBuffer buf, int start, int end)
+   Returns back a view of the buffer with start set as its position and end as its limit.
+   Should work with both direct and indirect buffers
+
+
+
+
+
+
+
+
+
+
+
+
 xpertss.text
 
    StringPrepException can go and be replaced by SyntaxException or ParseException
@@ -109,12 +125,6 @@ Modify parse methods to accept CharSequence rather than String
 
 
 
-
-
-NioUtils
-   subset(ByteBuffer buf, int start, int end)
-   Returns back a view of the buffer with start set as its position and end as its limit.
-   Should work with both direct and indirect buffers
 
 
 What do I want to do with PhaseBarrier?
