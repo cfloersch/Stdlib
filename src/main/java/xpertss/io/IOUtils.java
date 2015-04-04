@@ -112,17 +112,20 @@ public final class IOUtils {
 
 
 
+
    /**
     * Utility method to copy InputStream bytes to an OutputStream without having to
     * code all of the loop code. This just makes your code cleaner.
     *
     * @param in - InputStream to read bytes from.
     * @param out - OutputStream to write bytes to.
+    * @return the number of bytes copied
+    * @throws IOException if an I/O error occurs
     */
-   public static void copyTo(InputStream in, OutputStream out)
+   public static long copyTo(InputStream in, OutputStream out)
       throws IOException
    {
-      copyTo(in, out, false);
+      return copyTo(in, out, false);
    }
 
 
@@ -133,22 +136,24 @@ public final class IOUtils {
     * @param in - InputStream to read bytes from.
     * @param out - OutputStream to write bytes to.
     * @param close - Close streams when finished.
+    * @return the number of bytes copied
+    * @throws IOException if an I/O error occurs
     */
-   public static void copyTo(InputStream in, OutputStream out, boolean close)
+   public static long copyTo(InputStream in, OutputStream out, boolean close)
       throws IOException
    {
+      long total = 0;
       try {
          int len;
          byte[] buf = new byte[2048];
          while((len = in.read(buf)) != -1) {
-            out.write(buf,0,len);
+            out.write(buf, 0, len);
+            total += len;
          }
       } finally {
-         if(close) {
-            close(in);
-            close(out);
-         }
+         if(close) close(in, out);
       }
+      return total;
    }
 
 
@@ -160,11 +165,13 @@ public final class IOUtils {
     *
     * @param in - Reader to read chars from.
     * @param out - Writer to write chars to.
+    * @return the number of bytes copied
+    * @throws IOException if an I/O error occurs
     */
-   public static void copyTo(Reader in, Writer out)
+   public static long copyTo(Reader in, Writer out)
       throws IOException
    {
-      copyTo(in, out, false);
+      return copyTo(in, out, false);
    }
 
 
@@ -174,23 +181,25 @@ public final class IOUtils {
     *
     * @param in - Reader to read chars from.
     * @param out - Writer to write chars to.
-    * @param close - Close reader and writer when finished.
+    * @param close - Close the reader and writer when finished.
+    * @return the number of bytes copied
+    * @throws IOException if an I/O error occurs
     */
-   public static void copyTo(Reader in, Writer out, boolean close)
+   public static long copyTo(Reader in, Writer out, boolean close)
       throws IOException
    {
+      long total = 0;
       try {
          int len;
          char[] buf = new char[2048];
          while((len = in.read(buf)) != -1) {
-            out.write(buf,0,len);
+            out.write(buf, 0, len);
+            total += len;
          }
       } finally {
-         if(close) {
-            close(in);
-            close(out);
-         }
+         if(close) close(in, out);
       }
+      return total;
    }
 
 
