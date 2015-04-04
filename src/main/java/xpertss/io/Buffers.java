@@ -1,6 +1,7 @@
 package xpertss.io;
 
 import xpertss.lang.Integers;
+import xpertss.lang.Numbers;
 import xpertss.lang.Objects;
 
 import java.io.IOException;
@@ -35,6 +36,16 @@ public final class Buffers {
    public static Reader newReader(ByteBuffer buffer, Charset charset)
    {
       return new InputStreamReader(newInputStream(buffer), charset);
+   }
+
+
+   /**
+    * Wraps the given {@link java.nio.CharBuffer} in a {@link java.io.Reader} much like
+    * a {@link java.io.ByteArrayInputStream} wraps a byte array.
+    */
+   public static Reader newReader(CharBuffer buffer)
+   {
+      return new CharBufferReader(buffer);
    }
 
 
@@ -314,7 +325,7 @@ public final class Buffers {
 
 
    /**
-    * Returns a byte array from a string of hexadecimal digits. This assumes
+    * Returns a byte buffer from a string of hexadecimal digits. This assumes
     * that the String does not contain any spaces such as a fingerprint.
     */
    public static ByteBuffer fromHexString(String hex)
@@ -324,7 +335,6 @@ public final class Buffers {
       for (int i = 0; i < buf.length(); i += 2) {
          char    left  = buf.charAt(i);
          char    right = buf.charAt(i+1);
-         int     index = i / 2;
          byte b = 0;
          if (left < 'a') {
             b = (byte)((left - '0') << 4);
@@ -373,6 +383,7 @@ public final class Buffers {
 
       public long skip(long n)
       {
+         Numbers.gte(0L, n, "skip value is negative");
          long amount = Math.min(n, buffer.remaining());
          buffer.position(Integers.safeCast(buffer.position() + amount));
          return amount;
@@ -400,4 +411,65 @@ public final class Buffers {
    }
 
 
+   private static class CharBufferReader extends Reader {
+      private final CharBuffer buffer;
+      public CharBufferReader(CharBuffer buffer)
+      {
+         this.buffer = Objects.notNull(buffer);
+      }
+
+
+      @Override
+      public int read(char[] cbuf, int off, int len)
+         throws IOException
+      {
+         if (cbuf == null) {
+            throw new NullPointerException();
+         } else if (off < 0 || len < 0 || len > cbuf.length - off) {
+            throw new IndexOutOfBoundsException();
+         }
+         int amount = Math.min(len, buffer.remaining());
+         if(amount <= 0) return -1;
+         buffer.get(cbuf, off, amount);
+         return amount;
+
+      }
+
+      @Override
+      public long skip(long n) throws IOException
+      {
+         Numbers.gte(0L, n, "skip value is negative");
+         long amount = Math.min(n, buffer.remaining());
+         buffer.position(Integers.safeCast(buffer.position() + amount));
+         return amount;
+      }
+
+
+      @Override
+      public boolean ready() throws IOException
+      {
+         return true;
+      }
+
+      @Override
+      public boolean markSupported() {
+         return true;
+      }
+
+      @Override
+      public void mark(int readAheadLimit) throws IOException
+      {
+         buffer.mark();
+      }
+
+      @Override
+      public void reset() throws IOException
+      {
+         buffer.reset();
+      }
+
+      @Override
+      public void close() throws IOException { }
+
+   }
 }

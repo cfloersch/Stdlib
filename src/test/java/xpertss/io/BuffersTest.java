@@ -26,7 +26,7 @@ public class BuffersTest {
    public void testFlip() throws IOException
    {
       testData = ByteBuffer.allocate(4);
-      testData.put((byte)'T').put((byte)'e').put((byte)'s').put((byte)'t');
+      testData.put((byte)'T').put((byte)'e').put((byte)'s').put((byte) 't');
       assertFalse(testData.hasRemaining());
       assertEquals(testData.position(), testData.limit());
 
@@ -34,7 +34,7 @@ public class BuffersTest {
       assertEquals((byte)'T', in.read());
       assertEquals((byte)'e', in.read());
       assertEquals((byte)'s', in.read());
-      assertEquals((byte)'t', in.read());
+      assertEquals((byte) 't', in.read());
       assertEquals(-1, in.read());
    }
 
@@ -107,9 +107,9 @@ public class BuffersTest {
       assertEquals(9, in.read(data));
       assertEquals((byte)'a', data[8]);
       assertEquals((byte)0x00, data[9]);
-      assertEquals((byte)0x00, data[11]);
-      assertEquals((byte)0x00, data[13]);
-      assertEquals((byte)0x00, data[15]);
+      assertEquals((byte) 0x00, data[11]);
+      assertEquals((byte) 0x00, data[13]);
+      assertEquals((byte) 0x00, data[15]);
       assertEquals(-1, in.read());
    }
 
@@ -137,6 +137,27 @@ public class BuffersTest {
       String str = Buffers.toFingerPrint(buffer);
       assertEquals(32, str.length());
       assertEquals("00 01 02 03 04 05 06 07 08 09 0A", str);
+   }
+
+
+   @Test
+   public void testFromHexString()
+   {
+      ByteBuffer buffer = ByteBuffer.allocate(11);
+      for(int c = 0; c < 11; c++) buffer.put((byte) (c & 0xff));
+      buffer.flip();
+      String str = Buffers.toHexString(buffer);
+      ByteBuffer copy = Buffers.fromHexString(str);
+      assertEquals(buffer, copy);
+   }
+
+
+   @Test
+   public void testEqual()
+   {
+      assertTrue(Buffers.equal(testData, 5, new byte[] { (byte)'d', (byte)'a', (byte)'t'}));
+      assertTrue(Buffers.equal(testData, 4, new byte[] { (byte)' ', (byte)'d', (byte)'a', (byte)'t'}));
+      assertFalse(Buffers.equal(testData, new byte[] { (byte)' ', (byte)'d', (byte)'a', (byte)'t'}));
    }
 
 }
