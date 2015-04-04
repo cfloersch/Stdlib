@@ -18,6 +18,9 @@ public final class IOUtils {
    /**
     * Given the supplied InputStream read all the bytes from it and return them as a
     * byte array. This does not close the supplied stream.
+    *
+    * @param in - The InputStream to read from
+    * @throws IOException if an I/O error occurs
     */
    public static byte[] getBytes(InputStream in)
       throws IOException
@@ -29,6 +32,10 @@ public final class IOUtils {
    /**
     * Given the supplied InputStream read all the bytes from it and return them as a
     * byte array. This closes the supplied stream if specified.
+    *
+    * @param in - The InputStream to read from
+    * @param close - Close the stream when finished.
+    * @throws IOException if an I/O error occurs
     */
    public static byte[] getBytes(InputStream in, boolean close)
       throws IOException
@@ -52,7 +59,8 @@ public final class IOUtils {
     * This is essentially just a clean code utility.
     *
     * @param in - InputStream to read from.
-    * @param charset - Use specified charset to decode input stream bytes into characters.
+    * @param charset - The charset to use when decoding bytes to characters.
+    * @throws IOException if an I/O error occurs
     */
    public static String toString(InputStream in, Charset charset)
       throws IOException
@@ -67,8 +75,9 @@ public final class IOUtils {
     * This is essentially just a clean code utility.
     *
     * @param in - InputStream to read from.
-    * @param charset - Use specified charset to decode input stream bytes into characters.
+    * @param charset - The charset to use when decoding bytes to characters.
     * @param close - Close stream when finished.
+    * @throws IOException if an I/O error occurs
     */
    public static String toString(InputStream in, Charset charset, boolean close)
       throws IOException
@@ -82,6 +91,7 @@ public final class IOUtils {
     * loading text files to a string. This is essentially just a clean code utility.
     *
     * @param in - Reader to read from.
+    * @throws IOException if an I/O error occurs
     */
    public static String toString(Reader in)
       throws IOException
@@ -96,6 +106,7 @@ public final class IOUtils {
     *
     * @param in - Reader to read from.
     * @param close - Close reader when finished.
+    * @throws IOException if an I/O error occurs
     */
    public static String toString(Reader in, boolean close)
       throws IOException
