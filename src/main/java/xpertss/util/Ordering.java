@@ -73,7 +73,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    @SuppressWarnings("unchecked")
    public static <T extends Comparable<? super T>> Ordering<T> natural()
    {
-      return (Ordering<T>) NaturalOrdering.INSTANCE;
+      return Objects.cast(NaturalOrdering.INSTANCE);
    }
 
    /**
@@ -90,7 +90,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    @SuppressWarnings("unchecked")
    public static <T extends Comparable<? super T>> Ordering<T> reversed()
    {
-      return (Ordering<T>) ReversedOrdering.INSTANCE;
+      return Objects.cast(ReversedOrdering.INSTANCE);
    }
 
 
@@ -242,7 +242,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    @SuppressWarnings("unchecked")
    public static <T,U extends Comparable<? super U>> Ordering<T> comparing(Function<? super T,? extends U> keyExtractor)
    {
-      return new ComposedOrdering<>((Ordering<U>)NaturalOrdering.INSTANCE, keyExtractor);
+      return new ComposedOrdering<>((Ordering<U>)Objects.cast(NaturalOrdering.INSTANCE), keyExtractor);
    }
 
 
