@@ -60,5 +60,25 @@ public class ConfigTest {
    }
 
 
+   @Test
+   public void testResolveSimple()
+   {
+      Properties props = new Properties();
+      props.setProperty("user.home", "/home/joeblow");
+      props.setProperty("home.directory", "${user.home}");
+      Config config = new Config(props).resolve();
+      assertEquals("/home/joeblow", config.getProperty("home.directory"));
+   }
+
+   @Test
+   public void testResolveComplex()
+   {
+      Properties props = new Properties();
+      props.setProperty("user.name", "joeblow");
+      props.setProperty("temp.dir", "tmp");
+      props.setProperty("user.dir", "/home/${user.name}/${none}/${temp.dir}/pdf");
+      Config config = new Config(props).resolve();
+      assertEquals("/home/joeblow/${none}/tmp/pdf", config.getProperty("user.dir"));
+   }
 
 }

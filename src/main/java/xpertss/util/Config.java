@@ -7,12 +7,17 @@ package xpertss.util;
 
 import xpertss.lang.Objects;
 import xpertss.lang.SyntaxException;
+import xpertss.text.PropertyFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A configuration object represents an immutable set of properties.
@@ -21,7 +26,7 @@ import java.util.Properties;
 public class Config {
 
 
-   protected Properties properties;
+   protected final Properties properties;
 
 
    /**
@@ -252,6 +257,35 @@ public class Config {
    }
 
 
+   /**
+    * This will return a new Config object in which all of the properties
+    * within this Config are fully resolved.   This means that property
+    * values of the form ${property.name} will be replaced by any defined
+    * property value that matches property.name.
+    */
+   public Config resolve()
+   {
+      Properties copy = new Properties();
+      for(String propName : properties.stringPropertyNames()) {
+         String value = properties.getProperty(propName);
+         copy.put(propName, resolve(properties, value));
+      }
+      return new Config(copy);
+   }
+
+
+   /**
+    * Create and return a copy of the current configuration in {@link Map} form.
+    */
+   public Map<String,String> toMap()
+   {
+      Map<String,String> map = new LinkedHashMap<>();
+      for(String propName : properties.stringPropertyNames()) {
+         map.put(propName, properties.getProperty(propName));
+      }
+      return map;
+   }
+
 
 
 
@@ -278,8 +312,8 @@ public class Config {
       } catch (IOException e) {
          throw new SyntaxException(e);
       }
-      Config config = new Config(props);
-      return (system) ? config.overlayWith(System.getProperties()) : config;
+      if(system) props.putAll(System.getProperties());
+      return new Config(props);
    }
 
    /**
@@ -302,6 +336,26 @@ public class Config {
       return load(ResourceLoader.getResource(ctxUrlStr), overlay);
    }
 
+
+
+
+   private static final Pattern pattern = Pattern.compile("\\$\\{([\\w.\\-_]+)\\}");
+
+   public static String resolve(Properties props, String msg)
+   {
+      StringBuilder builder = new StringBuilder();
+      Matcher matcher = pattern.matcher(msg);
+      int last = 0;
+      while(matcher.find()) {
+         builder.append(msg.substring(last, matcher.start()));
+         String value = props.getProperty(matcher.group(1));
+         if(value != null) builder.append(value);
+         else builder.append(matcher.group());
+         last = matcher.end();
+      }
+      builder.append(msg.substring(last));
+      return builder.toString();
+   }
 
 
    private static InputStream open(URL url)
