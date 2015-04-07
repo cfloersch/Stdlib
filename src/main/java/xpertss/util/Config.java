@@ -7,7 +7,6 @@ package xpertss.util;
 
 import xpertss.lang.Objects;
 import xpertss.lang.SyntaxException;
-import xpertss.text.PropertyFormat;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -75,8 +75,8 @@ public class ConfigTest {
    {
       Properties props = new Properties();
       props.setProperty("user.name", "joeblow");
-      props.setProperty("temp.dir", "tmp");
       props.setProperty("user.dir", "/home/${user.name}/${none}/${temp.dir}/pdf");
+      props.setProperty("temp.dir", "tmp");
       Config config = new Config(props).resolve();
       assertEquals("/home/joeblow/${none}/tmp/pdf", config.getProperty("user.dir"));
    }
