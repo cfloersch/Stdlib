@@ -156,7 +156,7 @@ public class Config {
    {
       String prop = getProperty(key);
       try {
-         return Double.valueOf(prop);
+         return Double.valueOf(prop.trim());
       } catch(Exception e) {
          return def;
       }
