@@ -28,21 +28,13 @@ public class Config {
    protected final Properties properties;
 
 
-   /**
-    * Create a new <code>Config</code>.
-    */
-   public Config()
-   {
-      properties = new Properties();
-   }
 
    /**
     * Create a new <code>Config</code>.
     */
-   public Config(Properties properties)
+   private Config(Properties properties)
    {
-      this.properties = new Properties();
-      this.properties.putAll(properties);
+      this.properties = Objects.notNull(properties);
    }
 
 
@@ -251,8 +243,7 @@ public class Config {
    public Config overlayWith(Properties properties)
    {
       Properties props = new Properties(this.properties);
-      props.putAll(Objects.notNull(properties));
-      return new Config(props);
+      return new Config(copyTo(Objects.notNull(properties), props));
    }
 
 
@@ -311,7 +302,7 @@ public class Config {
       } catch (IOException e) {
          throw new SyntaxException(e);
       }
-      if(system) props.putAll(System.getProperties());
+      if(system) copyTo(System.getProperties(), props);
       return new Config(props);
    }
 
@@ -334,6 +325,20 @@ public class Config {
    {
       return load(ResourceLoader.getResource(ctxUrlStr), overlay);
    }
+
+
+   /**
+    * Create a Config object from the given properties. The config object will be
+    * an immutable copy of the supplied properties.
+    *
+    * @param props The properties to create the config from
+    * @return An immutable config derived from a copy of the given properties
+    */
+   public static Config create(Properties props)
+   {
+      return new Config(copyTo(Objects.notNull(props), new Properties()));
+   }
+
 
 
 
@@ -362,4 +367,12 @@ public class Config {
       try { return url.openStream(); } catch(Exception e) { throw new ResourceNotFoundException(e); }
    }
 
+
+   private static Properties copyTo(Properties src, Properties dst)
+   {
+      for(String propName : src.stringPropertyNames()) {
+         dst.put(propName, src.getProperty(propName));
+      }
+      return dst;
+   }
 }

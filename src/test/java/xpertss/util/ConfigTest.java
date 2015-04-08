@@ -23,7 +23,7 @@ public class ConfigTest {
       props.setProperty("space-and-comma", "eth0, eth1");
       props.setProperty("multiple-space", "eth0   eth1");
       props.setProperty("space-comma-space", "eth0 , eth1");
-      Config config = new Config(props);
+      Config config = Config.create(props);
 
       assertTrue(Arrays.equals(result, config.getStrings("comma-no-space")));
       assertTrue(Arrays.equals(result, config.getStrings("space-no-comma")));
@@ -42,7 +42,7 @@ public class ConfigTest {
       props.setProperty("server.harvester.host.allowed", "eth0,eth1");
       props.setProperty("server.harvester.stun.address", "162.43.8.122");
       props.setProperty("server.harvester.stun.port", "5328");
-      Config config = new Config(props);
+      Config config = Config.create(props);
       assertEquals("10.0.0.1", config.subConfig("server.harvester.host").getNotNullProperty("address"));
       assertEquals("162.43.8.122", config.subConfig("server.harvester.stun").getNotNullProperty("address"));
       assertEquals(5328, config.subConfig("server.harvester.stun").getInt("port"));
@@ -66,7 +66,7 @@ public class ConfigTest {
       Properties props = new Properties();
       props.setProperty("user.home", "/home/joeblow");
       props.setProperty("home.directory", "${user.home}");
-      Config config = new Config(props).resolve();
+      Config config = Config.create(props).resolve();
       assertEquals("/home/joeblow", config.getProperty("home.directory"));
    }
 
@@ -77,8 +77,12 @@ public class ConfigTest {
       props.setProperty("user.name", "joeblow");
       props.setProperty("user.dir", "/home/${user.name}/${none}/${temp.dir}/pdf");
       props.setProperty("temp.dir", "tmp");
-      Config config = new Config(props).resolve();
+      Config config = Config.create(props).resolve();
       assertEquals("/home/joeblow/${none}/tmp/pdf", config.getProperty("user.dir"));
+      Properties overlay = new Properties();
+      overlay.setProperty("none", "documents");
+      config = config.overlayWith(overlay).resolve();
+      assertEquals("/home/joeblow/documents/tmp/pdf", config.getProperty("user.dir"));
    }
 
 }
