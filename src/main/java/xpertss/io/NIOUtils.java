@@ -304,6 +304,25 @@ public final class NIOUtils {
 
 
    /**
+    * Create a {@link Predicate} that tests whether a file exists.
+    * <p/>
+    * The options parameter may be used to indicate how symbolic links are handled
+    * for the case that the file is a symbolic link. By default, symbolic links are
+    * followed. If the option NOFOLLOW_LINKS is present then symbolic links are not
+    * followed.
+    */
+   public static Predicate<Path> exists(LinkOption... options)
+   {
+      final LinkOption[] linkOptions = options;
+      return new Predicate<Path>() {
+         @Override public boolean apply(Path input)
+         {
+            return Files.exists(input, linkOptions);
+         }
+      };
+   }
+
+   /**
     * Create a {@link Predicate} that tests whether a file is a directory.
     * <p/>
     * The options array may be used to indicate how symbolic links are handled for
@@ -453,6 +472,25 @@ public final class NIOUtils {
       };
    }
 
+   /**
+    * Create a {@link Predicate} that tests whether a file is considered hidden.
+    * <p/>
+    * The exact definition of hidden is platform or provider dependent. On UNIX for example a
+    * file is considered to be hidden if its name begins with a period character ('.').  On
+    * Windows a file is considered hidden if it isn't a directory and the DOS hidden attribute
+    * is set.
+    * <p/>
+    * This implementation will treat {@link IOException}s as if the file is not hidden.
+    */
+   public static Predicate<Path> isHidden()
+   {
+      return new Predicate<Path>() {
+         @Override public boolean apply(Path input)
+         {
+            try { return Files.isHidden(input); } catch(Exception e) { return false; }
+         }
+      };
+   }
 
 
 

@@ -1,5 +1,6 @@
 package xpertss.time;
 
+import xpertss.function.Predicate;
 import xpertss.lang.Objects;
 
 import java.text.MessageFormat;
@@ -147,6 +148,40 @@ public final class Dates {
       return true;
    }
 
+
+
+
+
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the date being tested
+    * falls {@code before()} the given date.
+    */
+   public static Predicate<Date> before(Date d)
+   {
+      final Date date = d;
+      return new Predicate<Date>() {
+         @Override public boolean apply(Date input)
+         {
+            return input.before(date);
+         }
+      };
+   }
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the date being tested
+    * falls {@code after()} the given date.
+    */
+   public static Predicate<Date> after(Date d)
+   {
+      final Date date = d;
+      return new Predicate<Date>() {
+         @Override public boolean apply(Date input)
+         {
+            return input.after(date);
+         }
+      };
+   }
 
 
 
