@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -73,6 +74,28 @@ public final class Sets {
    {
       Set<T> result = newSet(src);
       for(F item : src) result.add(function.apply(item));
+      return result;
+   }
+
+
+   /**
+    * Creates and returns a new set containing the elements from the source set which
+    * satisfy the predicate.
+    * <p/>
+    * The returned set will be an instance of the supplied set if the supplied set can
+    * be duplicated using the {@link Sets#newSet(java.util.Set)} method. Otherwise, the
+    * returned set will be a {@link java.util.LinkedHashSet}.
+    *
+    * @param src The source set to pull elements from
+    * @param predicate The predicate to apply to each element
+    * @return A set containing the elements that satisfy the predicate
+    * @throws NullPointerException If either the set or predicate are {@code null}
+    * @see Sets#newSet
+    */
+   public static <T> Set<T> filter(Set<T> src, Predicate<T> predicate)
+   {
+      Set<T> result = newSet(src);
+      for(T item : src) if(predicate.apply(item)) result.add(item);
       return result;
    }
 
