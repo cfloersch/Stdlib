@@ -264,44 +264,44 @@ public final class Strings {
 
 
    /**
-    * This static method will take an array of Strings and concatenate them together using
-    * a space as a separator. The parts are concatenated in the order they are passed in.
-    * Null parts will not be concatenated.
+    * This static method will take an array of Strings and joins them together using
+    * a space as a separator. The parts are joined in the order they are passed in.
+    * Null parts will not be joined.
     *
-    * @param parts - One or more String parts to concatenate together
-    * @return  A String object representing the elements concatenated together
+    * @param parts - One or more String parts to join together
+    * @return  A String object representing the elements joined together
     */
-   public static String concat(String ... parts)
+   public static String join(String... parts)
    {
-      return concat(" ", parts, 0, parts.length);
+      return join(" ", parts, 0, parts.length);
    }
 
    /**
-    * This static method will take an array of Strings and concatenate them together using
-    * the supplied separator as a separator. The parts are concatenated in the order they
+    * This static method will take an array of Strings and join them together using
+    * the supplied separator as a separator. The parts are joined in the order they
     * are passed in. Null parts will not be concatenated.
     *
     * @param sep - The string representation of the separator characters.
-    * @param parts - One or more String parts to concatenate together
-    * @return  A String object representing the elements concatenated together
+    * @param parts - One or more String parts to join together
+    * @return  A String object representing the elements joined together
     */
-   public static String concat(String sep, String ... parts)
+   public static String join(String sep, String... parts)
    {
-      return concat(sep, parts, 0, parts.length);
+      return join(sep, parts, 0, parts.length);
    }
 
    /**
-    * This static method will take an array of Strings and concatenate them together using
-    * the supplied separator as a separator. The parts are concatenated in the order they
+    * This static method will take an array of Strings and joins them together using
+    * the supplied separator as a separator. The parts are joined in the order they
     * are passed in. Null parts will not be concatenated.
     *
     * @param sep The string representation of the separator characters.
-    * @param parts An array of String parts to concatenate together
-    * @param offset The offset of the array to begin the concatenation
-    * @param length The number of array elements to concatenate
-    * @return  A String object representing the elements concatenated together
+    * @param parts An array of String parts to join together
+    * @param offset The offset of the array to begin the joining
+    * @param length The number of array elements to join
+    * @return  A String object representing the elements joined together
     */
-   public static String concat(String sep, String[] parts, int offset, int length)
+   public static String join(String sep, String[] parts, int offset, int length)
    {
       StringBuilder buf = new StringBuilder();
       for(int i = offset; i < offset + length; i++) {
