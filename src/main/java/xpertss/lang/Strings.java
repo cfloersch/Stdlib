@@ -1,6 +1,10 @@
 package xpertss.lang;
 
 
+import xpertss.function.Predicate;
+import xpertss.function.Predicates;
+
+import java.io.Serializable;
 
 /**
  * Static utility methods and argument checkers used to process Strings.
@@ -56,6 +60,120 @@ public final class Strings {
    }
 
 
+
+
+
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the string being tested
+    * {@code equalsIgnoreCase()} the given target or both are {@code null}.
+    */
+   public static Predicate<String> equalToIgnoreCase(String target)
+   {
+      return (target == null) ? Predicates.<String>isNull() : new IsEqualToIgnoreCasePredicate(target);
+   }
+
+   static class IsEqualToIgnoreCasePredicate implements Predicate<String>, Serializable {
+      private final String target;
+
+      private IsEqualToIgnoreCasePredicate(String target)
+      {
+         this.target = target;
+      }
+
+      @Override
+      public boolean apply(String t)
+      {
+         return target.equalsIgnoreCase(t);
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return target.hashCode();
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         if (obj instanceof IsEqualToIgnoreCasePredicate) {
+            IsEqualToIgnoreCasePredicate that = (IsEqualToIgnoreCasePredicate) obj;
+            return target.equals(that.target);
+         }
+         return false;
+      }
+
+      @Override
+      public String toString()
+      {
+         return "IsEqualToIgnoreCase(" + target + ")";
+      }
+
+      private static final long serialVersionUID = 0;
+   }
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the string being tested
+    * {@code isEmpty()}.
+    */
+   public static Predicate<String> empty()
+   {
+      return EmptyPredicate.INSTANCE;
+   }
+
+   private enum EmptyPredicate implements Predicate<String> {
+      INSTANCE;
+
+      @Override public boolean apply(String input)
+      {
+         return isEmpty(input);
+      }
+   }
+
+
+
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the string being tested
+    * {@code startsWith()} the given prefix.
+    */
+   public static Predicate<String> startsWith(final String prefix)
+   {
+      return new Predicate<String>() {
+         @Override public boolean apply(String input)
+         {
+            return input.startsWith(prefix);
+         }
+      };
+   }
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the string being tested
+    * {@code endsWith()} the given suffix.
+    */
+   public static Predicate<String> endsWith(final String suffix)
+   {
+      return new Predicate<String>() {
+         @Override public boolean apply(String input)
+         {
+            return input.endsWith(suffix);
+         }
+      };
+   }
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the string being tested
+    * {@code contains()} the given string.
+    */
+   public static Predicate<String> contains(final String s)
+   {
+      return new Predicate<String>() {
+         @Override public boolean apply(String input)
+         {
+            return input.contains(s);
+         }
+      };
+   }
 
 
 

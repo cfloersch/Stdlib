@@ -75,6 +75,27 @@ public final class Lists {
    }
 
 
+   /**
+    * Creates and returns a new list containing the elements from the source list which
+    * satisfy the predicate.
+    * <p/>
+    * The returned list will be an instance of the supplied list if the supplied list can
+    * be duplicated using the {@link Lists#newList(java.util.List)} method. Otherwise, the
+    * returned list will be an {@link java.util.ArrayList}.
+    *
+    * @param src The source list to pull elements from
+    * @param predicate The predicate to apply to each element
+    * @return A list containing the elements that satisfy the predicate
+    * @throws NullPointerException If either the list or predicate are {@code null}
+    * @see Lists#newList
+    */
+   public static <T> List<T> filter(List<T> src, Predicate<T> predicate)
+   {
+      List<T> result = newList(src);
+      for(T item : src) if(predicate.apply(item)) result.add(item);
+      return result;
+   }
+
 
 
 
