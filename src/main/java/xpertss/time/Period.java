@@ -81,7 +81,8 @@ public class Period implements java.io.Serializable, Comparable<Period> {
 
    public Period(Date start, Date end)
    {
-      if(end.compareTo(start) <= 0) throw new IllegalArgumentException();
+      if(end.compareTo(Objects.notNull(start)) <= 0)
+         throw new IllegalArgumentException();
       this.start = start;
       this.end = end;
    }
