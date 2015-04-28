@@ -1,5 +1,6 @@
 package xpertss.io;
 
+import xpertss.function.Predicate;
 import xpertss.lang.Integers;
 import xpertss.lang.Numbers;
 import xpertss.lang.Objects;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -355,6 +357,62 @@ public final class Buffers {
 
 
 
+   // Predicate utils
+
+   /**
+    * Predicate which returns {@code true} if the supplied buffer has
+    * data remaining, {@code false} otherwise.
+    */
+   public static Predicate<Buffer> hasRemaining()
+   {
+      return HasRemainingPredicate.INSTANCE;
+   }
+
+   private enum HasRemainingPredicate implements Predicate<Buffer> {
+      INSTANCE;
+      @Override public boolean apply(Buffer input) {
+         return input.hasRemaining();
+      }
+   }
+
+
+   /**
+    * Predicate which returns {@code true} if the supplied buffer is a
+    * direct buffer, {@code false} otherwise.
+    */
+   public static Predicate<Buffer> direct()
+   {
+      return DirectPredicate.INSTANCE;
+   }
+
+   private enum DirectPredicate implements Predicate<Buffer> {
+      INSTANCE;
+      @Override public boolean apply(Buffer input) {
+         return input.isDirect();
+      }
+   }
+
+   /**
+    * Predicate which returns {@code true} if the supplied buffer is a
+    * read-only buffer, {@code false} otherwise.
+    */
+   public static Predicate<Buffer> readOnly()
+   {
+      return ReadOnlyPredicate.INSTANCE;
+   }
+
+   private enum ReadOnlyPredicate implements Predicate<Buffer> {
+      INSTANCE;
+      @Override public boolean apply(Buffer input) {
+         return input.isReadOnly();
+      }
+   }
+
+
+
+
+
+
    private static class ByteBufferInputStream extends InputStream {
       private final ByteBuffer buffer;
       public ByteBufferInputStream(ByteBuffer buffer)
@@ -409,7 +467,6 @@ public final class Buffers {
       public void close() throws IOException { }
 
    }
-
 
    private static class CharBufferReader extends Reader {
       private final CharBuffer buffer;
@@ -472,4 +529,5 @@ public final class Buffers {
       public void close() throws IOException { }
 
    }
+
 }

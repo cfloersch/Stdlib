@@ -9,6 +9,7 @@ package xpertss.threads;
 import xpertss.util.Ordering;
 import xpertss.function.Predicate;
 
+import java.nio.Buffer;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -514,6 +515,44 @@ public final class Threads {
       };
       public abstract int compare(Thread left, Thread right);
    }
+
+
+
+
+
+   /**
+    * Predicate which returns {@code true} if the supplied thread is
+    * alive, {@code false} otherwise.
+    */
+   public static Predicate<Thread> alive()
+   {
+      return AlivePredicate.INSTANCE;
+   }
+
+   private enum AlivePredicate implements Predicate<Thread> {
+      INSTANCE;
+      @Override public boolean apply(Thread input) {
+         return input.isAlive();
+      }
+   }
+
+
+   /**
+    * Predicate which returns {@code true} if the supplied thread is a
+    * daemon thread, {@code false} otherwise.
+    */
+   public static Predicate<Thread> daemon()
+   {
+      return DaemonPredicate.INSTANCE;
+   }
+
+   private enum DaemonPredicate implements Predicate<Thread> {
+      INSTANCE;
+      @Override public boolean apply(Thread input) {
+         return input.isDaemon();
+      }
+   }
+
 
 
 
