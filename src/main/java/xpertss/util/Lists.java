@@ -7,6 +7,7 @@ package xpertss.util;
 
 import xpertss.function.Function;
 import xpertss.function.Predicate;
+import xpertss.function.UnaryOperator;
 import xpertss.lang.Classes;
 import xpertss.lang.Objects;
 
@@ -145,6 +146,27 @@ public final class Lists {
    {
       for(Iterator<E> it = src.iterator(); it.hasNext(); ) {
          if(predicate.apply(it.next())) it.remove();
+      }
+   }
+
+
+
+
+
+   /**
+    * Replaces each element of the source list with the result of applying the
+    * operator to that element.
+    *
+    * @param src The list of elements to replace using the operator
+    * @param operator The operator applied to the list's elements
+    * @throws NullPointerException If either the list or operator are {@code null}
+    * @throws UnsupportedOperationException if the list does not support the set
+    *          operation
+    */
+   public static <E> void replace(List<E> src, UnaryOperator<E> operator)
+   {
+      for(int i = 0; i < src.size(); i++) {
+         src.set(i, operator.apply(src.get(i)));
       }
    }
 
