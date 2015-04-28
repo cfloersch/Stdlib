@@ -183,4 +183,12 @@ public class LongsTest {
       assertEquals(3, Longs.median(1,3,2,5,4));
    }
 
+
+   @Test
+   public void testParse()
+   {
+      assertEquals(10L, Longs.parse("10", -1L));
+      assertEquals(10L, Longs.parse(new StringBuilder("10"), -1L));
+   }
+
 }

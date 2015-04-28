@@ -20,18 +20,18 @@ public final class Integers {
     * Parse the given string into an int or return the specified default if there is an
     * error parsing the string.
     */
-   public static int parse(String str, int def)
+   public static int parse(CharSequence str, int def)
    {
-      try { return Integer.parseInt(str); } catch (Exception e) { return def; }
+      try { return Integer.parseInt(CharSequences.toString(str)); } catch (Exception e) { return def; }
    }
 
    /**
     * Parse the given string into an int using the specified radix or return the specified
     * default if there is an error parsing the string.
     */
-   public static int parse(String str, int radix, int def)
+   public static int parse(CharSequence str, int radix, int def)
    {
-      try { return Integer.parseInt(str, radix); } catch (Exception e) { return def; }
+      try { return Integer.parseInt(CharSequences.toString(str), radix); } catch (Exception e) { return def; }
    }
 
 

@@ -26,9 +26,9 @@ public final class Floats {
     * Parse the given string into a float or return the specified default if there
     * is an error parsing the string.
     */
-   public static float parse(String str, float def)
+   public static float parse(CharSequence str, float def)
    {
-      try { return Float.parseFloat(str); } catch (Exception e) { return def; }
+      try { return Float.parseFloat(CharSequences.toString(str)); } catch (Exception e) { return def; }
    }
 
 

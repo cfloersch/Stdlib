@@ -9,6 +9,7 @@ package xpertss.lang;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 
@@ -165,6 +166,14 @@ public class FloatsTest {
 
       float minus = (float) (min - 1);
       assertTrue(minus == min);
+   }
+
+
+   @Test
+   public void testParse()
+   {
+      assertTrue(10F == Floats.parse("10", -1F));
+      assertTrue(10F == Floats.parse(new StringBuilder("10"), -1F));
    }
 
 

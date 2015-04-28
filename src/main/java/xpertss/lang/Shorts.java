@@ -19,18 +19,18 @@ public final class Shorts {
     * Parse the given string into a short or return the specified default if there is an
     * error parsing the string.
     */
-   public static short parse(String str, short def)
+   public static short parse(CharSequence str, short def)
    {
-      try { return Short.parseShort(str); } catch (Exception e) { return def; }
+      try { return Short.parseShort(CharSequences.toString(str)); } catch (Exception e) { return def; }
    }
 
    /**
     * Parse the given string into a short using the specified radix or return the
     * specified default if there is an error parsing the string.
     */
-   public static short parse(String str, int radix, short def)
+   public static short parse(CharSequence str, int radix, short def)
    {
-      try { return Short.parseShort(str, radix); } catch (Exception e) { return def; }
+      try { return Short.parseShort(CharSequences.toString(str), radix); } catch (Exception e) { return def; }
    }
 
 

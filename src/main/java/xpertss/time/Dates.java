@@ -1,6 +1,7 @@
 package xpertss.time;
 
 import xpertss.function.Predicate;
+import xpertss.lang.CharSequences;
 import xpertss.lang.Objects;
 
 import java.text.MessageFormat;
@@ -37,12 +38,12 @@ public final class Dates {
     * @param def A default date to return if the parse fails
     * @return The parsed date or the default if the parse failed
     */
-   public static Date parse(TimeZone tz, String pattern, String str, Date def)
+   public static Date parse(TimeZone tz, String pattern, CharSequence str, Date def)
    {
       try {
          SimpleDateFormat format = new SimpleDateFormat(pattern);
          format.setTimeZone(Objects.ifNull(tz, TimeZone.getDefault()));
-         return format.parse(str);
+         return format.parse(CharSequences.toString(str));
       } catch (Exception e) { return def; }
    }
 
@@ -58,7 +59,7 @@ public final class Dates {
     * @param def A default date to return if the parse fails
     * @return The parsed date or the default if the parse failed
     */
-   public static Date parseLocal(String pattern, String str, Date def)
+   public static Date parseLocal(String pattern, CharSequence str, Date def)
    {
       return parse(TimeZone.getDefault(), pattern, str, def);
    }
@@ -75,7 +76,7 @@ public final class Dates {
     * @param def A default date to return if the parse fails
     * @return The parsed date or the default if the parse failed
     */
-   public static Date parseUTC(String pattern, String str, Date def)
+   public static Date parseUTC(String pattern, CharSequence str, Date def)
    {
       return parse(TimeZone.getTimeZone("UTC"), pattern, str, def);
    }

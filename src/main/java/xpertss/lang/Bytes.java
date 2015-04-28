@@ -19,18 +19,18 @@ public final class Bytes {
     * Parse the given string into a byte or return the specified default if there
     * is an error parsing the string.
     */
-   public static byte parse(String str, byte def)
+   public static byte parse(CharSequence str, byte def)
    {
-      try { return Byte.parseByte(str); } catch (Exception e) { return def; }
+      try { return Byte.parseByte(CharSequences.toString(str)); } catch (Exception e) { return def; }
    }
 
    /**
     * Parse the given string into a byte using the specified radix or return the
     * specified default if there is an error parsing the string.
     */
-   public static byte parse(String str, int radix, byte def)
+   public static byte parse(CharSequence str, int radix, byte def)
    {
-      try { return Byte.parseByte(str, radix); } catch (Exception e) { return def; }
+      try { return Byte.parseByte(CharSequences.toString(str), radix); } catch (Exception e) { return def; }
    }
 
 

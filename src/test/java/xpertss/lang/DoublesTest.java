@@ -7,6 +7,7 @@ package xpertss.lang;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 
@@ -56,5 +57,12 @@ public class DoublesTest {
       assertTrue(minus == min);
    }
 
+
+   @Test
+   public void testParse()
+   {
+      assertTrue(10D == Doubles.parse("10", -1D));
+      assertTrue(10D == Doubles.parse(new StringBuilder("10"), -1D));
+   }
 
 }

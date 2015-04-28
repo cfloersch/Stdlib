@@ -18,4 +18,11 @@ public class BytesTest {
       assertEquals((byte)0, data[0]);
    }
 
+   @Test
+   public void testParse()
+   {
+      assertEquals((byte)10, Bytes.parse("10", (byte) -1));
+      assertEquals((byte)10, Bytes.parse(new StringBuilder("10"), (byte) -1));
+   }
+
 }

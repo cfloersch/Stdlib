@@ -1,24 +1,3 @@
-Predicates
-    Threads
-        isAlive()
-        isDaemon()
-        isInterrupted()
-    Buffers
-        hasArray()
-        hasRemaining()
-        isDirect()
-        isReadOnly()
-
-
-
-
-
-
-
-Strings.join(String delimeter, Iterable<CharSequence> elements)
-
-
-
 
 
 We can add min(Comparable)/max(Comparable)/min(Comparator)/max(Comparator) to Objects
@@ -134,12 +113,6 @@ date formats.
 
 
 
-
-Modify parse methods to accept CharSequence rather than String
-   Bytes.parse()
-   Shorts.parse()
-   Dates.parse()
-   etc...
 
 
 

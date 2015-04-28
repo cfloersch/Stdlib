@@ -28,7 +28,7 @@ public final class Booleans {
     *
     * @see xpertss.lang.BooleanStyle
     */
-   public static boolean parse(String str)
+   public static boolean parse(CharSequence str)
    {
       return BooleanStyle.parse(str, styles);
    }

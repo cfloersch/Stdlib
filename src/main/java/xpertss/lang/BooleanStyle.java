@@ -3,11 +3,11 @@ package xpertss.lang;
 /**
  * Enumeration of various styles used to encode boolean values into strings.
  * <p/>
- * {@link Booleans#parse(String)} is very lenient when it comes to what it will
+ * {@link Booleans#parse(CharSequence)} is very lenient when it comes to what it will
  * allow as input. The parse methods defined below are much more strict, requiring
  * the supplied string to conform to the style.
  * <p/>
- * All implementations of {@link #parse(String)} are null-safe.
+ * All implementations of {@link #parse(CharSequence)} are null-safe.
  */
 public enum BooleanStyle {
 
@@ -17,9 +17,9 @@ public enum BooleanStyle {
     * Uses <b>True</b> for {@code true} and <b>False</b> for {@code false}
     */
    TrueFalseTitleCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "True".equals(str);
+         return CharSequences.equal("True", str);
       }
 
       public String toString(boolean value)
@@ -33,9 +33,9 @@ public enum BooleanStyle {
     * Uses <b>true</b> for {@code true} and <b>false</b> for {@code false}
     */
    TrueFalseLowerCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "true".equals(str);
+         return CharSequences.equal("true", str);
       }
 
       public String toString(boolean value)
@@ -49,9 +49,9 @@ public enum BooleanStyle {
     * Uses <b>TRUE</b> for {@code true} and <b>FALSE</b> for {@code false}
     */
    TrueFalseUpperCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "TRUE".equals(str);
+         return CharSequences.equal("TRUE", str);
       }
 
       public String toString(boolean value)
@@ -66,9 +66,9 @@ public enum BooleanStyle {
     * Uses <b>true</b> for {@code true} and <b>false</b> for {@code false}
     */
    TrueFalseIgnoreCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "true".equalsIgnoreCase(str);
+         return CharSequences.equalIgnoreCase("true", str);
       }
 
       public String toString(boolean value)
@@ -82,9 +82,9 @@ public enum BooleanStyle {
     * Uses <b>T</b> for {@code true} and <b>F</b> for {@code false}
     */
    TrueFalseUpperChar {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "T".equals(str);
+         return CharSequences.equal("T", str);
       }
 
       public String toString(boolean value)
@@ -98,9 +98,9 @@ public enum BooleanStyle {
     * Uses <b>t</b> for {@code true} and <b>f</b> for {@code false}
     */
    TrueFalseLowerChar {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "t".equals(str);
+         return CharSequences.equal("t", str);
       }
 
       public String toString(boolean value)
@@ -115,9 +115,9 @@ public enum BooleanStyle {
     * Uses <b>t</b> for {@code true} and <b>f</b> for {@code false}
     */
    TrueFalseAnyChar {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "t".equalsIgnoreCase(str);
+         return CharSequences.equalIgnoreCase("t", str);
       }
 
       public String toString(boolean value)
@@ -132,9 +132,9 @@ public enum BooleanStyle {
     * Uses <b>On</b> for {@code true} and <b>Off</b> for {@code false}
     */
    OnOffTitleCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "On".equals(str);
+         return CharSequences.equal("On", str);
       }
 
       public String toString(boolean value)
@@ -148,9 +148,9 @@ public enum BooleanStyle {
     * Uses <b>on</b> for {@code true} and <b>off</b> for {@code false}
     */
    OnOffLowerCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "on".equals(str);
+         return CharSequences.equal("on", str);
       }
 
       public String toString(boolean value)
@@ -164,9 +164,9 @@ public enum BooleanStyle {
     * Uses <b>ON</b> for {@code true} and <b>OFF</b> for {@code false}
     */
    OnOffUpperCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "ON".equals(str);
+         return CharSequences.equal("ON", str);
       }
 
       public String toString(boolean value)
@@ -181,9 +181,9 @@ public enum BooleanStyle {
     * Uses <b>on</b> for {@code true} and <b>off</b> for {@code false}
     */
    OnOffIgnoreCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "On".equalsIgnoreCase(str);
+         return CharSequences.equalIgnoreCase("On", str);
       }
 
       public String toString(boolean value)
@@ -198,9 +198,9 @@ public enum BooleanStyle {
     * Uses <b>Yes</b> for {@code true} and <b>No</b> for {@code false}
     */
    YesNoTitleCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "Yes".equals(str);
+         return CharSequences.equal("Yes", str);
       }
 
       public String toString(boolean value)
@@ -214,9 +214,9 @@ public enum BooleanStyle {
     * Uses <b>yes</b> for {@code true} and <b>no</b> for {@code false}
     */
    YesNoLowerCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "yes".equals(str);
+         return CharSequences.equal("yes", str);
       }
 
       public String toString(boolean value)
@@ -230,9 +230,9 @@ public enum BooleanStyle {
     * Uses <b>YES</b> for {@code true} and <b>NO</b> for {@code false}
     */
    YesNoUpperCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "YES".equals(str);
+         return CharSequences.equal("YES", str);
       }
 
       public String toString(boolean value)
@@ -247,9 +247,9 @@ public enum BooleanStyle {
     * Uses <b>yes</b> for {@code true} and <b>no</b> for {@code false}
     */
    YesNoIgnoreCase {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "Yes".equalsIgnoreCase(str);
+         return CharSequences.equalIgnoreCase("Yes", str);
       }
 
       public String toString(boolean value)
@@ -263,9 +263,9 @@ public enum BooleanStyle {
     * Uses <b>Y</b> for {@code true} and <b>N</b> for {@code false}
     */
    YesNoUpperChar {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "Y".equals(str);
+         return CharSequences.equal("Y", str);
       }
 
       public String toString(boolean value)
@@ -279,9 +279,9 @@ public enum BooleanStyle {
     * Uses <b>y</b> for {@code true} and <b>n</b> for {@code false}
     */
    YesNoLowerChar {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "y".equals(str);
+         return CharSequences.equal("y", str);
       }
 
       public String toString(boolean value)
@@ -296,9 +296,9 @@ public enum BooleanStyle {
     * Uses <b>y</b> for {@code true} and <b>n</b> for {@code false}
     */
    YesNoAnyChar {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "Y".equalsIgnoreCase(str);
+         return CharSequences.equalIgnoreCase("Y", str);
       }
 
       public String toString(boolean value)
@@ -313,9 +313,9 @@ public enum BooleanStyle {
     * Uses <b>1</b> for {@code true} and <b>0</b> for {@code false}
     */
    ZeroOne {
-      public boolean parse(String str)
+      public boolean parse(CharSequence str)
       {
-         return "1".equals(str);
+         return CharSequences.equal("1", str);
       }
 
       public String toString(boolean value)
@@ -327,9 +327,9 @@ public enum BooleanStyle {
 
 
 
-   public boolean parse(String str)
+   public boolean parse(CharSequence str)
    {
-      return "true".equals(str);
+      return CharSequences.equal("true", str);
    }
 
    public String toString(boolean value)
@@ -346,9 +346,9 @@ public enum BooleanStyle {
     * @param styles The set of styles to use to parse the string
     * @return {@code true} if any one of the styles returns {@code true}
     */
-   public static boolean parse(String str, BooleanStyle ... styles)
+   public static boolean parse(CharSequence str, BooleanStyle ... styles)
    {
-      if(styles != null && !Strings.isEmpty(str)) {
+      if(styles != null && !CharSequences.isEmpty(str)) {
          for(BooleanStyle style : styles) {
             if(style.parse(str)) return true;
          }

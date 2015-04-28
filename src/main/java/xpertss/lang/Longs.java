@@ -21,18 +21,18 @@ public final class Longs {
     * Parse the given string into a long or return the specified default if there is an
     * error parsing the string.
     */
-   public static long parse(String str, long def)
+   public static long parse(CharSequence str, long def)
    {
-      try { return Long.parseLong(str); } catch (Exception e) { return def; }
+      try { return Long.parseLong(CharSequences.toString(str)); } catch (Exception e) { return def; }
    }
 
    /**
     * Parse the given string into a long using the specified radix or return the
     * specified default if there is an error parsing the string.
     */
-   public static long parse(String str, int radix, long def)
+   public static long parse(CharSequence str, int radix, long def)
    {
-      try { return Long.parseLong(str, radix); } catch (Exception e) { return def; }
+      try { return Long.parseLong(CharSequences.toString(str), radix); } catch (Exception e) { return def; }
    }
 
 

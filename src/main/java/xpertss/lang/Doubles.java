@@ -29,9 +29,9 @@ public final class Doubles {
     * Parse the given string into a double or return the specified default if there
     * is an error parsing the string.
     */
-   public static double parse(String str, double def)
+   public static double parse(CharSequence str, double def)
    {
-      try { return Double.parseDouble(str); } catch (Exception e) { return def; }
+      try { return Double.parseDouble(CharSequences.toString(str)); } catch (Exception e) { return def; }
    }
 
 

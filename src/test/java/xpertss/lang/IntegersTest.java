@@ -171,4 +171,12 @@ public class IntegersTest {
    }
 
 
+   @Test
+   public void testParse()
+   {
+      assertEquals(10, Integers.parse("10", -1));
+      assertEquals(10, Integers.parse(new StringBuilder("10"), -1));
+   }
+
+
 }
