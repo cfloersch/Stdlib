@@ -1,9 +1,35 @@
+Predicates
+    Threads
+        isAlive()
+        isDaemon()
+        isInterrupted()
+    Buffers
+        hasArray()
+        hasRemaining()
+        isDirect()
+        isReadOnly()
 
 
 
 
 
 
+
+Strings.join(String delimeter, Iterable<CharSequence> elements)
+
+
+
+
+
+We can add min(Comparable)/max(Comparable)/min(Comparator)/max(Comparator) to Objects
+and Iterables
+
+   public static <T extends Comparable<? super T>> T min(T ... set)
+   public static <T extends Comparable<? super T>> T max(T ... set)
+   public static <T> T min(Comparator<? super T> comp, T ... set)
+   public static <T> T max(Comparator<? super T> comp, T ... set)
+
+   Note: Kind of already available via the Operators.maxBy and minBy
 
 
 
