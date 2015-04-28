@@ -794,6 +794,17 @@ public final class CharSequences {
    }
 
 
+   /**
+    * NullSafe utility method to convert a CharSequence to a String.
+    *
+    * @param seq The possibly {@code null} char sequence
+    * @return A string or {@code null} if the input was {@code null}
+    */
+   public static String toString(CharSequence seq)
+   {
+      return (seq != null) ? seq.toString() : null;
+   }
+
 
 
 
