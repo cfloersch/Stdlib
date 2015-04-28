@@ -329,7 +329,7 @@ public final class Strings {
     * @param s The string to truncate
     * @param length The length at which to truncate it
     * @return The truncated string or the original if no truncation was necessary
-    * @throws NullPointerException If the speified string is {@code null}
+    * @throws NullPointerException If the specified string is {@code null}
     */
    public static String truncate(String s, int length)
    {
