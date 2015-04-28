@@ -371,6 +371,36 @@ public class ObjectsTest {
    }
 
 
+   @Test
+   public void testMin()
+   {
+      assertEquals(1, (int) Objects.min(5,2,1,4));
+      assertEquals("a", Objects.min("c","d","a","b"));
+   }
+
+   @Test
+   public void testMinWithComparator()
+   {
+      assertEquals(5, (int) Objects.min(Ordering.<Integer>reversed(), 5,2,1,4));
+      assertEquals("d", Objects.min(Ordering.<String>reversed(), "c","d","a","b"));
+   }
+
+   @Test
+   public void testMax()
+   {
+      assertEquals(5, (int) Objects.max(5, 2, 1, 4));
+      assertEquals("d", Objects.max("c", "d", "a", "b"));
+   }
+
+   @Test
+   public void testMaxWithComparator()
+   {
+      assertEquals(1, (int) Objects.max(Ordering.<Integer>reversed(), 5, 2, 1, 4));
+      assertEquals("a", Objects.max(Ordering.<String>reversed(), "c", "d", "a", "b"));
+   }
+
+
+
    private static class Person {
       private String firstName;
       private String lastName;

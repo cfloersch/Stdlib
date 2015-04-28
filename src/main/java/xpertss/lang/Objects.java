@@ -405,6 +405,100 @@ public final class Objects {
 
 
 
+
+
+   /**
+    * Returns the value from the set representing the maximum value based on the
+    * item's natural ordering.
+    * <p>
+    * Returns <tt>null</tt> if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @return The maximum value from the set
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null}
+    */
+   @SafeVarargs
+   public static <T extends Comparable<? super T>> T max(T ... set)
+   {
+      if(Objects.notNull(set, "set can not be null").length < 1) return null;
+      T max = Objects.first(set);
+      for(int i = 1; i < set.length; i++) {
+         if(set[i].compareTo(max) > 0) max = set[i];
+      }
+      return max;
+   }
+
+   /**
+    * Returns the value from the set representing the maximum value based on the
+    * specified comparator.
+    * <p>
+    * Returns <tt>null</tt> if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @return The maximum value from the set
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null}
+    */
+   @SafeVarargs
+   public static <T extends Comparable<? super T>> T max(Comparator<? super T> comp, T ... set)
+   {
+      if(Objects.notNull(set, "set can not be null").length < 1) return null;
+      T max = Objects.first(set);
+      for(int i = 1; i < set.length; i++) {
+         if(comp.compare(set[i], max) > 0) max = set[i];
+      }
+      return max;
+   }
+
+   /**
+    * Returns the value from the set representing the minimum value based on the
+    * item's natural ordering.
+    * <p>
+    * Returns {@code null} if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @return The minimum value from the set
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null}
+    */
+   @SafeVarargs
+   public static <T extends Comparable<? super T>> T min(T ... set)
+   {
+      if(Objects.notNull(set, "set can not be null").length < 1) return null;
+      T min = Objects.first(set);
+      for(int i = 1; i < set.length; i++) {
+         if(set[i].compareTo(min) < 0) min = set[i];
+      }
+      return min;
+   }
+
+   /**
+    * Returns the value from the set representing the minimum value based on the
+    * specified comparator.
+    * <p>
+    * Returns {@code null} if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @return The minimum value from the set
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null}
+    */
+   @SafeVarargs
+   public static <T extends Comparable<? super T>> T min(Comparator<? super T> comp, T ... set)
+   {
+      if(Objects.notNull(set, "set can not be null").length < 1) return null;
+      T min = Objects.first(set);
+      for(int i = 1; i < set.length; i++) {
+         if(comp.compare(set[i], min) < 0) min = set[i];
+      }
+      return min;
+   }
+
+
+
+
+
    /**
     * Checks if an array is empty or {@code null}.
     *

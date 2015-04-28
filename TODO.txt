@@ -1,14 +1,11 @@
 
 
-We can add min(Comparable)/max(Comparable)/min(Comparator)/max(Comparator) to Objects
-and Iterables
+Add to Iterables
 
-   public static <T extends Comparable<? super T>> T min(T ... set)
-   public static <T extends Comparable<? super T>> T max(T ... set)
-   public static <T> T min(Comparator<? super T> comp, T ... set)
-   public static <T> T max(Comparator<? super T> comp, T ... set)
-
-   Note: Kind of already available via the Operators.maxBy and minBy
+   public static <T extends Comparable<? super T>> T min(Iterable<T> set)
+   public static <T extends Comparable<? super T>> T max(Iterable<T> set)
+   public static <T> T min(Iterable<T> set, Comparator<? super T> comp)
+   public static <T> T max(Iterable<T> set, Comparator<? super T> comp)
 
 
 
