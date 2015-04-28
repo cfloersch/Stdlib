@@ -436,9 +436,10 @@ public final class Objects {
     * Returns <tt>null</tt> if the supplied set is zero size.
     *
     * @param set Set of input objects to compare
+    * @param comp The comparator to use for comparison
     * @return The maximum value from the set
     * @throws NullPointerException If the supplied set or any of its elements are
-    *       {@code null}
+    *       {@code null} or if the comparator is {@code null}
     */
    @SafeVarargs
    public static <T extends Comparable<? super T>> T max(Comparator<? super T> comp, T ... set)
@@ -480,9 +481,10 @@ public final class Objects {
     * Returns {@code null} if the supplied set is zero size.
     *
     * @param set Set of input objects to compare
+    * @param comp The comparator to use for comparison
     * @return The minimum value from the set
     * @throws NullPointerException If the supplied set or any of its elements are
-    *       {@code null}
+    *       {@code null} or if the comparator is {@code null}
     */
    @SafeVarargs
    public static <T extends Comparable<? super T>> T min(Comparator<? super T> comp, T ... set)
