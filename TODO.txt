@@ -1,14 +1,4 @@
 
-
-Add to Iterables
-
-   public static <T extends Comparable<? super T>> T min(Iterable<T> set)
-   public static <T extends Comparable<? super T>> T max(Iterable<T> set)
-   public static <T> T min(Iterable<T> set, Comparator<? super T> comp)
-   public static <T> T max(Iterable<T> set, Comparator<? super T> comp)
-
-
-
 xpertss.text
 
    StringPrepException can go and be replaced by SyntaxException or ParseException
