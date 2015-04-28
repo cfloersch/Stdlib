@@ -431,6 +431,29 @@ public final class Strings {
       return buf.toString();
    }
 
+   /**
+    * This static method will take an array of Strings and joins them together using
+    * the supplied separator as a separator. The parts are joined in the order they
+    * are passed in. Null parts will not be concatenated.
+    *
+    * @param sep The string representation of the separator characters.
+    * @param parts An iterable of String parts to join together
+    * @return  A String object representing the elements joined together
+    */
+   public static String join(String sep, Iterable<String> parts)
+   {
+      StringBuilder buf = new StringBuilder();
+      for(String part : parts) {
+         if(part != null) {
+            if(buf.length() > 0) buf.append(sep);
+            buf.append(part);
+         }
+      }
+      return buf.toString();
+   }
+
+
+
 
 
 
@@ -521,6 +544,16 @@ public final class Strings {
 
    /**
     * Argument checking utility that will throw an {@link IllegalArgumentException} with
+    * a default message if the specified argument is {@code null} or zero length.
+    */
+   public static String notEmpty(String arg)
+   {
+      if(isEmpty(arg)) throw new IllegalArgumentException("string argument is empty");
+      return arg;
+   }
+
+   /**
+    * Argument checking utility that will throw an {@link IllegalArgumentException} with
     * the given message if the specified argument is {@code null} or zero length.
     */
    public static String notEmpty(String arg, String msg)
@@ -528,8 +561,5 @@ public final class Strings {
       if(isEmpty(arg)) throw new IllegalArgumentException(msg);
       return arg;
    }
-
-
-
 
 }
