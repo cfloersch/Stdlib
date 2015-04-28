@@ -118,27 +118,6 @@ What do I want to do with PhaseBarrier?
 
 
 
-
-
-Are there any other methods I should add to Consumers? Maybe something that links Consumer
-and Function or Consumer and Predicate?
-
-   onlyIf(Predicate) -> Allows a consumer to be registered to output only if the predicate
-                        holds true
-   transformFor(Function) -> Allows the consumer input to be transformed before being
-                        delivered
-
-   These should be possible already without me creating wrapper methods.. If I impl them
-   I would probably just name the methods compose..
-
-
-
-
-
-
-
-
-
 Set/Map I would love to have a means to create any impl Concurrent, CopyOnWrite, Hash, LinkedHash,
 etc and apply as a property that it use identity vs equals() comparison. It might also be nice if
 we could specify if values/keys are weak or soft references.
@@ -150,22 +129,6 @@ we could specify if values/keys are weak or soft references.
 
 Complete work on caching system. Needs to be capable of supporting maximumSize, weak/soft values,
 and weak keys.
-
-
-
-
-
-
-
-
-
-I would love to find a way to build my TimeProvider so I don't always have to call get() first.
-That should be internalized into the class. At the same time I would like to have the ability to
-inject a time provider impl into my classes. The current one allows me to inject one even if the
-class that uses it is beyond my reach of control. it also allows me to swap it out mid stream
-rather than at construction time. However, Timeprovider.get().millisTime() is a bit verbose to
-include over and over again in the code. So far I haven't written much that takes a TimeProvider
-via constructor. cachingSupplier is an exception.
 
 
 
