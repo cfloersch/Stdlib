@@ -3,6 +3,7 @@ package xpertss.util;
 import org.junit.Test;
 import xpertss.function.Consumer;
 import xpertss.function.Predicate;
+import xpertss.lang.Objects;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -72,6 +73,9 @@ public class IterablesTest {
       assertEquals(Lists.of("Chris", "Carl", "Craig"), copy);
    }
 
+
+
+
    @Test
    public void testAny()
    {
@@ -124,6 +128,47 @@ public class IterablesTest {
             return input.startsWith("C");
          }
       }));
+   }
+
+
+
+
+
+   @Test
+   public void testMin()
+   {
+      List<Integer> numbers = Lists.of(2,5,1,4,3);
+      assertEquals(Integer.valueOf(1), Iterables.min(numbers));
+      List<String> strings = Lists.of("b", "d",  "a", "c");
+      assertEquals("a", Iterables.min(strings));
+   }
+
+   @Test
+   public void testMinWithComparator()
+   {
+      List<Integer> numbers = Lists.of(2,5,1,4,3);
+      assertEquals(Integer.valueOf(5), Iterables.min(numbers, Ordering.<Integer>reversed()));
+      List<String> strings = Lists.of("b", "d",  "a", "c");
+      assertEquals("d", Iterables.min(strings, Ordering.<String>reversed()));
+   }
+
+
+   @Test
+   public void testMax()
+   {
+      List<Integer> numbers = Lists.of(2,5,1,4,3);
+      assertEquals(Integer.valueOf(5), Iterables.max(numbers));
+      List<String> strings = Lists.of("b", "d",  "a", "c");
+      assertEquals("d", Iterables.max(strings));
+   }
+
+   @Test
+   public void testMaxWithComparator()
+   {
+      List<Integer> numbers = Lists.of(2,5,1,4,3);
+      assertEquals(Integer.valueOf(1), Iterables.max(numbers, Ordering.<Integer>reversed()));
+      List<String> strings = Lists.of("b", "d",  "a", "c");
+      assertEquals("a", Iterables.max(strings, Ordering.<String>reversed()));
    }
 
 }

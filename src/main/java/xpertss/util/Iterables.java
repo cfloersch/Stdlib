@@ -99,6 +99,123 @@ public final class Iterables {
 
 
 
+
+
+
+
+   /**
+    * Returns the value from the iterable representing the minimum value based on
+    * the item's natural ordering.
+    * <p>
+    * Returns {@code null} if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @return The minimum value from the set or {@code null} if empty
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null}
+    */
+   public static <T extends Comparable<? super T>> T min(Iterable<T> set)
+   {
+      Iterator<T> iterator = Objects.notNull(set).iterator();
+      if(iterator.hasNext()) {
+         T min = iterator.next();
+         while(iterator.hasNext()) {
+            T item = iterator.next();
+            if(item.compareTo(min) < 0) min = item;
+         }
+         return min;
+      }
+      return null;
+   }
+
+   /**
+    * Returns the value from the iterable representing the maximum value based on
+    * the item's natural ordering.
+    * <p>
+    * Returns {@code null} if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @return The maximum value from the set or {@code null} if empty
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null}
+    */
+   public static <T extends Comparable<? super T>> T max(Iterable<T> set)
+   {
+      Iterator<T> iterator = Objects.notNull(set).iterator();
+      if(iterator.hasNext()) {
+         T max = iterator.next();
+         while(iterator.hasNext()) {
+            T item = iterator.next();
+            if(item.compareTo(max) > 0) max = item;
+         }
+         return max;
+      }
+      return null;
+   }
+
+
+   /**
+    * Returns the value from the iterable representing the minimum value based on
+    * the supplied comparator.
+    * <p>
+    * Returns {@code null} if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @param comp The comparator to use for comparison
+    * @return The minimum value from the set or {@code null} if empty
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null} or if the comparator is {@code null}
+    */
+   public static <T> T min(Iterable<T> set, Comparator<? super T> comp)
+   {
+      Iterator<T> iterator = Objects.notNull(set).iterator();
+      if(iterator.hasNext()) {
+         T min = iterator.next();
+         while(iterator.hasNext()) {
+            T item = iterator.next();
+            if(comp.compare(item, min) < 0) min = item;
+         }
+         return min;
+      }
+      return null;
+   }
+
+   /**
+    * Returns the value from the iterable representing the maximum value based on
+    * the supplied comparator.
+    * <p>
+    * Returns {@code null} if the supplied set is zero size.
+    *
+    * @param set Set of input objects to compare
+    * @param comp The comparator to use for comparison
+    * @return The maximum value from the set or {@code null} if empty
+    * @throws NullPointerException If the supplied set or any of its elements are
+    *       {@code null} or if the comparator is {@code null}
+    */
+   public static <T> T max(Iterable<T> set, Comparator<? super T> comp)
+   {
+      Iterator<T> iterator = Objects.notNull(set).iterator();
+      if(iterator.hasNext()) {
+         T max = iterator.next();
+         while(iterator.hasNext()) {
+            T item = iterator.next();
+            if(comp.compare(item, max) > 0) max = item;
+         }
+         return max;
+      }
+      return null;
+   }
+
+
+
+
+
+
+
+
+
+
+
    /**
     * Returns {@code true} if one or more elements in {@code iterable} satisfy
     * the predicate.
