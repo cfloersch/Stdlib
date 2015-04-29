@@ -12,6 +12,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.copySign;
 import static java.lang.Math.getExponent;
 import static java.lang.Math.rint;
+import static java.lang.String.format;
 
 /**
  * Static utility methods to operate on numerics.
@@ -152,17 +153,15 @@ public final class Numbers {
 
 
    /**
-    * Argument checking utility that will return the specified {@code arg} if it is greater than
-    * the specified minimum, otherwise it will throw an {@link IllegalArgumentException} with
-    * the specified message.
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
+    * Argument checking utility that will return the specified {@code arg} if it is greater than the
+    * specified minimum, otherwise it will throw an {@link IllegalArgumentException} identifying the
+    * specified argument.
     */
-   public static <T extends Number & Comparable<T>> T gt(T minimum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T gt(T minimum, T arg, String argName)
    {
       if(minimum.compareTo(arg) >= 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not greater than %s",
+                                                   argName, arg, minimum));
       return arg;
    }
 
@@ -171,31 +170,27 @@ public final class Numbers {
    /**
     * Argument checking utility that will return the specified {@code arg} if it is greater than or
     * equal to the specified minimum, otherwise it will throw an {@link IllegalArgumentException}
-    * with the specified message.
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
+    * identifying the specified argument.
     */
-   public static <T extends Number & Comparable<T>> T gte(T minimum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T gte(T minimum, T arg, String argName)
    {
       if(minimum.compareTo(arg) > 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not greater than equal to %s",
+                                                   argName, arg, minimum));
       return arg;
    }
 
 
    /**
     * Argument checking utility that will return the specified {@code arg} if it is less than the
-    * specified maximum, otherwise it will throw an {@link IllegalArgumentException} with the
-    * specified message.
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
+    * specified maximum, otherwise it will throw an {@link IllegalArgumentException} identifying the
+    * specified argument.
     */
-   public static <T extends Number & Comparable<T>> T lt(T maximum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T lt(T maximum, T arg, String argName)
    {
       if(maximum.compareTo(arg) <= 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not less than %s",
+                                                   argName, arg, maximum));
       return arg;
    }
 
@@ -203,66 +198,58 @@ public final class Numbers {
    /**
     * Argument checking utility that will return the specified {@code arg} if it is less than or
     * equal to the specified maximum, otherwise it will throw an {@link IllegalArgumentException}
-    * with the specified message.
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
+    * identifying the specified argument.
     */
-   public static <T extends Number & Comparable<T>> T lte(T maximum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T lte(T maximum, T arg, String argName)
    {
       if(maximum.compareTo(arg) < 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not less than equal to %s",
+                                                   argName, arg, maximum));
       return arg;
    }
 
    /**
     * Argument checking utility that will return the specified {@code arg} if it is between the
-    * given maximum and minimum, otherwise it will throw an {@link IllegalArgumentException} with
-    * the specified message.
+    * given maximum and minimum, otherwise it will throw an {@link IllegalArgumentException}
+    * identifying the specified argument.
     * <p>
     * An argument is said to be between when {@code minimum < arg < maximum}
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
     */
-   public static <T extends Number & Comparable<T>> T between(T minimum, T maximum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T between(T minimum, T maximum, T arg, String argName)
    {
       if(maximum.compareTo(arg) <= 0 || minimum.compareTo(arg) >= 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not between %s and %s",
+                                                   argName, arg, minimum, maximum));
       return arg;
    }
 
    /**
     * Argument checking utility that will return the specified {@code arg} if it is within the
-    * given range, otherwise it will throw an {@link IllegalArgumentException} with the specified
-    * message.
+    * given range, otherwise it will throw an {@link IllegalArgumentException} identifying the
+    * specified argument
     * <p>
     * An argument is said to be within when {@code minimum <= arg <= maximum}
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
     */
-   public static <T extends Number & Comparable<T>> T within(T minimum, T maximum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T within(T minimum, T maximum, T arg, String argName)
    {
       if(maximum.compareTo(arg) < 0 || minimum.compareTo(arg) > 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not within %s and %s",
+                                                   argName, arg, minimum, maximum));
       return arg;
    }
 
    /**
     * Argument checking utility that will return the specified {@code arg} if the specified range
-    * contains that argument, otherwise it will throw an {@link IllegalArgumentException} with the
-    * specified message.
+    * contains that argument, otherwise it will throw an {@link IllegalArgumentException} identifying
+    * the specified argument
     * <p>
     * An argument is said to be contained when {@code minimum <= arg < maximum}
-    * <p>
-    * This will attempt to process the specified message as a {@link MessageFormat} pattern
-    * supplying the {@code arg} as the sole input parameter at index zero.
     */
-   public static <T extends Number & Comparable<T>> T contains(T minimum, T maximum, T arg, String msg)
+   public static <T extends Number & Comparable<T>> T contains(T minimum, T maximum, T arg, String argName)
    {
       if(maximum.compareTo(arg) <= 0 || minimum.compareTo(arg) > 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not contained by %s and %s",
+                                                   argName, arg, minimum, maximum));
       return arg;
    }
 

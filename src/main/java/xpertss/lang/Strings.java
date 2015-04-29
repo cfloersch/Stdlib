@@ -6,6 +6,8 @@ import xpertss.function.Predicates;
 
 import java.io.Serializable;
 
+import static java.lang.String.*;
+
 /**
  * Static utility methods and argument checkers used to process Strings.
  *
@@ -554,11 +556,12 @@ public final class Strings {
 
    /**
     * Argument checking utility that will throw an {@link IllegalArgumentException} with
-    * the given message if the specified argument is {@code null} or zero length.
+    * a default message that identifies the argument name if the specified argument is
+    * {@code null} or zero length.
     */
-   public static String notEmpty(String arg, String msg)
+   public static String notEmpty(String arg, String argName)
    {
-      if(isEmpty(arg)) throw new IllegalArgumentException(msg);
+      if(isEmpty(arg)) throw new IllegalArgumentException(format("%s is empty", argName));
       return arg;
    }
 
