@@ -4,10 +4,11 @@ import xpertss.function.Predicate;
 import xpertss.lang.CharSequences;
 import xpertss.lang.Objects;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import static java.lang.String.format;
 
 /**
  * Utility methods and constants for managing and manipulating dates.
@@ -192,15 +193,13 @@ public final class Dates {
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is
     * greater than the specified minimum, otherwise it will throw an
-    * IllegalArgumentException with the specified message.
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
+    * {@link IllegalArgumentException} identifying the specified argument.
     */
-   public static Date gt(Date minimum, Date arg, String msg)
+   public static Date gt(Date minimum, Date arg, String argName)
    {
       if(minimum.compareTo(arg) >= 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not greater than %s",
+                                             argName, arg, minimum));
       return arg;
    }
 
@@ -209,15 +208,13 @@ public final class Dates {
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is
     * greater than or equal to the specified minimum, otherwise it will throw an
-    * IllegalArgumentException with the specified message.
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
+    * {@link IllegalArgumentException} identifying the specified argument.
     */
-   public static Date gte(Date minimum, Date arg, String msg)
+   public static Date gte(Date minimum, Date arg, String argName)
    {
       if(minimum.compareTo(arg) > 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not greater than equal to %s",
+                                             argName, arg, minimum));
       return arg;
    }
 
@@ -225,15 +222,13 @@ public final class Dates {
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is
     * less than the specified maximum, otherwise it will throw an
-    * IllegalArgumentException with the specified message.
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
+    * {@link IllegalArgumentException} identifying the specified argument.
     */
-   public static Date lt(Date maximum, Date arg, String msg)
+   public static Date lt(Date maximum, Date arg, String argName)
    {
       if(maximum.compareTo(arg) <= 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not less than %s",
+                                             argName, arg, maximum));
       return arg;
    }
 
@@ -241,15 +236,13 @@ public final class Dates {
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is
     * less than or equal to the specified maximum, otherwise it will throw an
-    * IllegalArgumentException with the specified message.
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
+    * {@link IllegalArgumentException} identifying the specified argument.
     */
-   public static Date lte(Date maximum, Date arg, String msg)
+   public static Date lte(Date maximum, Date arg, String argName)
    {
       if(maximum.compareTo(arg) < 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not less than equal to %s",
+                                             argName, arg, maximum));
       return arg;
    }
 
@@ -258,51 +251,45 @@ public final class Dates {
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is
     * between the given maximum and minimum, otherwise it will throw an
-    * IllegalArgumentException with the specified message.
+    * {@link IllegalArgumentException} identifying the specified argument.
     * <p>
     * An argument is said to be between when minimum < arg < maximum
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
     */
-   public static Date between(Date minimum, Date maximum, Date arg, String msg)
+   public static Date between(Date minimum, Date maximum, Date arg, String argName)
    {
       if(maximum.compareTo(arg) <= 0 || minimum.compareTo(arg) >= 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not between %s and %s",
+                                             argName, arg, minimum, maximum));
       return arg;
    }
 
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is
-    * within the given range, otherwise it will throw an IllegalArgumentException with
-    * the specified message.
+    * within the given range, otherwise it will throw an {@link IllegalArgumentException}
+    * identifying the specified argument.
     * <p>
     * An argument is said to be within when minimum <= arg <= maximum
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
     */
-   public static Date within(Date minimum, Date maximum, Date arg, String msg)
+   public static Date within(Date minimum, Date maximum, Date arg, String argName)
    {
       if(maximum.compareTo(arg) < 0 || minimum.compareTo(arg) > 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not within %s and %s",
+                                             argName, arg, minimum, maximum));
       return arg;
    }
 
    /**
     * Argument checking utility that will return the specified <tt>arg</tt> if it is contained
-    * within the given range, otherwise it will throw an IllegalArgumentException with the
-    * specified message.
+    * within the given range, otherwise it will throw an {@link IllegalArgumentException}
+    * identifying the specified argument.
     * <p>
     * An argument is said to be contained when minimum <= arg < maximum
-    * <p>
-    * This will attempt to process the specified message as a MessageFormat pattern
-    * supplying the <tt>arg</tt> as the sole input parameter at index zero.
     */
-   public static Date contains(Date minimum, Date maximum, Date arg, String msg)
+   public static Date contains(Date minimum, Date maximum, Date arg, String argName)
    {
       if(maximum.compareTo(arg) <= 0 || minimum.compareTo(arg) > 0)
-         throw new IllegalArgumentException(MessageFormat.format(msg, arg));
+         throw new IllegalArgumentException(format("%s(%s) not contained by %s and %s",
+                                             argName, arg, minimum, maximum));
       return arg;
    }
 
