@@ -55,8 +55,8 @@ public final class Lists {
 
 
    /**
-    * Returns a list containing elements that result from applying a given function to
-    * the elements of the source list.
+    * Creates and returns a new list containing elements that result from applying a given
+    * function to the elements of the source list.
     * <p/>
     * The returned list will be an instance of the supplied list if the supplied list can
     * be duplicated using the {@link Lists#newList(java.util.List)} method. Otherwise, the
