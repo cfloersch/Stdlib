@@ -107,8 +107,8 @@ public final class Enums {
     *
     * @param enumClass the {@link Class} of the {@code Enum} declaring the constant values.
     * @param name The name of the enum constant
-    * @param defValue The default alue to return if the named enum doesn't exist
-    * @return The named constant or {@code null} if it does not exist
+    * @param defValue The default value to return if the named enum doesn't exist
+    * @return The named constant or {@code defValue} if it does not exist
     */
    public static <T extends Enum<T>> T valueOf(Class<T> enumClass, String name, T defValue)
    {
