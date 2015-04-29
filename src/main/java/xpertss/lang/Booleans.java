@@ -3,6 +3,7 @@ package xpertss.lang;
 
 import xpertss.util.Ordering;
 
+import static java.lang.String.format;
 import static xpertss.lang.BooleanStyle.*;
 
 /**
@@ -527,7 +528,7 @@ public final class Booleans {
    public static boolean[] notEmpty(boolean[] array, String argName)
    {
       if(array == null) throw new NullPointerException(argName);
-      if(array.length < 1) throw new IllegalArgumentException(argName);
+      if(array.length < 1) throw new IllegalArgumentException(format("%s is empty", argName));
       return array;
    }
 

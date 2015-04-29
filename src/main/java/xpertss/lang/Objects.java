@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import static java.lang.String.format;
+
 /**
  * A set of utility methods for operating on objects.
  */
@@ -885,7 +887,7 @@ public final class Objects {
    public static <T> T[] notEmpty(T[] array, String argName)
    {
       if(array == null) throw new NullPointerException(argName);
-      if(array.length < 1) throw new IllegalArgumentException(argName);
+      if(array.length < 1) throw new IllegalArgumentException(format("%s is empty", argName));
       return array;
    }
 

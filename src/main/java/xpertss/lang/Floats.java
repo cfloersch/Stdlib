@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.POSITIVE_INFINITY;
+import static java.lang.String.format;
 
 /**
  * Static utility methods pertaining to floats
@@ -667,7 +668,7 @@ public final class Floats {
    public static float[] notEmpty(float[] array, String argName)
    {
       if(array == null) throw new NullPointerException(argName);
-      if(array.length < 1) throw new IllegalArgumentException(argName);
+      if(array.length < 1) throw new IllegalArgumentException(format("%s is empty", argName));
       return array;
    }
 

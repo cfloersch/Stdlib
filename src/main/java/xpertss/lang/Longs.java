@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
 
+import static java.lang.String.format;
+
 /**
  * Static utility methods pertaining to longs
  *
@@ -815,7 +817,7 @@ public final class Longs {
    public static long[] notEmpty(long[] array, String argName)
    {
       if(array == null) throw new NullPointerException(argName);
-      if(array.length < 1) throw new IllegalArgumentException(argName);
+      if(array.length < 1) throw new IllegalArgumentException(format("%s is empty", argName));
       return array;
    }
 

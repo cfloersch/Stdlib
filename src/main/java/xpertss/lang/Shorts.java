@@ -4,6 +4,8 @@ import xpertss.util.Ordering;
 
 import java.util.Arrays;
 
+import static java.lang.String.format;
+
 /**
  * Static utility methods pertaining to shorts
  *
@@ -548,7 +550,7 @@ public final class Shorts {
    public static short[] notEmpty(short[] array, String argName)
    {
       if(array == null) throw new NullPointerException(argName);
-      if(array.length < 1) throw new IllegalArgumentException(argName);
+      if(array.length < 1) throw new IllegalArgumentException(format("%s is empty", argName));
       return array;
    }
 
