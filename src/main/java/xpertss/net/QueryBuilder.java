@@ -50,7 +50,7 @@ public class QueryBuilder {
             if(param.startsWith(name + "=")) {
                String[] parts = param.split("=");
                if(parts.length > 2) {
-                  result.add(Strings.join("=", parts, 1, parts.length - 1));
+                  result.add(Strings.join('=', parts, 1, parts.length - 1));
                } else if(parts.length == 2) {
                   result.add(parts[1]);
                } else if(parts.length == 1) {
