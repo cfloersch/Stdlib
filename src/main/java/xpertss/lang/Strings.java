@@ -393,35 +393,35 @@ public final class Strings {
     */
    public static String join(String... parts)
    {
-      return join(" ", parts, 0, parts.length);
+      return join(' ', parts, 0, parts.length);
    }
 
    /**
     * This static method will take an array of Strings and join them together using
-    * the supplied separator as a separator. The parts are joined in the order they
-    * are passed in. Null parts will not be concatenated.
+    * the supplied separator. The parts are joined in the order they are passed in.
+    * Null parts will not be concatenated.
     *
-    * @param sep - The string representation of the separator characters.
+    * @param sep - The separator character.
     * @param parts - One or more String parts to join together
     * @return  A String object representing the elements joined together
     */
-   public static String join(String sep, String... parts)
+   public static String join(char sep, String... parts)
    {
       return join(sep, parts, 0, parts.length);
    }
 
    /**
     * This static method will take an array of Strings and joins them together using
-    * the supplied separator as a separator. The parts are joined in the order they
-    * are passed in. Null parts will not be concatenated.
+    * the supplied separator. The parts are joined in the order they are passed in.
+    * Null parts will not be concatenated.
     *
-    * @param sep The string representation of the separator characters.
+    * @param sep - The separator character.
     * @param parts An array of String parts to join together
     * @param offset The offset of the array to begin the joining
     * @param length The number of array elements to join
     * @return  A String object representing the elements joined together
     */
-   public static String join(String sep, String[] parts, int offset, int length)
+   public static String join(char sep, String[] parts, int offset, int length)
    {
       StringBuilder buf = new StringBuilder();
       for(int i = offset; i < offset + length; i++) {
@@ -434,15 +434,15 @@ public final class Strings {
    }
 
    /**
-    * This static method will take an array of Strings and joins them together using
-    * the supplied separator as a separator. The parts are joined in the order they
-    * are passed in. Null parts will not be concatenated.
+    * This static method will take an Iterable of Strings and joins them together using
+    * the supplied separator. The parts are joined in the order they are passed in. Null
+    * parts will not be concatenated.
     *
-    * @param sep The string representation of the separator characters.
+    * @param sep - The separator character.
     * @param parts An iterable of String parts to join together
     * @return  A String object representing the elements joined together
     */
-   public static String join(String sep, Iterable<String> parts)
+   public static String join(char sep, Iterable<String> parts)
    {
       StringBuilder buf = new StringBuilder();
       for(String part : parts) {

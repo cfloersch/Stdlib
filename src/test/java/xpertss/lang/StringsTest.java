@@ -14,6 +14,12 @@ import static junit.framework.Assert.assertTrue;
 
 public class StringsTest {
 
+   @Test
+   public void testJoin()
+   {
+      assertEquals("1 2 3", Strings.join("1", "2", "3"));
+      assertEquals("1,2,3", Strings.join(',', "1", "2", "3"));
+   }
 
    @Test
    public void testContains()
