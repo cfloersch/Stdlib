@@ -138,6 +138,33 @@ public final class Throwables {
    }
 
 
+   /**
+    * Returns {@code true} if the given throwable is not {@code null} and represents
+    * a checked exception type.
+    *
+    * @param t The throwable to evaluate
+    * @return {@code true} if the throwable represents a checked exception type
+    */
+   public static boolean isChecked(Throwable t)
+   {
+      return (t != null) && isChecked(t.getClass());
+   }
+
+   /**
+    * Returns {@code true} if the given exception type is not {@code null} and represents
+    * a checked exception type.
+    *
+    * @param exceptionType The class type to evaluate
+    * @return {@code true} if the throwable represents a checked exception type
+    */
+   public static boolean isChecked(Class<?> exceptionType)
+   {
+      return (exceptionType != null) &&
+         Throwable.class.isAssignableFrom(exceptionType) &&
+         !(Error.class.isAssignableFrom(exceptionType) ||
+            RuntimeException.class.isAssignableFrom(exceptionType));
+   }
+
 
 
    private static String stripPackage(String name)

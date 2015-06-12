@@ -1,3 +1,9 @@
+It would be nice to have a class similar to
+  http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/primitives/Primitives.html
+
+
+
+
 
 xpertss.text
 
