@@ -20,6 +20,7 @@ public final class Primitives {
 
    private Primitives() {}
 
+
    /** A map from primitive types to their corresponding wrapper types. */
    private static final Map<Class<?>, Class<?>> PRIMITIVE_TO_WRAPPER_TYPE;
 
@@ -44,10 +45,12 @@ public final class Primitives {
       WRAPPER_TO_PRIMITIVE_TYPE = Collections.unmodifiableMap(wrapToPrim);
    }
 
-   private static void add(Map<Class<?>, Class<?>> forward, Map<Class<?>, Class<?>> backward, Class<?> key, Class<?> value) {
+   private static void add(Map<Class<?>, Class<?>> forward, Map<Class<?>, Class<?>> backward, Class<?> key, Class<?> value)
+   {
       forward.put(key, value);
       backward.put(value, key);
    }
+
 
    /**
     * Returns an immutable set of all nine primitive types (including {@code
