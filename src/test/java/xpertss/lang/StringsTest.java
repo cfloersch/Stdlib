@@ -17,9 +17,48 @@ public class StringsTest {
    @Test
    public void testJoin()
    {
-      assertEquals("1 2 3", Strings.join("1", "2", "3"));
-      assertEquals("1,2,3", Strings.join(',', "1", "2", "3"));
+      assertEquals("1", Strings.join(" ", "1"));
+      assertEquals("1,2,3", Strings.join(",", "1", "2", "3"));
+      assertEquals("1 2 3", Strings.join(" ", "1", "2", "3"));
    }
+
+   @Test
+   public void testJoinNullParts()
+   {
+      assertEquals("", Strings.join(",", (String) null));
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testJoinNullSeparator()
+   {
+      Strings.join(null, "1", "2", "3");
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testJoinNullIterator()
+   {
+      Strings.join(" ", (Iterable<String>)null);
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testJoinNullArray()
+   {
+      Strings.join(" ", null, 0, 1);
+   }
+
+   @Test(expected = IndexOutOfBoundsException.class)
+   public void testJoinInvalidOffset()
+   {
+      Strings.join(" ", new String[0], 1, 1);
+   }
+
+   @Test(expected = IndexOutOfBoundsException.class)
+   public void testJoinInvalidLength()
+   {
+      Strings.join(" ", new String[0], 0, 1);
+   }
+
+
 
    @Test
    public void testContains()
