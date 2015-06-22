@@ -1,8 +1,10 @@
 package xpertss.lang;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -317,6 +319,31 @@ public final class Classes {
    public static Class<?> getComponentType(Class<?> cls)
    {
       return (cls.isArray()) ? cls.getComponentType() : cls;
+   }
+
+
+   /**
+    * Returns a proxy instance that implements {@code interfaceType} by dispatching
+    * method invocations to {@code handler}. The class loader of {@code interfaceType}
+    * will be used to define the proxy class.
+    *
+    * @param interfaceType The interface type the proxy will implement
+    * @param handler The handler that will process calls on the proxy's methods
+    * @return A new proxy of the specified type
+    * @throws NullPointerException if either interfaceType or handler are {@code null}
+    * @throws IllegalArgumentException if interfaceType does not specify the type of a
+    *    Java interface
+    */
+   public static <T> T newProxy(Class<T> interfaceType, InvocationHandler handler)
+   {
+      if(handler == null) throw new NullPointerException("handler");
+      if(interfaceType == null) throw new NullPointerException("interfaceType");
+      if(!interfaceType.isInterface()) throw new IllegalArgumentException("interfaceType not an interface");
+
+      Object proxy = Proxy.newProxyInstance(interfaceType.getClassLoader(),
+                                             new Class[]{interfaceType},
+                                             handler);
+      return interfaceType.cast(proxy);
    }
 
 }
