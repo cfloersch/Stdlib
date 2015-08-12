@@ -604,7 +604,7 @@ public final class Bytes {
     *    0f 23 3a 3f ff
     * </pre>
     */
-   public static String toFingerPrint(byte[] ba)
+   public static String toFingerPrint(byte ... ba)
    {
       return toFingerPrint(ba, 0, ba.length);
    }
@@ -642,7 +642,7 @@ public final class Bytes {
     *    0f233a3fff
     * </pre>
     */
-   public static String toHexString(byte[] ba)
+   public static String toHexString(byte ... ba)
    {
       return toHexString(ba, 0, ba.length);
    }
@@ -654,31 +654,41 @@ public final class Bytes {
 
 
 
+
    /**
     * Returns a byte array from a string of hexadecimal digits. This assumes
     * that the String does not contain any spaces such as a fingerprint.
+    *
+    * @throws NumberFormatException if the string contains characters outside
+    *          the valid range for hexadecimal notation or its length is not
+    *          a multiple of two.
     */
    public static byte[] fromHexString(String hex)
    {
-      byte[] bytes = new byte[hex.length() / 2];
-      String buf = hex.toLowerCase();
-      for (int i = 0; i < buf.length(); i += 2) {
-         char    left  = buf.charAt(i);
-         char    right = buf.charAt(i+1);
-         int     index = i / 2;
-         if (left < 'a') {
-            bytes[index] = (byte)((left - '0') << 4);
-         } else {
-            bytes[index] = (byte)((left - 'a' + 10) << 4);
-         }
-         if (right < 'a') {
-            bytes[index] += (byte)(right - '0');
-         } else {
-            bytes[index] += (byte)(right - 'a' + 10);
-         }
+      final int len = hex.length();
+
+      // "111" is not a valid hex encoding.
+      if(len % 2 != 0)
+         throw new NumberFormatException("hexBinary needs to be even-length: " + hex);
+
+      byte[] out = new byte[len/2];
+
+      for(int i = 0; i < len; i += 2) {
+         int h = hexToBin(hex.charAt(i));
+         int l = hexToBin(hex.charAt(i + 1));
+         out[i / 2] = (byte) ((h << 4) + l);
       }
-      return bytes;
+
+      return out;
    }
 
+
+   private static int hexToBin( char ch )
+   {
+      if( '0'<=ch && ch<='9' )    return ch-'0';
+      if( 'A'<=ch && ch<='F' )    return ch-'A'+10;
+      if( 'a'<=ch && ch<='f' )    return ch-'a'+10;
+      throw new NumberFormatException("contains illegal character for hexBinary: " + Character.toString(ch));
+   }
 
 }
