@@ -26,7 +26,7 @@ public final class Duration {
     * @param unit The target time unit the source should be converted to
     * @return The duration converted to the specified unit
     * @throws IllegalArgumentException if the specified string is invalid or negative
-    * @throws NullPointerException if teh specified unit or string are {@code null}
+    * @throws NullPointerException if the specified unit or string are {@code null}
     */
    public static long parse(String str, TimeUnit unit)
    {
