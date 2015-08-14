@@ -30,7 +30,6 @@ public final class Duration {
     */
    public static long parse(String str, TimeUnit unit)
    {
-      //if(str == null) return 0L;
       Matcher matcher = pattern.matcher(str);
       if(matcher.matches()) {
          long value = Long.parseLong(matcher.group(1));
