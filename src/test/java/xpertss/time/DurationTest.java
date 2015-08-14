@@ -111,4 +111,12 @@ public class DurationTest {
    {
       Duration.parse("-3d", SECONDS);
    }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testInvalidTimeUnit()
+   {
+      Duration.parse("3M", SECONDS);
+   }
+
+
 }
