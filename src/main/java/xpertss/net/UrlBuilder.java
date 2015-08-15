@@ -20,7 +20,7 @@ public class UrlBuilder {
    private String userinfo;
    private String scheme;
    private String host;
-   private int port;
+   private int port = -1;
 
    private String path;
    private String hash;
@@ -125,7 +125,7 @@ public class UrlBuilder {
     */
    public UrlBuilder setPort(int port)
    {
-      if(port < 0 || port > 65535)
+      if(port < -1 || port > 65535)
          throw new IllegalArgumentException("invalid port value: " + port);
       this.port = port;
       return this;
@@ -227,7 +227,7 @@ public class UrlBuilder {
          StringBuilder buf = new StringBuilder("//");
          if(userinfo != null) buf.append(userinfo).append("@");
          buf.append(host);
-         if(port > 0) buf.append(":").append(port);
+         if(port != -1) buf.append(":").append(port);
          return buf.toString();
       }
       return null;
