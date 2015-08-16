@@ -382,6 +382,36 @@ public final class Strings {
 
 
 
+   /**
+    * Removes single or double quotes from the given string if its quoted.
+    * <p/>
+    * <pre>
+    *   for input string = "mystr1" output will be = mystr1
+    *   for input string = 'mystr2' output will be = mystr2
+    *   for input string = "mystr3 output will be = "mystr3
+    *   for input string = 'mystr4 output will be = 'mystr4
+    *   for input string = mystr5" output will be = mystr5"
+    *   for input string = mystr6' output will be = mystr6'
+    *   for input string = 'mystr7" output will be = 'mystr7"
+    *   for input string = mystr8 output will be = mystr8
+    *   for input string = null output will be null
+    * </pre>
+    *
+    * @param s value to be unquoted.
+    * @return value unquoted, {@code null} if input is {@code null}.
+    *
+    */
+   public static String unquote(String s)
+   {
+
+      if (s != null && ((s.startsWith("\"") && s.endsWith("\""))
+            || (s.startsWith("'") && s.endsWith("'")))) {
+         s = s.substring(1, s.length() - 1);
+      }
+      return s;
+   }
+
+
 
 
    /**
