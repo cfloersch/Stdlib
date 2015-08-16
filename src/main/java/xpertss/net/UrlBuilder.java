@@ -118,10 +118,10 @@ public class UrlBuilder {
    /**
     * Set this URL's port.
     * <p>
-    * Setting this to 0 clears the port value.
+    * Setting this to -1 clears the port value.
     *
     * @throws IllegalArgumentException If the specified port number is not within the
-    *          range 0 - 65535
+    *          range -1 - 65535
     */
    public UrlBuilder setPort(int port)
    {
