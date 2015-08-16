@@ -329,30 +329,37 @@ public final class Buffers {
    /**
     * Returns a byte buffer from a string of hexadecimal digits. This assumes
     * that the String does not contain any spaces such as a fingerprint.
+    *
+    * @throws NumberFormatException if the string contains characters outside
+    *          the valid range for hexadecimal notation or its length is not
+    *          a multiple of two.
     */
    public static ByteBuffer fromHexString(String hex)
    {
+      final int len = hex.length();
+
+      // "111" is not a valid hex encoding.
+      if(len % 2 != 0)
+         throw new NumberFormatException("hexBinary needs to be even-length: " + hex);
+
       ByteBuffer buffer = ByteBuffer.allocate(hex.length() / 2);
-      String buf = hex.toLowerCase();
-      for (int i = 0; i < buf.length(); i += 2) {
-         char    left  = buf.charAt(i);
-         char    right = buf.charAt(i+1);
-         byte b = 0;
-         if (left < 'a') {
-            b = (byte)((left - '0') << 4);
-         } else {
-            b = (byte)((left - 'a' + 10) << 4);
-         }
-         if (right < 'a') {
-            b += (byte)(right - '0');
-         } else {
-            b += (byte)(right - 'a' + 10);
-         }
-         buffer.put(b);
+
+      for(int i = 0; i < len; i += 2) {
+         int h = hexToBin(hex.charAt(i));
+         int l = hexToBin(hex.charAt(i + 1));
+         buffer.put((byte) ((h << 4) + l));
       }
+
       return (ByteBuffer) buffer.flip();
    }
 
+   private static int hexToBin( char ch )
+   {
+      if( '0'<=ch && ch<='9' )    return ch-'0';
+      if( 'A'<=ch && ch<='F' )    return ch-'A'+10;
+      if( 'a'<=ch && ch<='f' )    return ch-'a'+10;
+      throw new NumberFormatException("contains illegal character for hexBinary: " + Character.toString(ch));
+   }
 
 
 
