@@ -4,6 +4,7 @@
  */
 package xpertss.net;
 
+import xpertss.lang.Bytes;
 import xpertss.lang.Integers;
 import xpertss.lang.Range;
 import xpertss.lang.Strings;
@@ -19,6 +20,37 @@ import java.util.Enumeration;
 public final class NetUtils {
 
    private NetUtils() { }
+
+
+   /**
+    * This method will convert an IPv4 address to its corresponding IPv6 address
+    * and vise versa.
+    *
+    * @param source The source InetAddress to convert
+    * @return the opposite type of inet address
+    * @throws IllegalArgumentException if the IPv6 address cannot be represented
+    *          as an IPv4 address
+    * @throws NullPointerException if the source address is {@code null}
+    */
+   public static InetAddress convert(InetAddress source)
+   {
+      if(source instanceof Inet4Address) {
+         return getInetAddress(Bytes.append(new byte[12], source.getAddress()));
+      } else if(source instanceof Inet6Address) {
+         byte[] bytes = source.getAddress();
+         for (int i = 0; i < 9; i++) {
+            if (bytes[i] != 0) {
+               throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
+            }
+         }
+         if (bytes[10] != 0 && bytes[10] != 0xFF || bytes[11] != 0 && bytes[11] != 0xFF) {
+            throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
+         }
+         return getInetAddress(new byte[] {bytes[12], bytes[13], bytes[14], bytes[15]});
+      }
+      throw new NullPointerException();
+   }
+
 
    /**
     * Compare two InetAddresses for ordering purposes. IPv4 is always classified as

@@ -3,6 +3,7 @@ package xpertss.net;
 import org.junit.Test;
 
 import java.net.InetAddress;
+import java.util.Arrays;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -226,5 +227,44 @@ public class NetUtilsTest {
       assertEquals(3, parts.length);
    }
 
+
+   @Test
+   public void testConvertValidIPv4Low()
+   {
+      byte[] target = new byte[16];
+      InetAddress ip4 = NetUtils.getInetAddress(Arrays.copyOf(target, 4));
+      assertTrue(Arrays.equals(target, NetUtils.convert(ip4).getAddress()));
+   }
+
+   @Test
+   public void testConvertValidIPv4High()
+   {
+      byte[] target = new byte[16];
+      byte[] source = new byte[4];
+      Arrays.fill(source, (byte)0xff);
+      System.arraycopy(source, 0, target, 12, 4);
+      InetAddress ip4 = NetUtils.getInetAddress(source);
+      assertTrue(Arrays.equals(target, NetUtils.convert(ip4).getAddress()));
+   }
+
+   @Test
+   public void testConvertValidIPv6Low()
+   {
+      byte[] source = new byte[16];
+      byte[] target = Arrays.copyOf(source, 4);
+      InetAddress ip6 = NetUtils.getInetAddress(source);
+      assertTrue(Arrays.equals(target, NetUtils.convert(ip6).getAddress()));
+   }
+
+   @Test
+   public void testConvertValidIPv6High()
+   {
+      byte[] source = new byte[16];
+      byte[] target = new byte[4];
+      Arrays.fill(target, (byte) 0xff);
+      System.arraycopy(target, 0, source, 12, 4);
+      InetAddress ip6 = NetUtils.getInetAddress(source);
+      assertTrue(Arrays.equals(target, NetUtils.convert(ip6).getAddress()));
+   }
 
 }
