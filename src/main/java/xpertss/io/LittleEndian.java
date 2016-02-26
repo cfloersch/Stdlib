@@ -25,7 +25,12 @@ public final class LittleEndian {
    public static short parseShort(byte[] data, int offset)
    {
       if(data.length - offset < 2) throw new IllegalArgumentException("invalid input size, expected 2 found " + (data.length - offset));
-      return (short)((data[offset + 1] << 8) + (data[offset]));
+      short result = 0;
+      for(int i = offset + 1; i >= offset; i--) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
@@ -47,7 +52,12 @@ public final class LittleEndian {
    public static char parseChar(byte[] data, int offset)
    {
       if(data.length - offset < 2) throw new IllegalArgumentException("invalid input size, expected 2 found " + (data.length - offset));
-      return (char)((data[offset + 1] << 8) + (data[offset]));
+      char result = 0;
+      for(int i = offset + 1; i >= offset; i--) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
@@ -69,7 +79,12 @@ public final class LittleEndian {
    public static int parseInt(byte[] data, int offset)
    {
       if(data.length - offset < 4) throw new IllegalArgumentException("invalid input size, expected 4 found " + (data.length - offset));
-      return ((data[offset + 3] << 24) + (data[offset + 2] << 16) + (data[offset + 1] << 8) + (data[offset]));
+      int result = 0;
+      for(int i = offset + 3; i >= offset; i--) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
@@ -91,7 +106,12 @@ public final class LittleEndian {
    public static long parseLong(byte[] data, int offset)
    {
       if(data.length - offset < 8) throw new IllegalArgumentException("invalid input size, expected 8 found " + (data.length - offset));
-      return ((long)(parseInt(data, offset + 4)) << 32) + (parseInt(data, offset) & 0xFFFFFFFFL);
+      long result = 0;
+      for(int i = offset + 7; i >= offset; i--) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 

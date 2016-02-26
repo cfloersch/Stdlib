@@ -27,7 +27,12 @@ public final class BigEndian {
    public static short parseShort(byte[] data, int offset)
    {
       if(data.length - offset < 2) throw new IllegalArgumentException("invalid input size, expected 2 found " + (data.length - offset));
-      return (short)((data[offset] << 8) + (data[++offset]));
+      short result = 0;
+      for(int i = offset; i < offset + 2; i++) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
@@ -49,7 +54,12 @@ public final class BigEndian {
    public static char parseChar(byte[] data, int offset)
    {
       if(data.length - offset < 2) throw new IllegalArgumentException("invalid input size, expected 2 found " + (data.length - offset));
-      return (char)((data[offset] << 8) + (data[++offset]));
+      char result = 0;
+      for(int i = offset; i < offset + 2; i++) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
@@ -71,7 +81,12 @@ public final class BigEndian {
    public static int parseInt(byte[] data, int offset)
    {
       if(data.length - offset < 4) throw new IllegalArgumentException("invalid input size, expected 4 found " + (data.length - offset));
-      return ((data[offset] << 24) + (data[++offset] << 16) + (data[++offset] << 8) + (data[++offset]));
+      int result = 0;
+      for(int i = offset; i < offset + 4; i++) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
@@ -94,7 +109,12 @@ public final class BigEndian {
    public static long parseLong(byte[] data, int offset)
    {
       if(data.length - offset < 8) throw new IllegalArgumentException("invalid input size, expected 8 found " + (data.length - offset));
-      return ((long)(parseInt(data, offset)) << 32) + (parseInt(data, offset + 4) & 0xFFFFFFFFL);
+      long result = 0;
+      for(int i = offset; i < offset + 8; i++) {
+         result <<= 8;
+         result |= data[i] & 0xFF;
+      }
+      return result;
    }
 
 
