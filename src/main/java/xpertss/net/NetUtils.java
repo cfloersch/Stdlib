@@ -43,7 +43,8 @@ public final class NetUtils {
                throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
             }
          }
-         if (bytes[10] != 0 && bytes[10] != 0xFF || bytes[11] != 0 && bytes[11] != 0xFF) {
+         byte FF = (byte) 0xFF;
+         if (bytes[10] != 0 && bytes[10] != FF || bytes[11] != 0 && bytes[11] != FF) {
             throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
          }
          return getInetAddress(new byte[] {bytes[12], bytes[13], bytes[14], bytes[15]});
