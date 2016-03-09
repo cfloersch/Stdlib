@@ -2,7 +2,6 @@ package xpertss.net;
 
 import org.junit.Test;
 import xpertss.io.BigEndian;
-import xpertss.lang.Integers;
 
 import java.net.InetAddress;
 import java.util.Arrays;
@@ -223,6 +222,7 @@ public class NetUtilsTest {
    public void testGetInetAddresses()
    {
       InetAddress[] addresses = NetUtils.getInetAddresses("www.google.com");
+      assertNotNull(addresses);
       assertTrue(addresses.length > 1);
       assertNull(NetUtils.getInetAddresses("does.not.exist"));
    }
