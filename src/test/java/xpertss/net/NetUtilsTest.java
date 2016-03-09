@@ -1,6 +1,8 @@
 package xpertss.net;
 
 import org.junit.Test;
+import xpertss.io.BigEndian;
+import xpertss.lang.Integers;
 
 import java.net.InetAddress;
 import java.util.Arrays;
@@ -33,6 +35,18 @@ public class NetUtilsTest {
       assertEquals(1, NetUtils.compare(NetUtils.getInetAddress("10.1.2.1"), NetUtils.getInetAddress("10.1.1.1")));
       assertEquals(1, NetUtils.compare(NetUtils.getInetAddress("10.1.1.2"), NetUtils.getInetAddress("10.1.1.1")));
    }
+
+   @Test
+   public void testCompareIPV6()
+   {
+      InetAddress base = NetUtils.getInetAddress("::FFFF:101.45.75.219");
+      assertEquals(-1, NetUtils.compare(base, NetUtils.getInetAddress("101.45.75.220")));
+      assertEquals(0, NetUtils.compare(base, NetUtils.getInetAddress("101.45.75.219")));
+      assertEquals(1, NetUtils.compare(base, NetUtils.getInetAddress("101.45.75.218")));
+   }
+
+
+
 
    @Test
    public void testCompareNullInputs()
@@ -265,6 +279,48 @@ public class NetUtilsTest {
       System.arraycopy(target, 0, source, 12, 4);
       InetAddress ip6 = NetUtils.getInetAddress(source);
       assertTrue(Arrays.equals(target, NetUtils.convert(ip6).getAddress()));
+   }
+
+
+   @Test
+   public void testGetConsecutiveInetAddress()
+   {
+      int baseInt = 0xfffffffa;
+      assertEquals(1, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 1).length);
+      assertEquals(2, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 2).length);
+      assertEquals(3, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 3).length);
+      assertEquals(4, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 4).length);
+      assertEquals(5, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 5).length);
+      assertEquals(6, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 6).length);
+      assertEquals(6, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 7).length);
+   }
+
+   @Test
+   public void testGetConsecutiveInetAddressOctetRoll()
+   {
+      InetAddress base = NetUtils.getInetAddress(BigEndian.toBytes(0xffff00ff));
+      InetAddress[] set = NetUtils.getInetAddresses(base, 3);
+      assertEquals(0xffff00ff, BigEndian.parseInt(set[0].getAddress()));
+      assertEquals(0xffff0100, BigEndian.parseInt(set[1].getAddress()));
+      assertEquals(0xffff0101, BigEndian.parseInt(set[2].getAddress()));
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testGetConsecutiveInetAddressNullInput()
+   {
+      NetUtils.getInetAddresses(null, 2);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testGetConsecutiveInetAddressZeroCount()
+   {
+      NetUtils.getInetAddresses(null, -0);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testGetConsecutiveInetAddressNegativeCount()
+   {
+      NetUtils.getInetAddresses(null, -1);
    }
 
 }

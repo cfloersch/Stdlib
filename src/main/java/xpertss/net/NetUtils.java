@@ -4,12 +4,15 @@
  */
 package xpertss.net;
 
+import xpertss.io.BigEndian;
 import xpertss.lang.Bytes;
 import xpertss.lang.Integers;
+import xpertss.lang.Numbers;
 import xpertss.lang.Range;
 import xpertss.lang.Strings;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.*;
 import java.util.Enumeration;
 
@@ -38,7 +41,7 @@ public final class NetUtils {
          return getInetAddress(Bytes.append(new byte[12], source.getAddress()));
       } else if(source instanceof Inet6Address) {
          byte[] bytes = source.getAddress();
-         for (int i = 0; i < 9; i++) {
+         for (int i = 0; i <= 9; i++) {
             if (bytes[i] != 0) {
                throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
             }
@@ -54,9 +57,9 @@ public final class NetUtils {
 
 
    /**
-    * Compare two InetAddresses for ordering purposes. IPv4 is always classified as
-    * smaller than IPv6 addresses. Otherwise, it orders them entirely based on the
-    * numeric values of their component octets.
+    * Compare two InetAddresses for ordering purposes. The comparison coverts
+    * the {@code InetAddress} to its numeric representation and then compares
+    * their values.
     * <p>
     * {@code null} is ordered less than non-null values.
     *
@@ -70,19 +73,11 @@ public final class NetUtils {
       if(one == two) return 0;
       if(one == null) return -1;
       if(two == null) return 1;
-      byte[] octetsOne = one.getAddress();
-      byte[] octetsTwo = two.getAddress();
-      if(octetsOne.length == octetsTwo.length) {
-         for(int i = 0; i < octetsOne.length; i++) {
-            if(octetsOne[i] < octetsTwo[i]) {
-               return -1;
-            } else if(octetsOne[i] > octetsTwo[i]) {
-               return 1;
-            }
-         }
-         return 0;
-      }
-      return (octetsOne.length < octetsTwo.length) ? -1 : 1;
+
+      BigInteger oneInt = new BigInteger(one.getAddress());
+      BigInteger twoInt = new BigInteger(two.getAddress());
+
+      return oneInt.compareTo(twoInt);
    }
 
 
@@ -183,6 +178,9 @@ public final class NetUtils {
    }
 
 
+
+
+
    /**
     * This method returns the local IP address as a String. If for some reason
     * the local IP address can't be determined it returns <code>0.0.0.0</code>
@@ -232,8 +230,6 @@ public final class NetUtils {
 
    }
 
-
-
    /**
     * Get all InetAddresses for the given name returning {@code null} if there
     * is an error resolving the name.
@@ -244,20 +240,25 @@ public final class NetUtils {
    }
 
    /**
-    * Returns an array of InetAddresses beginning with the specified base address
-    * and indexing the last octet by one for each count. This will not overflow
-    * the given IP space so if the base IP of 0.0.0.254 is given and a count
-    * greater than 2 is specified this will return a collection of only two
-    * addresses.
+    * Returns an array of InetAddresses containing {@code count} elements, beginning
+    * with the specified base address and indexing the last octet by one for each
+    * subsequent element. This will not overflow the given IP space so if the base
+    * IP of 255.255.255.254 is given and a count greater than 2 is specified this
+    * will return a collection of only two addresses.
+    *
+    * @throws NullPointerException if {@code base} is {@code null}
+    * @throws IllegalArgumentException if {@code count} less than one
     */
    public static InetAddress[] getInetAddresses(InetAddress base, int count)
    {
-      byte[] octets = base.getAddress();
-      int lastOctet = octets.length - 1;
-      InetAddress[] result = new InetAddress[Math.min(count, 256 - octets[lastOctet] & 0xff)];
+      Numbers.gt(0, count, "count");
+      int baseInt = BigEndian.parseInt(base.getAddress());
+      if(((long)baseInt + count) > 0x00000000ffffffff) {
+         count = Integers.safeCast(0x00000000ffffffff - baseInt) + 1;
+      }
+      InetAddress[] result = new InetAddress[count];
       for(int i = 0; i < result.length; i++) {
-         result[i] = getInetAddress(octets);
-         octets[lastOctet] = (byte) ((octets[lastOctet] + 1) & 0xff);
+         result[i] = getInetAddress(BigEndian.toBytes(baseInt + i));
       }
       return result;
    }
@@ -439,61 +440,6 @@ public final class NetUtils {
    }
 
 
-   /**
-    * Close a socket and catch any exceptions. Returns {@code false} if an error was
-    * encountered closing the socket, {@code true} otherwise.
-    */
-   public static boolean close(Socket sock)
-   {
-      try { if(sock != null) sock.close(); return true; } catch(Exception ex) { return false; }
-   }
-
-   /**
-    * Close a datagram socket and catch any exceptions. Returns {@code false} if an
-    * error was encountered closing the socket, {@code true} otherwise.
-    */
-   public static boolean close(DatagramSocket ds)
-   {
-      try { if(ds != null) ds.close(); return true; } catch(Exception ex) { return false; }
-   }
-
-   /**
-    * Close a server socket and catch any exceptions. Returns {@code false} if an
-    * error was encountered closing the socket, {@code true} otherwise.
-    */
-   public static boolean close(ServerSocket ss)
-   {
-      try { if(ss != null) ss.close(); return true; } catch(Exception ex) { return false; }
-   }
-
-
-
-
-   /**
-    * Shutdown the input stream of the specified socket. Catches all exceptions.
-    * Returns {@code true} if the input stream was shutdown without error,
-    * {@code false} otherwise.
-    */
-   public static boolean shutdownInput(Socket sock)
-   {
-      try {
-         if(sock != null) sock.shutdownInput();
-         return true;
-      } catch(Exception ignored) { return false; }
-   }
-
-   /**
-    * Shutdown the output stream of the specified socket. Catches all exceptions.
-    * Returns {@code true} if the output stream was shutdown without error,
-    * {@code false} otherwise.
-    */
-   public static boolean shutdownOutput(Socket sock)
-   {
-      try {
-         if(sock != null) sock.shutdownOutput();
-         return true;
-      } catch(Exception ignored) { return false; }
-   }
 
 
 
