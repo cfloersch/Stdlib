@@ -8,7 +8,6 @@ package xpertss.lang;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.List;
@@ -272,9 +271,9 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
    }
 
    /**
-    * Returns a list of range objects that contain all the values contained in this range that
-    * are not shared with the supplied range.  Returns an empty list if the supplied range
-    * equals this range or if the supplied range completely contains this range.
+    * Returns a list of range objects that contain all the values contained in this range
+    * that are not shared with the supplied range.  Returns an empty list if the supplied
+    * range equals this range or if the supplied range completely contains this range.
     */
    public List<Range<T>> difference(Range<T> range)
    {
@@ -283,11 +282,11 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
          case PRECEEDS:
          case FOLLOWS:
          case AFTER:
-            return Arrays.asList(clone());
+            return Collections.singletonList(clone());
          case LEADING:
-            return Arrays.asList(new Range<>(lower, range.lower));
+            return Collections.singletonList(new Range<>(lower, range.lower));
          case TRAILING:
-            return Arrays.asList(new Range<>(range.upper, upper));
+            return Collections.singletonList(new Range<>(range.upper, upper));
          case CONTAINS:
             List<Range<T>> result = new ArrayList<>();
             if(lower.compareTo(range.lower) < 0) {
