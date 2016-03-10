@@ -74,8 +74,8 @@ public final class NetUtils {
       if(one == null) return -1;
       if(two == null) return 1;
 
-      BigInteger oneInt = new BigInteger(one.getAddress());
-      BigInteger twoInt = new BigInteger(two.getAddress());
+      BigInteger oneInt = new BigInteger(1, one.getAddress());
+      BigInteger twoInt = new BigInteger(1, two.getAddress());
 
       return oneInt.compareTo(twoInt);
    }
@@ -229,6 +229,8 @@ public final class NetUtils {
       try { return InetAddress.getByAddress(addrBytes); } catch(Exception ex) { return null; }
 
    }
+
+
 
    /**
     * Get all InetAddresses for the given name returning {@code null} if there
@@ -421,6 +423,7 @@ public final class NetUtils {
     */
    public static boolean matches(String pattern, InetAddress host)
    {
+      // TODO Make sure this works with IPv4/IPv6 addresses
       if(pattern == null || host == null) return false;
       if(pattern.endsWith(".*")) {
          // IP Address wildcard match

@@ -3,11 +3,13 @@ package xpertss.net;
 import org.junit.Test;
 import xpertss.io.BigEndian;
 
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.util.Arrays;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -45,6 +47,27 @@ public class NetUtilsTest {
    }
 
 
+   @Test
+   public void testCompareLargeZerothOctet()
+   {
+      // InetAddresses are unsigned data types. Java however uses signed types for
+      // most of its numeric types. This can create some error cases when converting
+      // back and forth based on the sign bit. THis test is designed to test that is
+      // not an issue in the implementation.
+      InetAddress ipv6High = NetUtils.getInetAddress("FFFF::FFFF");
+      InetAddress ipv6Mid = NetUtils.getInetAddress("7FFF::FFFF");
+      InetAddress ipv6Low = NetUtils.getInetAddress("0000::FFFF");
+      assertEquals(1, NetUtils.compare(ipv6High, ipv6Mid));
+      assertEquals(-1, NetUtils.compare(ipv6Mid, ipv6High));
+      assertEquals(1, NetUtils.compare(ipv6High, ipv6Low));
+
+      InetAddress ipv4High = NetUtils.getInetAddress("255.255.255.255");
+      InetAddress ipv4Mid = NetUtils.getInetAddress("127.255.255.255");
+      InetAddress ipv4Low = NetUtils.getInetAddress("1.1.1.1");
+      assertEquals(1, NetUtils.compare(ipv4High, ipv4Mid));
+      assertEquals(-1, NetUtils.compare(ipv4Mid, ipv4High));
+      assertEquals(1, NetUtils.compare(ipv4High, ipv4Low));
+   }
 
 
    @Test
@@ -221,7 +244,7 @@ public class NetUtilsTest {
    @Test
    public void testGetInetAddresses()
    {
-      InetAddress[] addresses = NetUtils.getInetAddresses("www.google.com");
+      InetAddress[] addresses = NetUtils.getInetAddresses("www.yahoo.com");
       assertNotNull(addresses);
       assertTrue(addresses.length > 1);
       assertNull(NetUtils.getInetAddresses("does.not.exist"));
@@ -240,6 +263,8 @@ public class NetUtilsTest {
       String[] parts = "::".split(":", -1);
       assertEquals(3, parts.length);
    }
+
+
 
 
    @Test
@@ -282,17 +307,19 @@ public class NetUtilsTest {
    }
 
 
+
+
    @Test
    public void testGetConsecutiveInetAddress()
    {
-      int baseInt = 0xfffffffa;
-      assertEquals(1, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 1).length);
-      assertEquals(2, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 2).length);
-      assertEquals(3, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 3).length);
-      assertEquals(4, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 4).length);
-      assertEquals(5, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 5).length);
-      assertEquals(6, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 6).length);
-      assertEquals(6, NetUtils.getInetAddresses(NetUtils.getInetAddress(BigEndian.toBytes(baseInt)), 7).length);
+      InetAddress base = NetUtils.getInetAddress(BigEndian.toBytes(0xfffffffa));
+      assertEquals(1, NetUtils.getInetAddresses(base, 1).length);
+      assertEquals(2, NetUtils.getInetAddresses(base, 2).length);
+      assertEquals(3, NetUtils.getInetAddresses(base, 3).length);
+      assertEquals(4, NetUtils.getInetAddresses(base, 4).length);
+      assertEquals(5, NetUtils.getInetAddresses(base, 5).length);
+      assertEquals(6, NetUtils.getInetAddresses(base, 6).length);
+      assertEquals(6, NetUtils.getInetAddresses(base, 7).length);
    }
 
    @Test
@@ -322,5 +349,7 @@ public class NetUtilsTest {
    {
       NetUtils.getInetAddresses(null, -1);
    }
+
+
 
 }
