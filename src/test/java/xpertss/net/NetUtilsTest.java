@@ -306,6 +306,13 @@ public class NetUtilsTest {
       assertTrue(Arrays.equals(target, NetUtils.convert(ip6).getAddress()));
    }
 
+   @Test(expected = IllegalArgumentException.class)
+   public void testConvertInvalidIPv6Address() throws Exception
+   {
+      InetAddress invalid = InetAddress.getByName("FFFF::FFFF");
+      NetUtils.convert(invalid);
+   }
+
 
 
 
