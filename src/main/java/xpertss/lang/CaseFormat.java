@@ -9,6 +9,9 @@ package xpertss.lang;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for converting between various case formats.
+ */
 public enum CaseFormat {
 
 
