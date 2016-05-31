@@ -186,7 +186,7 @@ public enum CaseFormat {
     * Attempts to determine the case of the string. This will return the CaseFormat for the
     * string if it can be determined, or {@code null} otherwise.
     */
-   public static CaseFormat forString(String str)
+   public static CaseFormat of(String str)
    {
       for(CaseFormat format : values()) {
          if(format.matches(str)) return format;
