@@ -338,6 +338,17 @@ public final class Sets {
       return result;
    }
 
+   /**
+    * Returns a new Hash Set pre-populated with the specified items.
+    */
+   public static <E> HashSet<E> newHashSet(Iterable<? extends E> items)
+   {
+      HashSet<E> result = new HashSet<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
+
+
 
 
    /**
@@ -358,6 +369,17 @@ public final class Sets {
       Collections.addAll(result, items);
       return result;
    }
+
+   /**
+    * Returns a new Copy on Write Array Set pre-populated with the specified items..
+    */
+   public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet(Iterable<? extends E> items)
+   {
+      CopyOnWriteArraySet<E> result = new CopyOnWriteArraySet<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
+
 
 
 
@@ -382,6 +404,20 @@ public final class Sets {
    }
 
    /**
+    * Returns a new empty Concurrent Skip List Set and pre-populated with the
+    * specified items.
+    */
+   public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet(Iterable<? extends E> items)
+   {
+      ConcurrentSkipListSet<E> result = new ConcurrentSkipListSet<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
+
+
+
+
+   /**
     * Returns a new empty Concurrent Skip List Set with the given comparator.
     */
    public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet(Comparator<? super E> comparator)
@@ -400,6 +436,18 @@ public final class Sets {
       Collections.addAll(result, items);
       return result;
    }
+
+   /**
+    * Returns a new Concurrent Skip List Set with the given comparator and
+    * pre-populated with the specified items..
+    */
+   public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet(Comparator<? super E> comparator, Iterable<? extends E> items)
+   {
+      ConcurrentSkipListSet<E> result = new ConcurrentSkipListSet<>(comparator);
+      Iterables.addAll(result, items);
+      return result;
+   }
+
 
 
    /**
@@ -422,6 +470,18 @@ public final class Sets {
    }
 
    /**
+    * Returns a new empty Tree Set and pre-populated with the specified items..
+    */
+   public static <E> TreeSet<E> newTreeSet(Iterable<? extends E> items)
+   {
+      TreeSet<E> result = new TreeSet<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
+
+
+
+   /**
     * Returns a new empty Tree Set with the given comparator.
     */
    public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator)
@@ -438,6 +498,17 @@ public final class Sets {
    {
       TreeSet<E> result = new TreeSet<>(comparator);
       Collections.addAll(result, items);
+      return result;
+   }
+
+   /**
+    * Returns a new Tree Set with the given comparator and pre-populated with the
+    * specified items..
+    */
+   public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator, Iterable<? extends E> items)
+   {
+      TreeSet<E> result = new TreeSet<>(comparator);
+      Iterables.addAll(result, items);
       return result;
    }
 
@@ -462,6 +533,15 @@ public final class Sets {
       return result;
    }
 
+   /**
+    * Returns a new Linked Hash Set pre-populated with the specified items.
+    */
+   public static <E> LinkedHashSet<E> newLinkedHashSet(Iterable<? extends E> items)
+   {
+      LinkedHashSet<E> result = new LinkedHashSet<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
 
 
 

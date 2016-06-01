@@ -4,8 +4,11 @@ import xpertss.function.Consumer;
 import xpertss.function.Predicate;
 import xpertss.lang.Objects;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+
+import static xpertss.lang.Objects.notNull;
 
 /**
  * This class contains static utility methods that operate on objects of type
@@ -63,7 +66,7 @@ public final class Iterables {
     */
    public static <T> Ordering<Iterable<T>> ordering(Comparator<T> comparator)
    {
-      final Ordering<T> ordering = Ordering.from(Objects.notNull(comparator));
+      final Ordering<T> ordering = Ordering.from(notNull(comparator));
       return new Ordering<Iterable<T>>() {
          @Override public int compare(Iterable<T> leftIterable, Iterable<T> rightIterable)
          {
@@ -116,7 +119,7 @@ public final class Iterables {
     */
    public static <T extends Comparable<? super T>> T min(Iterable<T> set)
    {
-      Iterator<T> iterator = Objects.notNull(set).iterator();
+      Iterator<T> iterator = notNull(set).iterator();
       if(iterator.hasNext()) {
          T min = iterator.next();
          while(iterator.hasNext()) {
@@ -141,7 +144,7 @@ public final class Iterables {
     */
    public static <T extends Comparable<? super T>> T max(Iterable<T> set)
    {
-      Iterator<T> iterator = Objects.notNull(set).iterator();
+      Iterator<T> iterator = notNull(set).iterator();
       if(iterator.hasNext()) {
          T max = iterator.next();
          while(iterator.hasNext()) {
@@ -168,7 +171,7 @@ public final class Iterables {
     */
    public static <T> T min(Iterable<T> set, Comparator<? super T> comp)
    {
-      Iterator<T> iterator = Objects.notNull(set).iterator();
+      Iterator<T> iterator = notNull(set).iterator();
       if(iterator.hasNext()) {
          T min = iterator.next();
          while(iterator.hasNext()) {
@@ -194,7 +197,7 @@ public final class Iterables {
     */
    public static <T> T max(Iterable<T> set, Comparator<? super T> comp)
    {
-      Iterator<T> iterator = Objects.notNull(set).iterator();
+      Iterator<T> iterator = notNull(set).iterator();
       if(iterator.hasNext()) {
          T max = iterator.next();
          while(iterator.hasNext()) {
@@ -224,8 +227,8 @@ public final class Iterables {
     */
    public static <T> boolean any(Iterable<T> iterable, Predicate<? super T> predicate)
    {
-      Objects.notNull(predicate, "predicate");
-      for(T item : Objects.notNull(iterable, "iterable")) {
+      notNull(predicate, "predicate");
+      for(T item : notNull(iterable, "iterable")) {
          if(predicate.apply(item)) return true;
       }
       return false;
@@ -239,8 +242,8 @@ public final class Iterables {
     */
    public static <T> boolean all(Iterable<T> iterable, Predicate<? super T> predicate)
    {
-      Objects.notNull(predicate, "predicate");
-      for(T item : Objects.notNull(iterable, "iterable")) {
+      notNull(predicate, "predicate");
+      for(T item : notNull(iterable, "iterable")) {
          if(!predicate.apply(item)) return false;
       }
       return true;
@@ -254,11 +257,27 @@ public final class Iterables {
     */
    public static <T> boolean none(Iterable<T> iterable, Predicate<? super T> predicate)
    {
-      Objects.notNull(predicate, "predicate");
-      for(T item : Objects.notNull(iterable, "iterable")) {
+      notNull(predicate, "predicate");
+      for(T item : notNull(iterable, "iterable")) {
          if(predicate.apply(item)) return false;
       }
       return true;
    }
 
+
+
+   /**
+    * Adds all elements in {@code iterable} to {@code collection}.
+    *
+    * @return {@code true} if {@code collection} was modified as a result of this
+    *         operation
+    */public static <T> boolean addAll(Collection<T> addTo, Iterable<? extends T> iterable)
+   {
+      notNull(addTo, "addTo");
+      boolean wasModified = false;
+      for(T item : notNull(iterable, "iterable")) {
+         wasModified |= addTo.add(item);
+      }
+      return wasModified;
+   }
 }

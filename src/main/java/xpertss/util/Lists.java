@@ -341,6 +341,17 @@ public final class Lists {
       return result;
    }
 
+   /**
+    * Returns a new array list pre-populated with the specified items in the order
+    * they are provided.
+    */
+   public static <E> ArrayList<E> newArrayList(Iterable<? extends E> items)
+   {
+      ArrayList<E> result = new ArrayList<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
+
 
 
    /**
@@ -363,6 +374,19 @@ public final class Lists {
       return result;
    }
 
+   /**
+    * Returns a new copy on write array list pre-populated with the specified items in
+    * the order they are provided.
+    */
+   public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList(Iterable<? extends E> items)
+   {
+      CopyOnWriteArrayList<E> result = new CopyOnWriteArrayList<>();
+      Iterables.addAll(result, items);
+      return result;
+   }
+
+
+
 
    /**
     * Returns a new empty linked list.
@@ -381,6 +405,17 @@ public final class Lists {
    {
       LinkedList<E> result = new LinkedList<>();
       Collections.addAll(result, items);
+      return result;
+   }
+
+   /**
+    * Returns a new linked list pre-populated with the specified items in the order
+    * they are provided.
+    */
+   public static <E> LinkedList<E> newLinkedList(Iterable<? extends E> items)
+   {
+      LinkedList<E> result = new LinkedList<>();
+      Iterables.addAll(result, items);
       return result;
    }
 

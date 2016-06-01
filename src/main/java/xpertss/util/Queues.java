@@ -23,8 +23,8 @@ import java.util.concurrent.SynchronousQueue;
  */
 public final class Queues {
 
-   private static final Queue EMPTY_QUEUE = new EmptyQueue<Object>();
-   private static final Deque EMPTY_DEQUE = new EmptyDeque<Object>();
+   private static final Queue EMPTY_QUEUE = new EmptyQueue();
+   private static final Deque EMPTY_DEQUE = new EmptyDeque();
 
    private Queues() { }
 
