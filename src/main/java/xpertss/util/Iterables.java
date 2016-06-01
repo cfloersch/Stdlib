@@ -266,12 +266,15 @@ public final class Iterables {
 
 
 
+
+
    /**
     * Adds all elements in {@code iterable} to {@code collection}.
     *
     * @return {@code true} if {@code collection} was modified as a result of this
     *         operation
-    */public static <T> boolean addAll(Collection<T> addTo, Iterable<? extends T> iterable)
+    */
+   public static <T> boolean addAll(Collection<T> addTo, Iterable<? extends T> iterable)
    {
       notNull(addTo, "addTo");
       boolean wasModified = false;
