@@ -1,8 +1,8 @@
 package xpertss.net;
 
 import org.junit.Test;
-import xpertss.io.BigEndian;
 
+import java.math.BigInteger;
 import java.net.InetAddress;
 
 import static org.junit.Assert.*;
@@ -24,7 +24,6 @@ public class CIDRTest {
       assertEquals("10.0.0.0", cidr.getNetworkAddress().getHostAddress());
       assertEquals("255.255.255.0", cidr.getSubnetMask().getHostAddress());
       assertEquals("10.0.0.255", cidr.getBroadcastAddress().getHostAddress());
-      assertEquals(254, cidr.getAddressCount());
    }
 
    @Test
@@ -36,7 +35,6 @@ public class CIDRTest {
       assertEquals("10.0.0.1", cidr.getNetworkAddress().getHostAddress());
       assertEquals("255.255.255.255", cidr.getSubnetMask().getHostAddress());
       assertEquals("10.0.0.1", cidr.getBroadcastAddress().getHostAddress());
-      assertEquals(0, cidr.getAddressCount());
    }
 
    @Test
@@ -48,7 +46,6 @@ public class CIDRTest {
       assertEquals("10.0.0.0", cidr.getNetworkAddress().getHostAddress());
       assertEquals("255.255.255.254", cidr.getSubnetMask().getHostAddress());
       assertEquals("10.0.0.1", cidr.getBroadcastAddress().getHostAddress());
-      assertEquals(0, cidr.getAddressCount());
    }
 
    @Test
@@ -60,7 +57,6 @@ public class CIDRTest {
       assertEquals("10.0.0.0", cidr.getNetworkAddress().getHostAddress());
       assertEquals("255.255.255.252", cidr.getSubnetMask().getHostAddress());
       assertEquals("10.0.0.3", cidr.getBroadcastAddress().getHostAddress());
-      assertEquals(2, cidr.getAddressCount());
    }
 
    @Test
@@ -75,15 +71,149 @@ public class CIDRTest {
       assertFalse(cidr.contains(NetUtils.getInetAddress("10.1.0.2")));
    }
 
-   public void testToInt()
+
+
+
+
+   @Test
+   public void testBasicInet4CIDRPrefix8()
    {
-      // Looks like 10.0.0.127 = 167772287
-      // but        10.0.0.128 = 167772032
-      // That's the boundary in a signed 8 bit byte (-128 - + 127)
-      for(int i = 0; i <= 255; i++) {
-         InetAddress address = NetUtils.getInetAddress(String.format("10.0.0.%d", i));
-         System.out.println(address.getHostAddress() + " " + BigEndian.parseInt(address.getAddress()));
-      }
+      CIDR cidr = CIDR.parse("10.0.0.1/8");
+      assertEquals("10.0.0.0/8", cidr.toString());
+
+      assertEquals("10.0.0.0", cidr.getNetworkAddress().getHostAddress());
+      assertEquals("255.0.0.0", cidr.getSubnetMask().getHostAddress());
+      assertEquals("10.255.255.255", cidr.getBroadcastAddress().getHostAddress());
    }
+
+
+
+
+
+
+
+
+
+
+
+   @Test
+   public void testBigInteger()
+   {
+      InetAddress addrOne = NetUtils.getInetAddress("FFFF:FFFF::FFFF");
+      BigInteger one = new BigInteger(1, addrOne.getAddress());
+      assertEquals(1, one.signum());
+      InetAddress addrTwo = NetUtils.getInetAddress("00FF:FFFF::FFFF");
+      BigInteger two = new BigInteger(1, addrTwo.getAddress());
+      assertEquals(1, two.signum());
+   }
+
+
+
+
+
+
+
+
+   @Test
+   public void testIPv6CIDR_1()
+   {
+      byte[] start = {
+            (byte) 0x80, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+      };
+      InetAddress network = NetUtils.getInetAddress(start);
+
+      byte[] end = {
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff
+      };
+      InetAddress broadcast = NetUtils.getInetAddress(end);
+
+
+      CIDR cidr = CIDR.parse("FFFF::/1");
+      assertEquals(network, cidr.getNetworkAddress());
+      assertEquals(broadcast, cidr.getBroadcastAddress());
+   }
+
+
+   @Test
+   public void testIPv6CIDR_32()
+   {
+      byte[] start = {
+            (byte) 0xff, (byte) 0xff, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+      };
+      InetAddress network = NetUtils.getInetAddress(start);
+
+      byte[] end = {
+            (byte) 0xff, (byte) 0xff, (byte) 0x00, (byte) 0x00,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff
+      };
+      InetAddress broadcast = NetUtils.getInetAddress(end);
+
+
+      CIDR cidr = CIDR.parse("FFFF::/32");
+      assertEquals(network, cidr.getNetworkAddress());
+      assertEquals(broadcast, cidr.getBroadcastAddress());
+   }
+
+   @Test
+   public void testIPv6CIDR_64()
+   {
+      byte[] start = {
+            (byte) 0xff, (byte) 0xff, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+      };
+      InetAddress network = NetUtils.getInetAddress(start);
+
+      byte[] end = {
+            (byte) 0xff, (byte) 0xff, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+            (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff
+      };
+      InetAddress broadcast = NetUtils.getInetAddress(end);
+
+
+      CIDR cidr = CIDR.parse("FFFF::/64");
+      assertEquals(network, cidr.getNetworkAddress());
+      assertEquals(broadcast, cidr.getBroadcastAddress());
+   }
+
+   @Test
+   public void testIPv6CIDR_128()
+   {
+      byte[] start = {
+            (byte) 0xff, (byte) 0xff, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+      };
+      InetAddress network = NetUtils.getInetAddress(start);
+
+      byte[] end = {
+            (byte) 0xff, (byte) 0xff, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+      };
+      InetAddress broadcast = NetUtils.getInetAddress(end);
+
+
+      CIDR cidr = CIDR.parse("FFFF::/128");
+      assertEquals(network, cidr.getNetworkAddress());
+      assertEquals(broadcast, cidr.getBroadcastAddress());
+   }
+
 
 }

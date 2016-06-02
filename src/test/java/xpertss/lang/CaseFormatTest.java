@@ -17,37 +17,37 @@ public class CaseFormatTest {
    @Test
    public void testForStringUpperUnderScore()
    {
-      assertEquals(UPPER_UNDERSCORE, forString("HELLO_KITTY"));
+      assertEquals(UPPER_UNDERSCORE, of("HELLO_KITTY"));
    }
 
    @Test
    public void testForStringLowerUnderScore()
    {
-      assertEquals(LOWER_UNDERSCORE, forString("hello_kitty"));
+      assertEquals(LOWER_UNDERSCORE, of("hello_kitty"));
    }
 
    @Test
    public void testForStringLowerHyphen()
    {
-      assertEquals(LOWER_HYPHEN, forString("hello-kitty"));
+      assertEquals(LOWER_HYPHEN, of("hello-kitty"));
    }
 
    @Test
    public void testForStringLowerCamel()
    {
-      assertEquals(LOWER_CAMEL, forString("helloKitty"));
+      assertEquals(LOWER_CAMEL, of("helloKitty"));
    }
 
    @Test
    public void testForStringUpperCamel()
    {
-      assertEquals(UPPER_CAMEL, forString("HelloKitty"));
+      assertEquals(UPPER_CAMEL, of("HelloKitty"));
    }
 
    @Test
    public void testForSingleWord()
    {
-      assertNull(forString("hello"));
+      assertNull(of("hello"));
    }
 
 

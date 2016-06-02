@@ -7,7 +7,7 @@
 package xpertss.net;
 
 import xpertss.io.BigEndian;
-import xpertss.lang.BigMath;
+import xpertss.lang.Bytes;
 import xpertss.lang.Integers;
 import xpertss.lang.Objects;
 
@@ -16,6 +16,7 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.Arrays;
+
 
 /**
  * Classless Inter-Domain Routing (CIDR) is a method for allocating IP addresses
@@ -85,15 +86,6 @@ public class CIDR {
 
 
 
-   /**
-    * Returns the number of addresses available in this CIDR excluding the network
-    * address and the broadcast address.
-    */
-   public long getAddressCount()
-   {
-      return 0;
-   }
-
 
    @Override
    public int hashCode()
@@ -119,18 +111,26 @@ public class CIDR {
    }
 
 
-
-
-   public static CIDR create(InetAddress address, int mask)
+   /**
+    * Create a CIDR from a base address and prefix.
+    */
+   public static CIDR create(InetAddress address, int prefix)
    {
       Objects.notNull(address, "address");
-      if(mask < 0) throw new IllegalArgumentException("invalid CIDR prefix");
+      if(prefix < 0) throw new IllegalArgumentException("invalid CIDR prefix");
       if(address instanceof Inet4Address) {
-         return CIDR4.create(address, mask);
+         return CIDR4.create(address, prefix);
       }
-      return null; //return CIDR6.create(address, mask);
+      return CIDR6.create(address, prefix);
    }
 
+   /**
+    * Parse a standard CIDR notation string into its associated CIDR object
+    * i.e.:
+    * CIDR  subnet = parse("10.10.10.0/24"); or
+    * CIDR  subnet = parse("1fff:0:0a88:85a3:0:0:ac1f:8001/24"); or
+    * CIDR  subnet = parse("10.10.10.0/255.255.255.0");
+    */
    public static CIDR parse(String encoded)
    {
       int p = encoded.indexOf('/');
@@ -138,6 +138,21 @@ public class CIDR {
       return create(NetUtils.getInetAddress(encoded.substring(0, p)),
                      Integers.parse(encoded.substring(p+1), -1));
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -179,15 +194,10 @@ public class CIDR {
       }
 
 
-      public long getAddressCount()
-      {
-         return Math.max(0, endInt - baseInt - 1);
-      }
-
       public static CIDR create(InetAddress address, int mask)
       {
          if(mask > 32) throw new IllegalArgumentException("invalid CIDR prefix");
-         int netmask = ~((1 << 32 - mask) - 1);;
+         int netmask = ~((1 << 32 - mask) - 1);
          int baseInt = BigEndian.parseInt(address.getAddress()) & netmask;
          int endInt = baseInt + (1 << 32 - mask) - 1;
          return new CIDR4(baseInt, endInt, netmask, mask);
@@ -195,7 +205,21 @@ public class CIDR {
 
    }
 
-   /*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    private static class CIDR6 extends CIDR {
 
       private final BigInteger baseInt;
@@ -204,9 +228,13 @@ public class CIDR {
       private final InetAddress end;
       private final InetAddress netmask;
 
-      private CIDR6(BigInteger baseInt, BigInteger endInt, BigInteger netmask, int mask)
+      private CIDR6(InetAddress address, int prefix, BigInteger baseInt, BigInteger endInt, BigInteger netmask)
       {
          super(address, prefix);
+         this.baseInt = baseInt;
+         this.endInt = endInt;
+         this.end = bigIntToIPv6Address(endInt);
+         this.netmask = bigIntToIPv6Address(netmask);
       }
 
 
@@ -222,26 +250,81 @@ public class CIDR {
 
       public boolean contains(InetAddress address)
       {
-         if(address instanceof Inet4Address) {
-            address = NetUtils.convert(address);
-         }
-         BigInteger addressInt = BigInteger.ONE;
+         BigInteger addressInt = ipv6AddressToBigInteger(address);
          return addressInt.compareTo(baseInt) > 0 && addressInt.compareTo(endInt) < 0;
       }
 
 
-      public long getAddressCount()
+
+      public static CIDR create(InetAddress address, int prefix)
       {
-         // TODO long really isn't big enough to represent the number of addresses a IPv6 CIDR block might contain which could be up to 128 bit in size
-         return BigMath.max(BigInteger.ZERO, endInt.subtract(baseInt).subtract(BigInteger.ONE)).longValue();
+         if(prefix > 128) throw new IllegalArgumentException("invalid CIDR prefix");
+
+         BigInteger base = ipv6AddressToBigInteger(address);
+         BigInteger netmask = ipv6CidrMaskToMask(prefix);
+         BigInteger baseInt = base.and(netmask);
+         InetAddress baseAddress = bigIntToIPv6Address(baseInt);
+         BigInteger endInt = baseInt.add(ipv6CidrMaskToBaseAddress(prefix)).subtract(BigInteger.ONE);
+
+         return new CIDR6(baseAddress, prefix, baseInt, endInt, netmask);
       }
 
 
-      public static CIDR create(InetAddress address, int mask)
+
+      /**
+       * Given an IPv6 baseAddress length, return the block length.  I.e., a
+       * baseAddress length of 96 will return 2**32.
+       */
+      private static BigInteger ipv6CidrMaskToBaseAddress(int cidrMask)
       {
-         if(mask > 128) throw new IllegalArgumentException("invalid CIDR prefix");
-         return null;
+         return BigInteger.ONE.shiftLeft(128 - cidrMask);
       }
+
+      private static BigInteger ipv6CidrMaskToMask(int cidrMask)
+      {
+         return BigInteger.ONE.shiftLeft(128 - cidrMask).subtract(BigInteger.ONE).not();
+      }
+
+
+
+
+
+      /**
+       * Given an IPv6 address, convert it into a BigInteger.
+       *
+       * @return the integer representation of the InetAddress
+       * @throws IllegalArgumentException if the address is not an IPv6
+       *                                  address.
+       */
+      private static BigInteger ipv6AddressToBigInteger(InetAddress address)
+      {
+         if (address instanceof Inet4Address) {
+            address = NetUtils.convert(address);
+         }
+         return new BigInteger(1, address.getAddress());
+      }
+
+      /**
+       * Convert a big integer into an IPv6 address.
+       *
+       * @return the inetAddress from the integer
+       */
+      private static InetAddress bigIntToIPv6Address(BigInteger addr)
+      {
+         byte[] b = addr.toByteArray();
+         if (b.length > 16) {
+            if(!(b.length == 17 && b[0] == 0)) {
+               throw new AssertionError("IPv6 address produced more than 16 bytes");
+            } else {
+               b = Arrays.copyOfRange(b, 1, 17);
+            }
+         } else if(b.length < 16) {
+            b = Bytes.prepend(b, new byte[16 - b.length]);
+         }
+         return NetUtils.getInetAddress(b);
+      }
+
    }
-   */
+
+
 }
