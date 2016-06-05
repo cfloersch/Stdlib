@@ -3,13 +3,11 @@ package xpertss.net;
 import org.junit.Test;
 import xpertss.io.BigEndian;
 
-import java.math.BigInteger;
 import java.net.InetAddress;
 import java.util.Arrays;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
