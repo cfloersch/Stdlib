@@ -316,8 +316,9 @@ public class NetUtilsTest {
 
 
 
+
    @Test
-   public void testGetConsecutiveInetAddress()
+   public void testGetConsecutiveInetV4Address()
    {
       InetAddress base = NetUtils.getInetAddress(BigEndian.toBytes(0xfffffffa));
       assertEquals(1, NetUtils.getInetAddresses(base, 1).length);
@@ -339,6 +340,37 @@ public class NetUtilsTest {
       assertEquals(0xffff0101, BigEndian.parseInt(set[2].getAddress()));
    }
 
+   @Test
+   public void testGetConsecutiveInetV6Address()
+   {
+      InetAddress base = NetUtils.getInetAddress("ffff:ffff:ffff:ffff:ffff:ffff:ffff:fffa");
+      assertEquals(1, NetUtils.getInetAddresses(base, 1).length);
+      assertEquals(2, NetUtils.getInetAddresses(base, 2).length);
+      assertEquals(3, NetUtils.getInetAddresses(base, 3).length);
+      assertEquals(4, NetUtils.getInetAddresses(base, 4).length);
+      assertEquals(5, NetUtils.getInetAddresses(base, 5).length);
+      assertEquals(6, NetUtils.getInetAddresses(base, 6).length);
+      assertEquals(6, NetUtils.getInetAddresses(base, 7).length);
+   }
+
+   @Test
+   public void testGetConsecutiveInetV4V6Address()
+   {
+      InetAddress base = NetUtils.convert(NetUtils.getInetAddress("255.255.255.255"));
+      assertEquals(1, NetUtils.getInetAddresses(base, 1).length);
+      assertEquals(2, NetUtils.getInetAddresses(base, 2).length);
+      assertEquals(3, NetUtils.getInetAddresses(base, 3).length);
+      assertEquals(4, NetUtils.getInetAddresses(base, 4).length);
+      assertEquals(5, NetUtils.getInetAddresses(base, 5).length);
+      assertEquals(6, NetUtils.getInetAddresses(base, 6).length);
+      assertEquals(7, NetUtils.getInetAddresses(base, 7).length);
+   }
+
+
+
+
+
+
    @Test(expected = NullPointerException.class)
    public void testGetConsecutiveInetAddressNullInput()
    {
@@ -348,7 +380,7 @@ public class NetUtilsTest {
    @Test(expected = IllegalArgumentException.class)
    public void testGetConsecutiveInetAddressZeroCount()
    {
-      NetUtils.getInetAddresses(null, -0);
+      NetUtils.getInetAddresses(null, 0);
    }
 
    @Test(expected = IllegalArgumentException.class)
@@ -356,7 +388,5 @@ public class NetUtilsTest {
    {
       NetUtils.getInetAddresses(null, -1);
    }
-
-
 
 }

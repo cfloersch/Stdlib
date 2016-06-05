@@ -4,7 +4,6 @@
  */
 package xpertss.net;
 
-import xpertss.io.BigEndian;
 import xpertss.lang.Bytes;
 import xpertss.lang.Integers;
 import xpertss.lang.Numbers;
@@ -14,7 +13,11 @@ import xpertss.lang.Strings;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.*;
+import java.util.Arrays;
 import java.util.Enumeration;
+
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.valueOf;
 
 /**
  * A set of utility methods useful for networking related code.
@@ -241,12 +244,22 @@ public final class NetUtils {
       try { return InetAddress.getAllByName(name); } catch(Exception ex) { return null; }
    }
 
+
+
+   private static final BigInteger MAX_UNSIGNED_128 =new BigInteger("ffffffffffffffffffffffffffffffff", 16);
+   private static final BigInteger MAX_UNSIGNED_32 = new BigInteger("ffffffff", 16);
+
    /**
     * Returns an array of InetAddresses containing {@code count} elements, beginning
     * with the specified base address and indexing the last octet by one for each
-    * subsequent element. This will not overflow the given IP space so if the base
-    * IP of 255.255.255.254 is given and a count greater than 2 is specified this
-    * will return a collection of only two addresses.
+    * subsequent element.
+    * <p/>
+    * This will not overflow the given IP space so if the base IP of 255.255.255.254
+    * is given and a count greater than 2 is specified this will return a collection
+    * of only two addresses.
+    * <p/>
+    * This will return IPv6 addresses if the supplied address is IPv6 otherwise, it
+    * will return IPv4 addresses.
     *
     * @throws NullPointerException if {@code base} is {@code null}
     * @throws IllegalArgumentException if {@code count} less than one
@@ -254,17 +267,26 @@ public final class NetUtils {
    public static InetAddress[] getInetAddresses(InetAddress base, int count)
    {
       Numbers.gt(0, count, "count");
-      int baseInt = BigEndian.parseInt(base.getAddress());
-      if(((long)baseInt + count) > 0x00000000ffffffff) {
-         count = Integers.safeCast(0x00000000ffffffff - baseInt) + 1;
+      BigInteger baseInt = new BigInteger(1, base.getAddress());
+      BigInteger maxInt = baseInt.add(valueOf(count).subtract(ONE));
+      if(base instanceof Inet4Address) {
+         if(maxInt.compareTo(MAX_UNSIGNED_32) > 0)
+            count = MAX_UNSIGNED_32.subtract(baseInt).add(ONE).intValue();
+      } else {
+         if(maxInt.compareTo(MAX_UNSIGNED_128) > 0)
+            count = MAX_UNSIGNED_128.subtract(baseInt).add(ONE).intValue();
       }
       InetAddress[] result = new InetAddress[count];
       for(int i = 0; i < result.length; i++) {
-         result[i] = getInetAddress(BigEndian.toBytes(baseInt + i));
+         if(base instanceof Inet4Address) {
+            result[i] = bigIntToIPv4Address(baseInt);
+         } else {
+            result[i] = bigIntToIPv6Address(baseInt);
+         }
+         baseInt = baseInt.add(ONE);
       }
       return result;
    }
-
 
 
 
@@ -503,6 +525,48 @@ public final class NetUtils {
    }
 
 
+
+
+
+   /**
+    * Convert a big integer into an IPv6 address.
+    *
+    * @return the inetAddress from the integer
+    */
+   private static InetAddress bigIntToIPv6Address(BigInteger addr)
+   {
+      byte[] b = addr.toByteArray();
+      if (b.length > 16) {
+         if(!(b.length == 17 && b[0] == 0)) {
+            throw new AssertionError("IPv6 address produced more than 16 bytes");
+         } else {
+            b = Arrays.copyOfRange(b, 1, 17);
+         }
+      } else if(b.length < 16) {
+         b = Bytes.prepend(b, new byte[16 - b.length]);
+      }
+      return NetUtils.getInetAddress(b);
+   }
+
+   /**
+    * Convert a big integer into an IPv4 address.
+    *
+    * @return the inetAddress from the integer
+    */
+   private static InetAddress bigIntToIPv4Address(BigInteger addr)
+   {
+      byte[] b = addr.toByteArray();
+      if (b.length > 4) {
+         if(!(b.length == 5 && b[0] == 0)) {
+            throw new AssertionError("IPv4 address produced more than 4 bytes");
+         } else {
+            b = Arrays.copyOfRange(b, 1, 5);
+         }
+      } else if(b.length < 4) {
+         b = Bytes.prepend(b, new byte[4 - b.length]);
+      }
+      return NetUtils.getInetAddress(b);
+   }
 
 }
 
