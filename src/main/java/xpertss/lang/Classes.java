@@ -1,13 +1,15 @@
 package xpertss.lang;
 
+import xpertss.util.Lists;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -214,40 +216,42 @@ public final class Classes {
       for(sup = subClass.getSuperclass(); sup != null && sup != superClass;) sup = sup.getSuperclass();
       return sup != null;
    }
-   
 
 
 
 
    /**
-    * Gets a List of all interfaces implemented by the given class and its superclasses.
+    * Method that will find all super-classes and implemented interfaces of a given
+    * class or interface. Classes are listed in order of precedence, starting with
+    * the immediate super-class, followed by interfaces the class directly declares
+    * to implement, and then recursively followed by parent of super-class and so
+    * forth. Note that <code>Object.class</code> is not included in the list
+    * regardless of whether <code>endBefore</code> argument is defined or not.
+    *
+    * @param endBefore Super-type to NOT include in results, if any; when
+    *    encountered, will be ignored (and no super types are checked).
     */
-   public static List<Class<?>> getAllInterfaces(Class<?> cls)
+   public static List<Class<?>> findSuperTypes(Class<?> cls, Class<?> endBefore)
    {
-      LinkedHashSet<Class<?>> result = new LinkedHashSet<>();
-      while(cls != null) {
-         Class<?>[] interfaces = cls.getInterfaces();
-         Collections.addAll(result, interfaces);
-         cls = cls.getSuperclass();
-      }
-      return new ArrayList<>(result);
+      List<Class<?>> results = Lists.newArrayList();
+      addSuperTypes(cls, endBefore, results, false);
+      return results;
    }
 
-   /**
-    * Gets a List of superclasses for the given class.
-    */
-   public static List<Class<?>> getAllSuperclasses(Class<?> cls)
+   private static void addSuperTypes(Class<?> cls, Class<?> endBefore, Collection<Class<?>> result, boolean addClassItself)
    {
-      List<Class<?>> classes = new ArrayList<>();
-      if(cls != null) {
-         Class<?> superclass = cls.getSuperclass();
-         while (superclass != null) {
-            classes.add(superclass);
-            superclass = superclass.getSuperclass();
-         }
+      if (cls == endBefore || cls == null || cls == Object.class) { return; }
+      if (addClassItself) {
+         if (result.contains(cls)) return;
+         result.add(cls);
       }
-      return classes;
+      for (Class<?> intCls : cls.getInterfaces()) {
+         addSuperTypes(intCls, endBefore, result, true);
+      }
+      addSuperTypes(cls.getSuperclass(), endBefore, result, true);
    }
+
+
 
 
    /**
@@ -344,6 +348,28 @@ public final class Classes {
                                              new Class[]{interfaceType},
                                              handler);
       return interfaceType.cast(proxy);
+   }
+
+
+
+   /**
+    * Helper method that checks if given class is a concrete one; that is, not an
+    * interface nor abstract class.
+    */
+   public static boolean isConcrete(Class<?> type)
+   {
+      int mod = type.getModifiers();
+      return (mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0;
+   }
+
+   /**
+    * Helper method that checks if given member is a concrete one; that is, not an
+    * interface nor abstract class.
+    */
+   public static boolean isConcrete(Member member)
+   {
+      int mod = member.getModifiers();
+      return (mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0;
    }
 
 }
