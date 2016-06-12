@@ -11,6 +11,15 @@ public final class Consumers {
 
    private Consumers() { }
 
+   private static final Consumer<Object> NOOP = new Consumer<Object>() { @Override public void apply(Object o) { } };
+
+   /**
+    * Simple no-op consumer.
+    */
+   public static <T> Consumer<T> noop()
+   {
+      return Objects.cast(NOOP);
+   }
 
    /**
     * Returns a null-safe consumer that output's its input to the system's standard output

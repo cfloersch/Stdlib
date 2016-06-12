@@ -1,6 +1,8 @@
 package xpertss.lang;
 
-import xpertss.util.Lists;
+import xpertss.function.Consumer;
+import xpertss.function.Consumers;
+import xpertss.util.Sets;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -9,8 +11,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.Collection;
-import java.util.List;
+import java.util.Set;
+
+import static xpertss.lang.Objects.isOneOf;
 
 /**
  * A set of utility methods for {@link Class <code>Class</code>es} and class names.
@@ -220,36 +223,6 @@ public final class Classes {
 
 
 
-   /**
-    * Method that will find all super-classes and implemented interfaces of a given
-    * class or interface. Classes are listed in order of precedence, starting with
-    * the immediate super-class, followed by interfaces the class directly declares
-    * to implement, and then recursively followed by parent of super-class and so
-    * forth. Note that <code>Object.class</code> is not included in the list
-    * regardless of whether <code>endBefore</code> argument is defined or not.
-    *
-    * @param endBefore Super-type to NOT include in results, if any; when
-    *    encountered, will be ignored (and no super types are checked).
-    */
-   public static List<Class<?>> findSuperTypes(Class<?> cls, Class<?> endBefore)
-   {
-      List<Class<?>> results = Lists.newArrayList();
-      addSuperTypes(cls, endBefore, results, false);
-      return results;
-   }
-
-   private static void addSuperTypes(Class<?> cls, Class<?> endBefore, Collection<Class<?>> result, boolean addClassItself)
-   {
-      if (cls == endBefore || cls == null || cls == Object.class) { return; }
-      if (addClassItself) {
-         if (result.contains(cls)) return;
-         result.add(cls);
-      }
-      for (Class<?> intCls : cls.getInterfaces()) {
-         addSuperTypes(intCls, endBefore, result, true);
-      }
-      addSuperTypes(cls.getSuperclass(), endBefore, result, true);
-   }
 
 
 
@@ -293,6 +266,7 @@ public final class Classes {
    public static boolean isAssignableFrom(Class<?> toClass, Class<?> cls)
    {
       return !(toClass == null || cls == null) && toClass.isAssignableFrom(cls);
+      // TODO Maybe be more sophisticated and handle autoboxing/unboxing as well
    }
 
 
@@ -371,5 +345,113 @@ public final class Classes {
       int mod = member.getModifiers();
       return (mod & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0;
    }
+
+
+
+
+
+   /**
+    * Iterate over the classes' declared fields passing each to the specified
+    * consumer.
+    */
+   public static void fields(Class<?> cls, Consumer<Field> consumer)
+   {
+      Objects.notNull(cls, "cls"); Objects.notNull(consumer, "consumer");
+      for(Field field : cls.getDeclaredFields()) consumer.apply(field);
+   }
+
+   /**
+    * Iterate over the classes' declared methods passing each to the specified
+    * consumer.
+    */
+   public static void methods(Class<?> cls, Consumer<Method> consumer)
+   {
+      Objects.notNull(cls, "cls"); Objects.notNull(consumer, "consumer");
+      for(Method method : cls.getDeclaredMethods()) consumer.apply(method);
+   }
+
+
+   /**
+    * Walks the given class hierarchy and collects all the fields from the given
+    * class and all of its super classes. This excludes fields found in interfaces.
+    */
+   public static Set<Field> findFields(Class<?> cls)
+   {
+      final Set<Field> fields = Sets.newLinkedHashSet();
+      walk(cls, null, new Consumer<Field>() {
+         @Override
+         public void apply(Field field)
+         {
+            if(!field.getDeclaringClass().isInterface()) fields.add(field);
+         }
+      }, null);
+      return fields;
+   }
+
+   /**
+    * Walks the given class hierarchy and collects all the methods from the given class
+    * and all of its super classes and interfaces.
+    */
+   public static Set<Method> findMethods(Class<?> cls)
+   {
+      final Set<Method> methods = Sets.newLinkedHashSet();
+      walk(cls, null, null, new Consumer<Method>() {
+         @Override
+         public void apply(Method method)
+         {
+            methods.add(method);
+         }
+      });
+      return methods;
+   }
+
+   /**
+    * Walks the given class hierarchy and collects all the classes and interfaces starting
+    * with the given class and all of its super classes and interfaces.
+    */
+   public static Set<Class<?>> findSuperClasses(Class<?> cls)
+   {
+      final Set<Class<?>> classes = Sets.newLinkedHashSet();
+      walk(cls, new Consumer<Class>() {
+         @Override
+         public void apply(Class clazz)
+         {
+            classes.add(clazz);
+         }
+      }, null, null);
+      return classes;
+   }
+
+
+   /**
+    * Walk the given class hierarchy consuming classes, fields, methods, or all of the
+    * above. The classes consumer, fields consumer or the methods consumer may be {@code
+    * null} if you're not interested in consuming those.
+    * <p/>
+    * This will visit the fields and methods of the given class first. It will then
+    * recurse into any declared interfaces, walking up the interface's super class
+    * structure before coming back and walking up the given classes' super class
+    * structure. It will stop when it encounters a {@code null} super class or it
+    * encounters {@link Object}
+    *
+    * @throws NullPointerException if the specified class is {@code null}
+    */
+   public static void walk(Class<?> cls, Consumer<Class> classes,
+                                             Consumer<Field> fields,
+                                                Consumer<Method> methods)
+   {
+      Objects.notNull(cls, "cls");
+      classes = Objects.ifNull(classes, Consumers.<Class>noop());
+      fields = Objects.ifNull(fields, Consumers.<Field>noop());
+      methods = Objects.ifNull(methods, Consumers.<Method>noop());
+      while(!isOneOf(cls, null, Object.class)) {
+         classes.apply(cls); fields(cls, fields); methods(cls, methods);
+         for(Class<?> inter : cls.getInterfaces()) {
+            walk(inter, classes, fields, methods);
+         }
+         cls = cls.getSuperclass();
+      }
+   }
+
 
 }

@@ -5,18 +5,19 @@ import org.junit.Test;
 
 
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +26,20 @@ import static org.junit.Assert.assertTrue;
  * Date: 12/9/12
  */
 public class ClassesTest {
+
+
+   @Test
+   public void testFindSuperClasses()
+   {
+      Set<Class<?>> classes = Classes.findSuperClasses(Integer.class);
+      assertTrue(classes.contains(Comparable.class));
+      assertTrue(classes.contains(Integer.class));
+      assertTrue(classes.contains(Number.class));
+      assertTrue(classes.contains(Serializable.class));
+      assertFalse(classes.contains(Object.class));
+      assertEquals(4, classes.size());
+   }
+
 
    @Test
    public void testToArray()
@@ -69,65 +84,56 @@ public class ClassesTest {
    @Test
    public void getGetDeclaredField()
    {
-      Field field = Classes.getField(Rectangle2D.Double.class, "x");
-      assertNotNull(field);
+      assertNotNull(Classes.getField(Rectangle2D.Double.class, "x"));
    }
 
    @Test
    public void getGetSecondLevelField()
    {
-      Field field = Classes.getField(Rectangle2D.Double.class, "OUT_LEFT");
-      assertNotNull(field);
+      assertNotNull(Classes.getField(Rectangle2D.Double.class, "OUT_LEFT"));
    }
 
    @Test
    public void getGetNonExistentField()
    {
-      Field field = Classes.getField(Rectangle2D.Double.class, "IN_LEFT");
-      assertNull(field);
+      assertNull(Classes.getField(Rectangle2D.Double.class, "IN_LEFT"));
    }
 
    @Test
    public void testGetDeclaredMethod()
    {
-      Method method = Classes.getMethod(LinkedHashMap.class, "get", Object.class);
-      assertNotNull(method);
+      assertNotNull(Classes.getMethod(LinkedHashMap.class, "get", Object.class));
    }
 
    @Test
    public void testGetSecondLevelMethod()
    {
-      Method method = Classes.getMethod(LinkedHashMap.class, "remove", Object.class);
-      assertNotNull(method);
+      assertNotNull(Classes.getMethod(LinkedHashMap.class, "remove", Object.class));
    }
 
    @Test
    public void testGetThirdLevelMethod()
    {
-      Method method = Classes.getMethod(LinkedHashMap.class, "equals", Object.class);
-      assertNotNull(method);
+      assertNotNull(Classes.getMethod(LinkedHashMap.class, "equals", Object.class));
    }
 
    @Test
    public void testGetFourthLevelMethodNoArgs()
    {
-      Method method = Classes.getMethod(LinkedHashMap.class, "finalize", null);
-      assertNotNull(method);
+      assertNotNull(Classes.getMethod(LinkedHashMap.class, "finalize"));
    }
 
    @Test
    public void testGetFourthLevelMethodTwoArgs()
    {
-      Method method = Classes.getMethod(LinkedHashMap.class, "wait", long.class, int.class);
-      assertNotNull(method);
+      assertNotNull(Classes.getMethod(LinkedHashMap.class, "wait", long.class, int.class));
    }
 
    @Test
    public void testGetNonExistentMethod()
    {
       // wait has long and int args not Long and Integer
-      Method method = Classes.getMethod(LinkedHashMap.class, "wait", Long.class, Integer.class);
-      assertNull(method);
+      assertNull(Classes.getMethod(LinkedHashMap.class, "wait", Long.class, Integer.class));
    }
 
 
@@ -143,8 +149,7 @@ public class ClassesTest {
    @Test
    public void testGetNoneExistentConstructor()
    {
-      Constructor<String> cons = Classes.getConstructor(String.class, Integer.class);
-      assertNull(cons);
+      assertNull(Classes.getConstructor(String.class, Integer.class));
    }
 
    @Test
