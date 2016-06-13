@@ -29,7 +29,12 @@ import static java.lang.String.format;
 import static xpertss.lang.Objects.*;
 import static xpertss.lang.Strings.firstCharToUpper;
 
-
+/**
+ * An AnnotatedClass provides easy access to the under lying classes' creators,
+ * mutators, accessors, fields, methods, and annotations. The key benefit is
+ * that it aggregates annotations together resolving meta-annotations, etc to
+ * make working with them easier than the traditional java reflection packages.
+ */
 public final class AnnotatedClass implements Annotated {
 
    /**
@@ -109,9 +114,7 @@ public final class AnnotatedClass implements Annotated {
 
 
    /**
-    * Factory method that instantiates an instance. Returned instance
-    * will only be initialized with class annotations, but not with
-    * any method information.
+    * Factory method that instantiates an instance for a given class.
     * <p/>
     * TODO It would be nice to construct this with a Type vs a Class
     */
@@ -131,9 +134,6 @@ public final class AnnotatedClass implements Annotated {
 
    @Override
    public String getName() { return clazz.getName(); }
-
-
-
 
    @Override
    public Class<?> getAnnotated() { return clazz; }
@@ -166,44 +166,74 @@ public final class AnnotatedClass implements Annotated {
    public int getModifiers() { return clazz.getModifiers(); }
 
 
+   /**
+    * Helper method that returns {@code true} if the given class is marked as public,
+    * {@code false} otherwise.
+    */
    public boolean isPublic()
    {
       return Modifier.isPublic(getModifiers());
    }
 
+   /**
+    * Helper method that returns {@code true} if the given class is package private,
+    * {@code false} otherwise. A class is package private if it is not marked as
+    * public, private, nor protected.
+    */
    public boolean isPackagePrivate()
    {
       return ((getModifiers() & (Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC)) == 0);
    }
 
+   /**
+    * Helper method that returns {@code true} if the given class is marked as private,
+    * {@code false} otherwise.
+    */
    public boolean isPrivate()
    {
       return Modifier.isPrivate(getModifiers());
    }
 
 
+   /**
+    * Helper method that returns {@code true} if the given class is neither an interface
+    * nor marked as abstract, {@code false} otherwise.
+    */
    public boolean isConcrete()
    {
       return (getModifiers() & (Modifier.INTERFACE | Modifier.ABSTRACT)) == 0;
    }
 
+   /**
+    * Helper method that returns {@code true} if the given class is marked as final,
+    * {@code false} otherwise.
+    */
    public boolean isFinal()
    {
       return Modifier.isFinal(getModifiers());
    }
 
+   /**
+    * Helper method that returns {@code true} if the given class is marked as static,
+    * {@code false} otherwise.
+    */
    public boolean isStatic()
    {
       return Modifier.isStatic(getModifiers());
    }
 
 
-
+   /**
+    * Returns the generic type encapsulated by this wrapper.
+    */
    public Type getGenericType()
    {
       return clazz;
    }
 
+   /**
+    * Returns the raw type encapsulated by this wrapper.
+    */
    public Class<?> getRawType()
    {
       return clazz;
