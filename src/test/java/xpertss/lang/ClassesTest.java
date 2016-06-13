@@ -5,10 +5,13 @@ import org.junit.Test;
 
 
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.ProtocolException;
+import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -219,4 +222,19 @@ public class ClassesTest {
    }
 
 
+   @Test
+   public void testDeclaresException()
+   {
+      Method method = Classes.getMethod(TestClass.class, "testThrows");
+      assertTrue(Classes.declaresException(method, IOException.class));
+      assertTrue(Classes.declaresException(method, ProtocolException.class));
+      assertFalse(Classes.declaresException(method, Exception.class));
+      assertFalse(Classes.declaresException(method, SQLException.class));
+   }
+
+   private class TestClass {
+      public void testThrows() throws IOException
+      {
+      }
+   }
 }

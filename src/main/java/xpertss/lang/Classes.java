@@ -349,6 +349,29 @@ public final class Classes {
 
 
 
+   /**
+    * Determine whether the given method explicitly declares the given exception
+    * or one of its sub classes.
+    *
+    * @param method the declaring method
+    * @param exceptionType the exception to throw
+    * @return {@code true} if the specified method throws the given exception type;
+    *    {@code false} otherwise
+    */
+   public static boolean declaresException(Method method, Class<?> exceptionType)
+   {
+      Objects.notNull(method, "method");
+      Class<?>[] declaredExceptions = method.getExceptionTypes();
+      for (Class<?> declaredException : declaredExceptions) {
+         if (declaredException.isAssignableFrom(exceptionType)) {
+            return true;
+         }
+      }
+      return false;
+   }
+
+
+
 
    /**
     * Iterate over the classes' declared fields passing each to the specified
