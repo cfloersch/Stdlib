@@ -1,20 +1,8 @@
 package xpertss.reflect;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import xpertss.lang.Annotations;
-import xpertss.util.Sets;
 
-import javax.annotation.Tainted;
-import javax.annotation.concurrent.NotThreadSafe;
-import javax.annotation.meta.Exclusive;
-import javax.annotation.meta.Exhaustive;
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -45,52 +33,6 @@ public class AnnotatedClassTest {
       assertTrue((modifiers & (Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC)) == 0);
    }
 
-   @Test
-   @Ignore
-   public void testAnnotationInheritance() throws Exception
-   {
-      // TODO When I have a method I want to see all the annotations on that method or on the method in an interface
-      // TODO Might also want annotations on superclass methods.. Particularly those marked abstract?
-      Method baseInterMethod = BaseClass.class.getMethod("baseInterMethod", String.class);
-      Set<Annotation> annotations = Annotations.getAnnotations(baseInterMethod);
-      System.out.println();
-   }
-
-
-   @Test
-   @Ignore
-   public void testAnnotationInterface()
-   {
-      Set<Annotation> annotations = Annotations.getAnnotations(SubClass.class);
-      assertTrue(annotations.contains(Exhaustive.class));
-      assertTrue(annotations.contains(NotThreadSafe.class));
-   }
-
-   @Test
-   @Ignore
-   public void testMethodOverrides() throws Exception
-   {
-      Method baseMethod = BaseClass.class.getMethod("baseMethod", Integer.class);
-      Method overrideMethod = SubClass.class.getMethod("baseMethod", Integer.class);
-      // TODO Need to find a way to test method equality using just name/parameters
-      // Of course parameters could be subTypes?
-      assertTrue(baseMethod.equals(overrideMethod));
-   }
-
-   @Test
-   @Ignore
-   public void testField() throws Exception
-   {
-      SubClass instance = new SubClass();
-      Field baseField = BaseClass.class.getDeclaredField("test");
-      Field subField = SubClass.class.getDeclaredField("test");
-
-      assertEquals("base", instance.getSuperTest());     // access to super classes' variant is possible using super
-      assertEquals("sub", instance.getTest());           // unspecified defaults to this
-
-      // The following is NOT true
-      assertEquals(baseField.get(instance), subField.get(instance));
-   }
 
    /*
       So it looks like any given method should include annotations in this order
