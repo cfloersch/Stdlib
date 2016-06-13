@@ -1,5 +1,6 @@
 package xpertss.lang;
 
+import xpertss.function.Consumer;
 import xpertss.util.Sets;
 
 import java.lang.annotation.Annotation;
@@ -54,17 +55,20 @@ public final class Annotations {
    }
 
 
+   // TODO All of these determine annotation equality using both type and property values??? Fix that???
 
    public static Set<Annotation> getAnnotations(Class<?> clazz)
    {
-      Set<Annotation> result = Sets.newLinkedHashSet();
-      result.addAll(getAnnotations((AnnotatedElement)clazz));
-      for(Class<?> inter : clazz.getInterfaces()) {
-         result.addAll(getAnnotations((Class) inter));
-      }
-      while(!isOneOf((clazz = clazz.getSuperclass()), Object.class, null)) {
-         result.addAll(getAnnotations((Class)clazz));
-      }
+      final Set<Annotation> result = Sets.newLinkedHashSet();
+      Classes.walk(clazz, new Consumer<Class>() {
+         @Override
+         public void apply(Class aClass)
+         {
+            for(Annotation ann : aClass.getDeclaredAnnotations()) {
+               result.add(ann);
+            }
+         }
+      }, null, null);
       return result;
    }
 
