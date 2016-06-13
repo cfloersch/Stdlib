@@ -27,9 +27,10 @@ abstract class AbstractMember implements AnnotatedMember {
 
 
 
+   @Override
    public abstract Member getMember();
 
-
+   @Override
    public abstract int getModifiers();
 
 
@@ -40,9 +41,7 @@ abstract class AbstractMember implements AnnotatedMember {
 
    public boolean isPackagePrivate()
    {
-      return !(Modifier.isPrivate(getModifiers())
-               || Modifier.isPublic(getModifiers())
-                  || Modifier.isProtected(getModifiers()));
+      return ((getModifiers() & (Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC)) == 0);
    }
 
    public boolean isPrivate()
@@ -67,6 +66,7 @@ abstract class AbstractMember implements AnnotatedMember {
     * be different from what {@link #getContextClass()} returns; "owner" may be a
     * sub-type of "declaring class".
     */
+   @Override
    public abstract Class<?> getDeclaringClass();
 
 
@@ -78,7 +78,9 @@ abstract class AbstractMember implements AnnotatedMember {
     * you can compare return value to that of {@link #getDeclaringClass()}.
     * The main use for this accessor is (usually) to access class annotations.
     */
-   public AnnotatedClass getContextClass() {
+   @Override
+   public final AnnotatedClass getContextClass()
+   {
       return context;
    }
 
@@ -117,15 +119,16 @@ abstract class AbstractMember implements AnnotatedMember {
     * {@link AccessibleObject#setAccessible} on
     * the underlying annotated element.
     */
-   public final void fixAccess()
+   @Override
+   public final void makeAccessible()
    {
-      // We know all members are also accessible objects...
-      AccessibleObject ao = (AccessibleObject) getMember();
+      // If a field/method/constructor is public and so is its declaring class then there is no need to set it accessible
+      // If a field/method/constructor is already accessible no need to set it accessible again
 
-      try {
+      // Do we want to allow callers to set final fields accessible??
+      AccessibleObject ao = (AccessibleObject) getMember();
+      if( (!Modifier.isPublic(getModifiers()) || !Modifier.isPublic(getDeclaringClass().getModifiers()) ) && !ao.isAccessible() ) {
          ao.setAccessible(true);
-      } catch (SecurityException se) {
-         if (!ao.isAccessible()) throw se;
       }
    }
 
@@ -137,17 +140,15 @@ abstract class AbstractMember implements AnnotatedMember {
     * Full generic type of the annotated element; definition
     * of what exactly this means depends on sub-class.
     */
+   @Override
    public abstract Type getGenericType();
 
    /**
     * "Raw" type (type-erased class) of the annotated element; definition
     * of what exactly this means depends on sub-class.
     */
+   @Override
    public abstract Class<?> getRawType();
-
-
-
-
 
 
 

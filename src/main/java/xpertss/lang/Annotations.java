@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Set;
 
+import static xpertss.lang.Objects.isOneOf;
+
 /**
  * General utility methods for working with annotations, handling meta-annotations,
  * bridge methods (which the compiler generates for generic declarations) as well
@@ -47,6 +49,21 @@ public final class Annotations {
       Set<Annotation> result = Sets.newLinkedHashSet();
       for(Annotation ann : element.getAnnotations()) {
          result.addAll(getMetaAnnotations(ann));
+      }
+      return result;
+   }
+
+
+
+   public static Set<Annotation> getAnnotations(Class<?> clazz)
+   {
+      Set<Annotation> result = Sets.newLinkedHashSet();
+      result.addAll(getAnnotations((AnnotatedElement)clazz));
+      for(Class<?> inter : clazz.getInterfaces()) {
+         result.addAll(getAnnotations((Class) inter));
+      }
+      while(!isOneOf((clazz = clazz.getSuperclass()), Object.class, null)) {
+         result.addAll(getAnnotations((Class)clazz));
       }
       return result;
    }

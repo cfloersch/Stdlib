@@ -58,6 +58,20 @@ public class AnnotatedMethod extends AbstractMember implements AnnotatedWithPara
       this.params = method.params;
    }
 
+   AnnotatedMethod(AnnotatedMethod method, AnnotationMap annotations)
+   {
+      super(method.getContextClass(), method.annotations.with(annotations));
+      this.method = Objects.notNull(method, "method").getMember();
+      this.params = method.params;
+   }
+
+
+   AnnotatedMethod with(AnnotationMap annotations)
+   {
+      return new AnnotatedMethod(this, annotations);
+   }
+
+
     /*
     /*****************************************************
     /* Annotated impl

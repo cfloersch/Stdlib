@@ -6,15 +6,23 @@
  */
 package xpertss.reflect;
 
+import xpertss.function.Consumer;
 import xpertss.function.Predicate;
+import xpertss.lang.Annotations;
 import xpertss.lang.Classes;
+import xpertss.lang.Objects;
 import xpertss.lang.Strings;
 import xpertss.util.Sets;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -25,23 +33,17 @@ import static xpertss.lang.Strings.firstCharToUpper;
 public final class AnnotatedClass implements Annotated {
 
    /**
-    * Class for which annotations apply, and that owns other
-    * components (constructors, methods)
+    * Class that was used to construct this instance including all of its
+    * annotations, members, super classes, etc.
     */
    private final Class<?> clazz;
 
-   /**
-    * Ordered set of super classes and interfaces of the
-    * class itself: included in order of precedence
-    */
-   private final List<Class<?>> superTypes;
-
 
    /**
-    * Combined list of Jackson annotations that the class has,
-    * including inheritable ones from super classes and interfaces
+    * Combined list of annotations that the class has, including inheritable
+    * ones from super classes and interfaces
     */
-   private AnnotationMap annotations;
+   private final AnnotationMap annotations;
 
 
 
@@ -85,12 +87,21 @@ public final class AnnotatedClass implements Annotated {
     * Constructor will not do any initializations, to allow for
     * configuring instances differently depending on use cases
     */
-   private AnnotatedClass(Class<?> cls, List<Class<?>> superTypes, AnnotationMap classAnnotations)
+   private AnnotatedClass(Class<?> cls)
    {
-      // TODO Need to parse the class into annotations, creators, mutators, accessors, fields, and methods
       clazz = cls;
-      this.superTypes = superTypes;
-      this.annotations = classAnnotations;
+
+      ClassAnnotationConsumer classAnnotations = new ClassAnnotationConsumer();
+      MethodConsumer methodConsumer = new MethodConsumer(this);
+      FieldConsumer fieldConsumer = new FieldConsumer(this);
+
+      Classes.walk(cls, classAnnotations, fieldConsumer, methodConsumer);
+      methods = methodConsumer.getMethods();
+      fields = fieldConsumer.getFields();
+      annotations = classAnnotations.getAnnotations();
+
+      // TODO Now build accessor/mutator/creators
+
    }
 
 
@@ -106,7 +117,11 @@ public final class AnnotatedClass implements Annotated {
     */
    public static AnnotatedClass of(Class<?> cls)
    {
-      return new AnnotatedClass(cls, Classes.findSuperTypes(cls, null), null);
+      if(!Classes.isConcrete(cls)) {
+         throw new IllegalArgumentException(format("%s not a concrete class", cls.getName()));
+      }
+      // TODO Anything else I'd like to filter out?
+      return new AnnotatedClass(cls);
    }
 
 
@@ -173,7 +188,7 @@ public final class AnnotatedClass implements Annotated {
 
    public boolean isPackagePrivate()
    {
-      return !(Modifier.isPrivate(getModifiers()) || Modifier.isPublic(getModifiers()));
+      return ((getModifiers() & (Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC)) == 0);
    }
 
    public boolean isPrivate()
@@ -437,4 +452,121 @@ public final class AnnotatedClass implements Annotated {
    }
 
 
+
+   private static class FieldConsumer implements Consumer<Field> {
+
+      Set<AnnotatedField> fields = Sets.newLinkedHashSet();
+      AnnotatedClass context;
+
+      private FieldConsumer(AnnotatedClass context)
+      {
+         this.context = context;
+      }
+
+      @Override
+      public void apply(Field field)
+      {
+         fields.add(new AnnotatedField(context, field, AnnotationMap.of(field)));
+      }
+
+      public Set<AnnotatedField> getFields()
+      {
+         return fields;
+      }
+
+   }
+
+   private static class MethodConsumer implements Consumer<Method> {
+
+      Map<MethodKey, AnnotatedMethod> methods = new LinkedHashMap();
+      AnnotatedClass context;
+
+      private MethodConsumer(AnnotatedClass context)
+      {
+         this.context = context;
+      }
+
+      @Override
+      public void apply(Method method)
+      {
+         MethodKey key = MethodKey.of(method);
+         AnnotatedMethod annotated = methods.get(key);
+         if(annotated == null) {
+            annotated = new AnnotatedMethod(context, method);
+         } else {
+            // We want the first instance method (not interface method)
+            if(annotated.getDeclaringClass().isInterface()) {
+               AnnotationMap annotations = AnnotationMap.of(annotated.getAnnotations());
+               // We would like the class method rather than interface method
+               annotated = new AnnotatedMethod(context, method);
+               annotated = annotated.with(annotations);
+            } else {
+               AnnotationMap annotations = AnnotationMap.of(method);
+               annotated = annotated.with(annotations);
+            }
+         }
+         methods.put(key, annotated);
+      }
+
+      public Set<AnnotatedMethod> getMethods()
+      {
+         return Sets.newLinkedHashSet(methods.values());
+      }
+
+
+   }
+
+   private static class ClassAnnotationConsumer implements Consumer<Class> {
+
+      AnnotationMap annotations;
+
+      @Override
+      public void apply(Class aClass)
+      {
+         Set<Annotation> ann = Annotations.getAnnotations((AnnotatedElement)aClass);
+         if(annotations == null) {
+            annotations = AnnotationMap.of(ann);
+         } else {
+            annotations = annotations.with(AnnotationMap.of(ann));
+         }
+      }
+
+      public AnnotationMap getAnnotations()
+      {
+         return annotations;
+      }
+   }
+
+
+   private static class MethodKey {
+
+      private String name;
+      private Class[] params;
+
+      private MethodKey(String name, Class[] params)
+      {
+         this.name = name;
+         this.params = params;
+      }
+
+      public boolean equals(Object obj)
+      {
+         if(obj instanceof MethodKey) {
+            MethodKey key = (MethodKey) obj;
+            return Objects.equal(name, key.name)
+                     && Arrays.equals(params, key.params);
+         }
+         return false;
+      }
+
+      public int hashCode()
+      {
+         return Objects.hash(name, params);
+      }
+
+      public static MethodKey of(Method method)
+      {
+         return new MethodKey(method.getName(), method.getParameterTypes());
+      }
+   }
 }

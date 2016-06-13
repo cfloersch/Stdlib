@@ -61,7 +61,7 @@ public interface AnnotatedMember extends Annotated {
     * {@link java.lang.reflect.AccessibleObject#setAccessible} on the underlying
     * annotated element.
     */
-   void fixAccess();
+   void makeAccessible();
 
 
 

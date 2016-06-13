@@ -15,10 +15,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Collection providing for rapid access to a collection of annotations by type.
@@ -84,9 +83,9 @@ public final class AnnotationMap implements Iterable<Annotation> {
     * Returns a new AnnotationMap that includes all the annotations in this map
     * as well as those in the supplied set if they are not already present.
     */
-   public AnnotationMap with(Set<Annotation> additions)
+   public AnnotationMap with(AnnotationMap additions)
    {
-      Map<Class<? extends Annotation>,Annotation> newSet = new HashMap<>(annotations);
+      Map<Class<? extends Annotation>,Annotation> newSet = new LinkedHashMap<>(annotations);
       for(Annotation ann : additions) {
          if(!newSet.containsKey(ann.annotationType()))
             newSet.put(ann.annotationType(), ann);
@@ -101,7 +100,7 @@ public final class AnnotationMap implements Iterable<Annotation> {
    public AnnotationMap overlay(AnnotationMap other)
    {
       if (other == null || other.isEmpty()) return this;
-      Map<Class<? extends Annotation>,Annotation> annotations = new HashMap<Class<? extends Annotation>,Annotation>();
+      Map<Class<? extends Annotation>,Annotation> annotations = new LinkedHashMap<Class<? extends Annotation>,Annotation>();
       // add these annotations first
       annotations.putAll(this.annotations);
       // overlay supplied annotations
@@ -114,9 +113,21 @@ public final class AnnotationMap implements Iterable<Annotation> {
    /**
     * Creates and returns an AnnotationMap for the given set of annotations.
     */
-   public static AnnotationMap of(Set<Annotation> annotations)
+   public static AnnotationMap of(Iterable<Annotation> annotations)
    {
-      Map<Class<? extends Annotation>,Annotation> newSet = new HashMap<>();
+      Map<Class<? extends Annotation>,Annotation> newSet = new LinkedHashMap<>();
+      for(Annotation ann : annotations) {
+         newSet.put(ann.annotationType(), ann);
+      }
+      return new AnnotationMap(newSet);
+   }
+
+   /**
+    * Creates and returns an AnnotationMap for the given set of annotations.
+    */
+   public static AnnotationMap of(Annotation[] annotations)
+   {
+      Map<Class<? extends Annotation>,Annotation> newSet = new LinkedHashMap<>();
       for(Annotation ann : annotations) {
          newSet.put(ann.annotationType(), ann);
       }
