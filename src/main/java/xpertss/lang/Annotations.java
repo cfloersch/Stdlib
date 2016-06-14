@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Set;
 
-import static xpertss.lang.Objects.isOneOf;
-
 /**
  * General utility methods for working with annotations, handling meta-annotations,
  * bridge methods (which the compiler generates for generic declarations) as well
@@ -65,7 +63,7 @@ public final class Annotations {
          public void apply(Class aClass)
          {
             for(Annotation ann : aClass.getDeclaredAnnotations()) {
-               result.add(ann);
+               result.addAll(getMetaAnnotations(ann));
             }
          }
       }, null, null);
