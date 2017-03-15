@@ -659,22 +659,22 @@ public final class Integers {
    }
 
 
-   /**
-    * Converts the argument to a long by an unsigned conversion. In an unsigned
-    * conversion to a long, the high-order 32 bits of the long are zero and the
-    * low-order 32 bits are equal to the bits of the integer argument.
-    * Consequently, zero and positive int values are mapped to a numerically
-    * equal long value and negative int values are mapped to a long value equal
-    * to the input plus 232.
-    *
-    * @param x the value to convert to an unsigned long
-    * @return the argument converted to long by an unsigned conversion
-    */
-   public static long toUnsignedLong(int x)
-   {
-      return ((long) x) & 0xffffffffL;
-   }
 
+   /**
+    * Converts the argument to an int by an unsigned conversion. In an unsigned
+    * conversion to an int, the high-order 16 bits of the int are zero and the
+    * low-order 16 bits are equal to the bits of the short argument.
+    * Consequently, zero and positive short values are mapped to a numerically
+    * equal int value and negative short values are mapped to an int value equal
+    * to the input plus 2^16.
+    *
+    * @param x the value to convert to an int
+    * @return the argument converted to an int by an unsigned conversion
+    */
+   public static int fromUnsignedShort(short x)
+   {
+      return ((int) x) & 0xffff;
+   }
 
 
    private static final double MIN_INT_AS_DOUBLE = -0x1p31;

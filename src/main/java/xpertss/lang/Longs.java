@@ -628,6 +628,24 @@ public final class Longs {
 
 
 
+   /**
+    * Converts the argument to a long by an unsigned conversion. In an unsigned
+    * conversion to a long, the high-order 32 bits of the long are zero and the
+    * low-order 32 bits are equal to the bits of the integer argument.
+    * Consequently, zero and positive int values are mapped to a numerically
+    * equal long value and negative int values are mapped to a long value equal
+    * to the input plus 2^32.
+    *
+    * @param x the value to convert to a long
+    * @return the argument converted to long by an unsigned conversion
+    */
+   public static long fromUnsignedInt(int x)
+   {
+      return ((long) x) & 0xffffffffL;
+   }
+
+
+
 
 
    private static final double MIN_LONG_AS_DOUBLE = -0x1p63;
