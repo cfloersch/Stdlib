@@ -430,6 +430,21 @@ public final class Shorts {
 
 
 
+   /**
+    * Converts the argument to a short by an unsigned conversion. In an unsigned
+    * conversion to a short, the high-order 8 bits of the short are zero and the
+    * low-order 8 bits are equal to the bits of the byte argument.
+    * Consequently, zero and positive byte values are mapped to a numerically
+    * equal short value and negative byte values are mapped to a short value
+    * equal to the input plus 2^8.
+    *
+    * @param x the value to convert to a short
+    * @return the argument converted to a short by an unsigned conversion
+    */
+   public static short fromUnsignedByte(byte x)
+   {
+      return (short) (((short) x) & 0xff);
+   }
 
 
 
