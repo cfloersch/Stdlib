@@ -7,6 +7,9 @@ package xpertss.lang;
 
 import java.util.Arrays;
 
+import static xpertss.lang.Numbers.gte;
+import static xpertss.lang.Objects.notNull;
+
 /**
  * Static utility methods pertaining to chars.
  */
@@ -250,6 +253,99 @@ public final class Characters {
       System.arraycopy(array, idx, result, idx + size(items), size(array) - idx);
       return result;
    }
+
+
+
+
+
+
+
+   /**
+    * Tests if two array regions are equal.
+    *
+    * @param src The source array to check within
+    * @param sOffset The starting point within the source array to check
+    * @param other The sequence to compare to
+    * @param oOffset The index into the sequence to begin the comparison
+    * @param len The number of elements to compare
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean regionMatches(char[] src, int sOffset, char[] other, int oOffset, int len)
+   {
+      if(notNull(src, "src").length < gte(0, sOffset, "sOffset") + gte(0, len, "len"))
+         throw new ArrayIndexOutOfBoundsException("src array");
+      if(notNull(other, "other").length < gte(0, oOffset, "oOffset") + len)
+         throw new ArrayIndexOutOfBoundsException("other array");
+      for(int i = 0; i < len; i++) {
+         if(src[i + sOffset] != other[i + oOffset]) return false;
+      }
+      return true;
+   }
+
+
+   /**
+    * Checks whether the src array starts with the specified array segment.
+    *
+    * @param src The src array to check - beginning at index 0
+    * @param other The array to compare with
+    * @param oOffset The offset into the compare array to begin the comparison
+    * @param len The number of elements in the compare array to match
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean startsWith(char[] src, char[] other, int oOffset, int len)
+   {
+      return regionMatches(src, 0, other, oOffset, len);
+   }
+
+   /**
+    * Checks whether the src array starts with the specified array.
+    *
+    * @param src The src array to check - beginning at index 0
+    * @param other The array to compare with
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean startsWith(char[] src, char[] other)
+   {
+      return regionMatches(src, 0, other, 0, other.length);
+   }
+
+
+   /**
+    * Checks whether the src array ends with the specified array segment.
+    *
+    * @param src The src array to check - beginning at {@code src.length - len}
+    * @param other The array to compare with
+    * @param oOffset The offset into the compare array to begin the comparison
+    * @param len The number of elements in the compare array to match
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean endsWith(char[] src, char[] other, int oOffset, int len)
+   {
+      return regionMatches(src, src.length - len, other, oOffset, len);
+   }
+
+   /**
+    * Checks whether the src array ends with the specified array.
+    *
+    * @param src The src array to check - beginning at {@code src.length - other.length}
+    * @param other The array to compare with
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean endsWith(char[] src, char[] other)
+   {
+      return regionMatches(src, src.length - other.length, other, 0, other.length);
+   }
+
+
+
+
+
+
+
+
+
+
+
 
 
    /**
