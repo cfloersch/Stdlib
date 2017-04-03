@@ -219,8 +219,8 @@ public final class NetUtils {
     */
    public static InetAddress getInetAddress(String name)
    {
+      if(Strings.isEmpty(name)) return null;
       try { return InetAddress.getByName(name); } catch(Exception ex) { return null; }
-
    }
 
    /**
@@ -241,6 +241,7 @@ public final class NetUtils {
     */
    public static InetAddress[] getInetAddresses(String name)
    {
+      if(Strings.isEmpty(name)) return null;
       try { return InetAddress.getAllByName(name); } catch(Exception ex) { return null; }
    }
 

@@ -387,4 +387,19 @@ public class NetUtilsTest {
       NetUtils.getInetAddresses(null, -1);
    }
 
+
+
+
+
+   // Test getInetAddress returns null for null input
+
+   @Test
+   public void testGetInetAddressReturnsNullOnNullInput()
+   {
+      assertNull(NetUtils.getInetAddress((String)null));
+      assertNull(NetUtils.getInetAddress(""));
+      assertNull(NetUtils.getInetAddress((byte[]) null));
+      assertNull(NetUtils.getInetAddresses(null));
+   }
+
 }
