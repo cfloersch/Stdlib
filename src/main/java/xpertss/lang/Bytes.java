@@ -5,6 +5,8 @@ import xpertss.util.Ordering;
 import java.util.Arrays;
 
 import static java.lang.String.format;
+import static xpertss.lang.Numbers.gte;
+import static xpertss.lang.Objects.notNull;
 
 /**
  * Static utility methods pertaining to bytes.
@@ -212,7 +214,7 @@ public final class Bytes {
    public static byte[] subset(byte[] src, int offset, int length)
    {
       byte[] result = new byte[Numbers.gt(0, length, "length must be greater than 0")];
-      System.arraycopy(notEmpty(src, "src"), Numbers.gte(0, offset, "invalid offset"), result, 0, length);
+      System.arraycopy(notEmpty(src, "src"), gte(0, offset, "invalid offset"), result, 0, length);
       return result;
    }
 
@@ -264,7 +266,7 @@ public final class Bytes {
     */
    public static byte[] insert(int idx, byte[] array, byte ... items)
    {
-      byte[] result = new byte[Objects.notNull(array).length + size(items)];
+      byte[] result = new byte[notNull(array).length + size(items)];
       System.arraycopy(array, 0, result, 0, idx);
       if(items != null) System.arraycopy(items, 0, result, idx, size(items));
       System.arraycopy(array, idx, result, idx + size(items), size(array) - idx);
@@ -272,6 +274,83 @@ public final class Bytes {
    }
 
 
+
+
+   /**
+    * Tests if two array regions are equal.
+    *
+    * @param src The source array to check within
+    * @param sOffset The starting point within the source array to check
+    * @param other The sequence to compare to
+    * @param oOffset The index into the sequence to begin the comparison
+    * @param len The number of elements to compare
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean regionMatches(byte[] src, int sOffset, byte[] other, int oOffset, int len)
+   {
+      if(notNull(src, "src").length < gte(0, sOffset, "sOffset") + gte(0, len, "len"))
+         throw new ArrayIndexOutOfBoundsException("src array");
+      if(notNull(other, "other").length < gte(0, oOffset, "oOffset") + len)
+         throw new ArrayIndexOutOfBoundsException("other array");
+      for(int i = 0; i < len; i++) {
+         if(src[i + sOffset] != other[i + oOffset]) return false;
+      }
+      return true;
+   }
+
+
+   /**
+    * Checks whether the src array starts with the specified array segment.
+    *
+    * @param src The src array to check - beginning at index 0
+    * @param other The array to compare with
+    * @param oOffset The offset into the compare array to begin the comparison
+    * @param len The number of elements in the compare array to match
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean startsWith(byte[] src, byte[] other, int oOffset, int len)
+   {
+      return regionMatches(src, 0, other, oOffset, len);
+   }
+
+   /**
+    * Checks whether the src array starts with the specified array.
+    *
+    * @param src The src array to check - beginning at index 0
+    * @param other The array to compare with
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean startsWith(byte[] src, byte[] other)
+   {
+      return regionMatches(src, 0, other, 0, other.length);
+   }
+
+
+   /**
+    * Checks whether the src array ends with the specified array segment.
+    *
+    * @param src The src array to check - beginning at {@code src.length - len}
+    * @param other The array to compare with
+    * @param oOffset The offset into the compare array to begin the comparison
+    * @param len The number of elements in the compare array to match
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean endsWith(byte[] src, byte[] other, int oOffset, int len)
+   {
+      return regionMatches(src, src.length - len, other, oOffset, len);
+   }
+
+   /**
+    * Checks whether the src array ends with the specified array.
+    *
+    * @param src The src array to check - beginning at {@code src.length - other.length}
+    * @param other The array to compare with
+    * @return {@code true} if the regions match, {@code false} otherwise
+    */
+   public static boolean endsWith(byte[] src, byte[] other)
+   {
+      return regionMatches(src, src.length - other.length, other, 0, other.length);
+   }
 
 
 
@@ -454,7 +533,7 @@ public final class Bytes {
     */
    public static int between(Range<Byte> range)
    {
-      Objects.notNull(range);
+      notNull(range);
       return range.getUpper() - range.getLower();
    }
 
