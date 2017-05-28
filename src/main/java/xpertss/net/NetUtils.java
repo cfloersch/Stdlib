@@ -25,6 +25,11 @@ import static java.math.BigInteger.valueOf;
 @SuppressWarnings("UnusedDeclaration")
 public final class NetUtils {
 
+   private static final byte[] prefix = {
+      (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+      (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0xff, (byte) 0xff
+   };
+
    private NetUtils() { }
 
 
@@ -41,7 +46,7 @@ public final class NetUtils {
    public static InetAddress convert(InetAddress source)
    {
       if(source instanceof Inet4Address) {
-         return getInetAddress(Bytes.append(new byte[12], source.getAddress()));
+         return getInetAddress(Bytes.append(prefix, source.getAddress()));
       } else if(source instanceof Inet6Address) {
          byte[] bytes = source.getAddress();
          for (int i = 0; i <= 9; i++) {
