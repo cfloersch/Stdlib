@@ -244,6 +244,8 @@ public final class NetUtils {
     * Returns a new {@link InetAddress} which is the specified base address
     * plus the specified increment.
     *
+    * @throws ArithmeticException if the increment overflows the bounds of
+    *                               given inet address type.
     * @param base Base {@link InetAddress} to increment
     * @param increment The increment to add to the base
     * @return A new {@link InetAddress}
