@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
 import static java.math.BigInteger.valueOf;
 
 /**
@@ -237,6 +238,33 @@ public final class NetUtils {
       try { return InetAddress.getByAddress(addrBytes); } catch(Exception ex) { return null; }
 
    }
+
+
+   /**
+    * Returns a new {@link InetAddress} which is the specified base address
+    * plus the specified increment.
+    *
+    * @throws ArithmeticException if the increment overflows the bounds of
+    *                               given inet address type.
+    * @param base Base {@link InetAddress} to increment
+    * @param increment The increment to add to the base
+    * @return A new {@link InetAddress}
+    */
+   public static InetAddress getInetAddress(InetAddress base, int increment)
+   {
+      BigInteger baseInt = new BigInteger(1, base.getAddress());
+      BigInteger newInt = baseInt.add(valueOf(increment));
+      if(base instanceof Inet4Address) {
+         if(newInt.compareTo(MAX_UNSIGNED_32) > 0 || newInt.compareTo(ZERO) < 0)
+            throw new ArithmeticException();
+         return bigIntToIPv4Address(newInt);
+      }
+      if(newInt.compareTo(MAX_UNSIGNED_128) > 0 || newInt.compareTo(ZERO) < 0)
+         throw new ArithmeticException();
+      return bigIntToIPv6Address(newInt);
+   }
+
+
 
 
 
@@ -529,6 +557,46 @@ public final class NetUtils {
          return URLDecoder.decode(str, "utf-8");
       } catch(UnsupportedEncodingException e) { return null; }
    }
+
+
+
+
+
+
+
+
+
+
+
+   /**
+    * Null safe method to return a host address. This will return {@code null} if
+    * the specified inet address is {@code null}.
+    */
+   public static String hostAddress(InetAddress addr)
+   {
+      return (addr != null) ? addr.getHostAddress() : null;
+   }
+
+   /**
+    * Null safe method to return a host name. This will return {@code null} if
+    * the specified inet address is {@code null}.
+    */
+   public static String hostName(InetAddress addr)
+   {
+      return (addr != null) ? addr.getHostName() : null;
+   }
+
+   /**
+    * Null safe method to return a canonical host name. This will return {@code null}
+    * if the specified inet address is {@code null}.
+    */
+   public static String canonicalName(InetAddress addr)
+   {
+      return (addr != null) ? addr.getCanonicalHostName() : null;
+   }
+
+
+
 
 
 

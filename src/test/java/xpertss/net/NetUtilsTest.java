@@ -312,7 +312,40 @@ public class NetUtilsTest {
    }
 
 
+   @Test
+   public void testInetDecrement()
+   {
+      InetAddress test = NetUtils.getInetAddress("10.148.1.0");
+      assertEquals("10.148.0.255", NetUtils.getInetAddress(test, -1).getHostAddress());
+      assertEquals("10.148.0.1", NetUtils.getInetAddress(test, -255).getHostAddress());
+      assertEquals("10.148.0.0", NetUtils.getInetAddress(test, -256).getHostAddress());
+   }
 
+   @Test(expected = ArithmeticException.class)
+   public void testInetDecrementOverflow()
+   {
+      InetAddress test = NetUtils.getInetAddress("0.0.0.1");
+      NetUtils.getInetAddress(test, -2);
+   }
+
+
+   @Test
+   public void testInetIncrement()
+   {
+      InetAddress test = NetUtils.getInetAddress("10.148.1.0");
+      assertEquals("10.148.1.30", NetUtils.getInetAddress(test, 30).getHostAddress());
+      assertEquals("10.148.1.60", NetUtils.getInetAddress(test, 60).getHostAddress());
+      assertEquals("10.148.1.128", NetUtils.getInetAddress(test, 128).getHostAddress());
+      assertEquals("10.148.1.255", NetUtils.getInetAddress(test, 255).getHostAddress());
+      assertEquals("10.148.2.0", NetUtils.getInetAddress(test, 256).getHostAddress());
+   }
+
+   @Test(expected = ArithmeticException.class)
+   public void testInetIncrementOverflow()
+   {
+      InetAddress test = NetUtils.getInetAddress("255.255.255.255");
+      NetUtils.getInetAddress(test, 1);
+   }
 
 
    @Test
