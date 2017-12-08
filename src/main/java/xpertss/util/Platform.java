@@ -150,6 +150,13 @@ public enum Platform {
    public String getDisplayName() { return System.getProperty("os.name"); }
 
 
+   public String toString()
+   {
+      StringBuilder builder = new StringBuilder();
+      builder.append("Java/").append(javaVersion());
+      builder.append(" (").append(getDisplayName()).append(" ").append(osVersion()).append(")");
+      return builder.toString();
+   }
 
 
 
