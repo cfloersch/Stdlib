@@ -245,6 +245,7 @@ public class CIDRTest {
       assertTrue(cidr.contains(NetUtils.getInetAddress("10.0.0.1")));
       assertTrue(cidr.contains(NetUtils.getInetAddress("255.255.255.254")));
       assertTrue(cidr.contains(NetUtils.getInetAddress("255.255.255.255")));
+      assertFalse(cidr.contains(NetUtils.getInetAddress("0::")));
    }
 
 }
