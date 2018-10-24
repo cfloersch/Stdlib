@@ -34,36 +34,6 @@ public final class NetUtils {
    private NetUtils() { }
 
 
-   /**
-    * This method will convert an IPv4 address to its corresponding IPv6 address
-    * and vise versa.
-    *
-    * @param source The source InetAddress to convert
-    * @return the opposite type of inet address
-    * @throws IllegalArgumentException if the IPv6 address cannot be represented
-    *          as an IPv4 address
-    * @throws NullPointerException if the source address is {@code null}
-    */
-   public static InetAddress convert(InetAddress source)
-   {
-      if(source instanceof Inet4Address) {
-         return getInetAddress(Bytes.append(prefix, source.getAddress()));
-      } else if(source instanceof Inet6Address) {
-         byte[] bytes = source.getAddress();
-         for (int i = 0; i <= 9; i++) {
-            if (bytes[i] != 0) {
-               throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
-            }
-         }
-         byte FF = (byte) 0xFF;
-         if (bytes[10] != 0 && bytes[10] != FF || bytes[11] != 0 && bytes[11] != FF) {
-            throw new IllegalArgumentException("This IPv6 address cannot be used in IPv4 context");
-         }
-         return getInetAddress(new byte[] {bytes[12], bytes[13], bytes[14], bytes[15]});
-      }
-      throw new NullPointerException();
-   }
-
 
    /**
     * Compare two InetAddresses for ordering purposes. The comparison coverts

@@ -4,7 +4,6 @@ import org.junit.Test;
 import xpertss.io.BigEndian;
 
 import java.net.InetAddress;
-import java.util.Arrays;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -265,51 +264,6 @@ public class NetUtilsTest {
 
 
 
-   @Test
-   public void testConvertValidIPv4Low()
-   {
-      byte[] target = new byte[16];
-      InetAddress ip4 = NetUtils.getInetAddress(Arrays.copyOf(target, 4));
-      assertTrue(Arrays.equals(target, NetUtils.convert(ip4).getAddress()));
-   }
-
-   @Test
-   public void testConvertValidIPv4High()
-   {
-      byte[] target = new byte[16];
-      byte[] source = new byte[4];
-      Arrays.fill(source, (byte)0xff);
-      System.arraycopy(source, 0, target, 12, 4);
-      InetAddress ip4 = NetUtils.getInetAddress(source);
-      assertTrue(Arrays.equals(target, NetUtils.convert(ip4).getAddress()));
-   }
-
-   @Test
-   public void testConvertValidIPv6Low()
-   {
-      byte[] source = new byte[16];
-      byte[] target = Arrays.copyOf(source, 4);
-      InetAddress ip6 = NetUtils.getInetAddress(source);
-      assertTrue(Arrays.equals(target, NetUtils.convert(ip6).getAddress()));
-   }
-
-   @Test
-   public void testConvertValidIPv6High()
-   {
-      byte[] source = new byte[16];
-      byte[] target = new byte[4];
-      Arrays.fill(target, (byte) 0xff);
-      System.arraycopy(target, 0, source, 12, 4);
-      InetAddress ip6 = NetUtils.getInetAddress(source);
-      assertTrue(Arrays.equals(target, NetUtils.convert(ip6).getAddress()));
-   }
-
-   @Test(expected = IllegalArgumentException.class)
-   public void testConvertInvalidIPv6Address() throws Exception
-   {
-      InetAddress invalid = InetAddress.getByName("FFFF::FFFF");
-      NetUtils.convert(invalid);
-   }
 
 
    @Test
@@ -384,18 +338,6 @@ public class NetUtilsTest {
       assertEquals(6, NetUtils.getInetAddresses(base, 7).length);
    }
 
-   @Test
-   public void testGetConsecutiveInetV4V6Address()
-   {
-      InetAddress base = NetUtils.convert(NetUtils.getInetAddress("255.255.255.255"));
-      assertEquals(1, NetUtils.getInetAddresses(base, 1).length);
-      assertEquals(2, NetUtils.getInetAddresses(base, 2).length);
-      assertEquals(3, NetUtils.getInetAddresses(base, 3).length);
-      assertEquals(4, NetUtils.getInetAddresses(base, 4).length);
-      assertEquals(5, NetUtils.getInetAddresses(base, 5).length);
-      assertEquals(6, NetUtils.getInetAddresses(base, 6).length);
-      assertEquals(7, NetUtils.getInetAddresses(base, 7).length);
-   }
 
 
 

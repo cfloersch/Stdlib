@@ -69,6 +69,7 @@ public class CIDRTest {
       assertFalse(cidr.contains(NetUtils.getInetAddress("10.0.0.255")));
       assertFalse(cidr.contains(NetUtils.getInetAddress("10.0.1.2")));
       assertFalse(cidr.contains(NetUtils.getInetAddress("10.1.0.2")));
+      assertTrue(cidr.contains(NetUtils.getInetAddress("0:0:0:0:0:ffff:a00:1")));
    }
 
 
@@ -215,5 +216,35 @@ public class CIDRTest {
       assertEquals(broadcast, cidr.getBroadcastAddress());
    }
 
+
+
+
+
+
+
+
+
+   @Test
+   public void testIPv4MappedIPv6CIDRParsesToIPv4CIDR()
+   {
+      CIDR cidr = CIDR.parse("0:0:0:0:0:ffff:a00:1/104");
+      assertTrue(cidr instanceof CIDR.CIDR4);
+      assertEquals(NetUtils.getInetAddress("10.0.0.0"), cidr.getNetworkAddress());
+      assertTrue(cidr.contains(NetUtils.getInetAddress("10.0.0.1")));
+      assertFalse(cidr.contains(NetUtils.getInetAddress("10.0.0.0")));
+      assertFalse(cidr.contains(NetUtils.getInetAddress("11.0.0.0")));
+   }
+
+
+   @Test
+   public void testIPv6CIDRProperlyContainsIPv4Addresses()
+   {
+      CIDR cidr = CIDR.parse("0::/64");
+      assertTrue(cidr instanceof CIDR.CIDR6);
+      assertTrue(cidr.contains(NetUtils.getInetAddress("0.0.0.0")));
+      assertTrue(cidr.contains(NetUtils.getInetAddress("10.0.0.1")));
+      assertTrue(cidr.contains(NetUtils.getInetAddress("255.255.255.254")));
+      assertTrue(cidr.contains(NetUtils.getInetAddress("255.255.255.255")));
+   }
 
 }

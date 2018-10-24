@@ -135,8 +135,12 @@ public class CIDR {
    {
       int p = encoded.indexOf('/');
       if(p < 0) throw new IllegalArgumentException("invalid CIDR notation");
-      return create(NetUtils.getInetAddress(encoded.substring(0, p)),
-                     Integers.parse(encoded.substring(p+1), -1));
+      InetAddress addr = NetUtils.getInetAddress(encoded.substring(0, p));
+      int prefix = Integers.parse(encoded.substring(p+1), -1);
+      if(encoded.contains(":") && addr instanceof Inet4Address) {
+         prefix = prefix - 96;
+      }
+      return create(addr, prefix);
    }
 
 
@@ -154,9 +158,13 @@ public class CIDR {
 
 
 
+   private static final byte[] PREFIX = {
+      (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+      (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0xff, (byte) 0xff
+   };
 
 
-   private static class CIDR4 extends CIDR {
+   static class CIDR4 extends CIDR {
 
       private final int baseInt;
       private final int endInt;
@@ -187,7 +195,13 @@ public class CIDR {
       public boolean contains(InetAddress address)
       {
          if(address instanceof Inet6Address) {
-            address = NetUtils.convert(address);
+            byte[] bytes = address.getAddress();
+            if(!Bytes.regionMatches(bytes, 0, PREFIX, 0, PREFIX.length)) {
+               return false;
+            }
+            // This shouldn't happen in modern JVMs
+            int addressInt = BigEndian.parseInt(Arrays.copyOfRange(bytes, 12, 16));
+            return baseInt < addressInt && addressInt < endInt;
          }
          int addressInt = BigEndian.parseInt(address.getAddress());
          return baseInt < addressInt && addressInt < endInt;
@@ -220,7 +234,7 @@ public class CIDR {
 
 
 
-   private static class CIDR6 extends CIDR {
+   static class CIDR6 extends CIDR {
 
       private final BigInteger baseInt;
       private final BigInteger endInt;
@@ -298,10 +312,11 @@ public class CIDR {
        */
       private static BigInteger ipv6AddressToBigInteger(InetAddress address)
       {
+         byte[] bytes = address.getAddress();
          if (address instanceof Inet4Address) {
-            address = NetUtils.convert(address);
+            bytes = Bytes.append(PREFIX, bytes);
          }
-         return new BigInteger(1, address.getAddress());
+         return new BigInteger(1, bytes);
       }
 
       /**
