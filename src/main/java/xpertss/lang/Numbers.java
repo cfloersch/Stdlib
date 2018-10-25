@@ -359,7 +359,7 @@ public final class Numbers {
 
    /**
     * Returns {@code true} if {@code x} represents a mathematical integer.
-    * <p/>
+    * <p>
     * This is equivalent to, but not necessarily implemented as, the expression {@code
     * !Double.isNaN(x) && !Double.isInfinite(x) && x == Math.rint(x)}.
     */

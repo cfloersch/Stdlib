@@ -17,14 +17,14 @@ import java.util.Comparator;
  *         .compare(this.aList, that.aList, Iterables.ordering())
  *         .result();
  *   }}</pre>
- * <p/>
+ * <p>
  * The value of this expression will have the same sign as the <i>first
  * nonzero</i> comparison result in the chain, or will be zero if every
  * comparison result was zero.
- * <p/>
+ * <p>
  * Once any comparison returns a nonzero value, remaining comparisons are
  * "short-circuited".
- * <p/>
+ * <p>
  * Currently the only way to handle arrays is to pass in a comparator which
  * can be easily done for primitive arrays due to Integers.comparator() and
  * equivalent methods in Bytes, Booleans, Floats, etc.. However, that impl

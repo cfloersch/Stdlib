@@ -2,10 +2,10 @@ package xpertss.reflect;
 
 /**
  * Interface applied to members that can create instances of an object.
- * <p/>
+ * <p>
  * This is applied to static methods with a return type of the given
  * class or to constructors belonging to the class.
- * <p/>
+ * <p>
  * TODO Generify this so invoke returns our object type
  */
 public interface AnnotatedCreator extends AnnotatedWithParams {

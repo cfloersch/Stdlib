@@ -7,7 +7,6 @@ package xpertss.threads;
 
 import org.junit.Before;
 import org.junit.Test;
-import xpertss.function.Predicate;
 import xpertss.util.Sets;
 
 import java.util.Arrays;
@@ -18,6 +17,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
@@ -278,13 +278,7 @@ public class ThreadsTest {
          }, String.format("test-thread-%d", i));
          threads[i].start();
       }
-      Set<Thread> gThreads = Threads.getThreads(group, new Predicate<Thread>() {
-         @Override
-         public boolean apply(Thread input)
-         {
-            return input.getName().contains("-1");
-         }
-      });
+      Set<Thread> gThreads = Threads.getThreads(group, input -> input.getName().contains("-1"));
       assertEquals(1, gThreads.size());
       assertSame(threads[1], Sets.first(gThreads));
       latch.countDown();

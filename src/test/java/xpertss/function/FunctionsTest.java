@@ -10,6 +10,7 @@ import xpertss.lang.Numbers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

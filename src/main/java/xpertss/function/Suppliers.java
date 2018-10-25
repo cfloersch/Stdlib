@@ -10,6 +10,8 @@ import xpertss.lang.Objects;
 
 import java.io.Serializable;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Utility methods to create and chain supplier implementations.
@@ -90,7 +92,7 @@ public final class Suppliers {
     * Returns a supplier which guarantees that the delegate's {@link Supplier#get()} method
     * will be called by only a single thread at a time, making it thread-safe. This
     * implementation will synchronizes on the delegate before calling it.
-    * <p/>
+    * <p>
     * Using traditional synchronization is suitable where very little contention exists. As
     * lock contention goes up it scales poorly.
     *
@@ -124,7 +126,7 @@ public final class Suppliers {
     * method will be called by only a single thread at a time, making it thread-safe.
     * This implementation will acquire a lock {@link ReentrantLock} before calling the
     * delegate.
-    * <p/>
+    * <p>
     * This implementation is very similar to the synchronized variant at low contention
     * levels even though it is less consistent.  However, at higher contention levels it
     * performs slightly better.
@@ -182,16 +184,16 @@ public final class Suppliers {
    /**
     * Returns a supplier which caches the instance retrieved during the first call to
     * {@code get()} and returns that value on subsequent calls.
-    * <p/>
+    * <p>
     * The returned supplier is thread-safe. It utilizes a double check lock mechanism
     * to maintain as much efficiency as possible.
-    * <p/>
+    * <p>
     * This implementation stores the supplied value in a hard reference ensuring once
     * it is loaded the first time it will always be available on subsequent calls.
-    * <p/>
+    * <p>
     * If the specified delegate is the product of a previous call to memoize or is an
     * instance of any of the predefined caching suppliers, it is returned directly.
-    * <p/>
+    * <p>
     * If the underlying supplier returns {@code null} it will be assumed that the load
     * failed and  {@code null} will be returned to the caller. Subsequent threads will
     * again attempt to load the cache returning {@code null} only if their respective

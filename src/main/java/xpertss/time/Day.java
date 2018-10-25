@@ -5,10 +5,10 @@ import xpertss.lang.Numbers;
 
 /**
  * A day of the week, such as 'Tuesday'.
- * <p/>
+ * <p>
  * Day is an enum representing the 7 days of the week - Monday, Tuesday, Wednesday,
  * Thursday, Friday, Saturday and Sunday.
- * <p/>
+ * <p>
  * In addition to the textual enum name, each day of the week has an int value. The
  * int value follows the Gregorian standard, from 1 (Sunday) to 7 (Saturday). It is
  * recommended that applications use the enum rather than the int value to ensure
@@ -94,7 +94,7 @@ public enum Day {
 
    /**
     * Obtains an instance of Day from an int value.
-    * <p/>
+    * <p>
     * Day is an enum representing the 7 days of the week. This factory allows the enum
     * to be obtained from the int value. The int value follows the Gregorian standard,
     * from 1 (Sunday) to 7 (Saturday).

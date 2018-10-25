@@ -5,7 +5,7 @@ import java.net.InetAddress;
 
 /**
  * A simple enumeration of IPv4 class types.
- * <p/>
+ * <p>
  * Note IP Classes are not really used any more as they have been
  * superseded by classless inter-domain routing (CIDR).
  */

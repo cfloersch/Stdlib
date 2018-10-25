@@ -15,7 +15,7 @@ import static xpertss.lang.Objects.*;
 /**
  * A Chronology is based on the Gregorian/Julian Calendar and allows conversions
  * between human readable dates and times and computer Date objects.
- * <p/>
+ * <p>
  * This uses a Julian/Gregorian calendar system with Oct 15th, 1582 as the cut over
  * date. This means that all dates prior to the cut over date will be treated as
  * Julian calendar dates while all dates equal to or greater than the cut over date
@@ -23,11 +23,11 @@ import static xpertss.lang.Objects.*;
  * Gregorian and the Julian calendar is the leap year rule. The Julian calendar
  * specifies leap years every four years, whereas the Gregorian calendar omits
  * century years which are not divisible by 400.
- * <p/>
+ * <p>
  * Historically, in those countries which adopted the Gregorian calendar first,
  * October 4, 1582 (Julian) was thus followed by October 15, 1582 (Gregorian).
  * This chronology models that correctly.
- * <p/>
+ * <p>
  * This chronology implements proleptic Gregorian and Julian calendars. That is,
  * dates are computed by extrapolating Julian rules indefinitely backward in time
  * and Gregorian rules indefinitely forward in time. Dates obtained using this
@@ -35,7 +35,7 @@ import static xpertss.lang.Objects.*;
  * modern Julian calendar rules were adopted. Before this date, leap year rules
  * were applied irregularly, and before 45 BC the Julian calendar did not even
  * exist.
- * <p/>
+ * <p>
  * This chronology differs from the modern ISO chronology in that it treats
  * Sunday as the first day of the week and it supports both the modern era CE/AD
  * and the ancient era BCE/BC.

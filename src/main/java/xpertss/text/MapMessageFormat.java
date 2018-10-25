@@ -369,7 +369,7 @@ public class MapMessageFormat extends Format {
     * original pattern is returned, if source contains null objects, the
     * formatted result will substitute each argument with the string "null".
     *
-    * @param source an array of objects to be formatted & substituted.
+    * @param source an array of objects to be formatted &amp; substituted.
     * @param result where text is appended.
     * @param ignore no useful status is returned.
     */
@@ -408,7 +408,7 @@ public class MapMessageFormat extends Format {
     * original pattern is returned, if source contains null objects, the
     * formatted result will substitute each argument with the string "null".
     *
-    * @param source an array of objects to be formatted & substituted.
+    * @param source an array of objects to be formatted &amp; substituted.
     * @param result where text is appended.
     * @param ignore no useful status is returned.
     */
@@ -443,7 +443,7 @@ public class MapMessageFormat extends Format {
     * is comparing with.  For example, if the parsing string "AAA {0} BBB"
     * is comparing against the pattern "AAD {0} BBB", the error index is
     * 0. When an error occurs, the call to this method will return null.
-    * If the soruce is null, return an empty array.
+    * If the source is null, return an empty array.
     */
    public Map parse(String source, ParsePosition status)
    {

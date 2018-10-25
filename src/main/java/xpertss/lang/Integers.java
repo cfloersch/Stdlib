@@ -1,9 +1,8 @@
 package xpertss.lang;
 
-import xpertss.util.Ordering;
-
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static java.lang.String.format;
 import static xpertss.lang.Numbers.gte;
@@ -478,7 +477,7 @@ public final class Integers {
    /**
     * Find the most frequently occurring item(s) returning an empty array if all
     * items are unique.
-    * <p/>
+    * <p>
     * If there are multiple most frequent items because they all have the same
     * count within the set, the returned array will include them all sorted from
     * smallest to largest.
@@ -633,7 +632,7 @@ public final class Integers {
 
    /**
     * Returns the {@code b} to the {@code k}th power, provided it does not overflow.
-    * <p/>
+    * <p>
     * {@link Math#pow} may be faster, but does not check for overflow.
     *
     * @throws IllegalArgumentException if {@code k} is negative
@@ -700,7 +699,7 @@ public final class Integers {
     * Returns the absolute value of the given {@code int} value. If the argument
     * is not negative, the argument is returned. If the argument is negative, the
     * negation of the argument is returned.
-    * <p/>
+    * <p>
     * If the value equals {@link Integer#MIN_VALUE} an exception will be thrown to
     * indicate the action is impossible to perform without overflow.
     *
@@ -791,7 +790,7 @@ public final class Integers {
 
    /**
     * Returns {@code true} if {@code x} represents a power of two.
-    * <p/>
+    * <p>
     * This differs from {@code Integer.bitCount(x) == 1}, because
     * {@code Integer.bitCount(Integer.MIN_VALUE) == 1}, but
     * {@link Integer#MIN_VALUE} is not a power of two.
@@ -805,9 +804,9 @@ public final class Integers {
 
    /**
     * The following method will return a random number between <code>min</code>
-    * and <code>max</code> minus one. For example if you pass
-    * in the numbers 5 & 10 you will consistently get random numbers
-    * of 5,6,7,8, and 9 but will never get 10.
+    * and <code>max</code> minus one. For example if you pass in the numbers 5
+    * &amp; 10 you will consistently get random numbers of 5,6,7,8, and 9 but
+    * will never get 10.
     * <p>
     * @param min    The minimum number the random number should be
     * @param max    One more than the maximum number the random should be.
@@ -843,14 +842,14 @@ public final class Integers {
     * Returns an ordering that orders two {@code int} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(int[], int[])}.
     */
-   public static Ordering<int[]> natural()
+   public static Comparator<int[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -859,27 +858,27 @@ public final class Integers {
     * Returns an ordering that orders two {@code int} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [2] < [1], [1, 2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(int[], int[])}.
     */
-   public static Ordering<int[]> reversed()
+   public static Comparator<int[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
    @SuppressWarnings("SuspiciousNameCombination")
-   private static abstract class LexicographicalOrdering extends Ordering<int[]> {
-      private static final Ordering<int[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<int[]> {
+      private static final Comparator<int[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(int left, int right)
          {
             return Integer.compare(left, right);
          }
       };
-      private static final Ordering<int[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<int[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(int left, int right)
          {
             return Integer.compare(right, left);
@@ -927,7 +926,7 @@ public final class Integers {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

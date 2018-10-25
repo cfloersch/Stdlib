@@ -1,9 +1,8 @@
 package xpertss.lang;
 
-import xpertss.util.Ordering;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -394,7 +393,7 @@ public final class Doubles {
    /**
     * Find the most frequently occurring item(s) returning an empty array if all
     * items are unique.
-    * <p/>
+    * <p>
     * If there are multiple most frequent items because they all have the same
     * count within the set, the returned array will include them all sorted from
     * smallest to largest.
@@ -488,8 +487,8 @@ public final class Doubles {
     * Doubles can only accurately represent integer numbers with its 53 bit mantissa.
     * This method will cast a {@code long} to a {@code double} only if its range falls
     * within the range representable by a double without losing precision.
-    * <p/>
-    * The acceptable range of a long is -9007199254740992L <= x <= 9007199254740992L
+    * <p>
+    * The acceptable range of a long is -9007199254740992L &lt;= x &lt;= 9007199254740992L
     *
     *
     * @param value any value in the range of the {@code double} type
@@ -543,14 +542,14 @@ public final class Doubles {
     * Returns an ordering that orders two {@code double} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(double[], double[])}.
     */
-   public static Ordering<double[]> natural()
+   public static Comparator<double[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -559,26 +558,26 @@ public final class Doubles {
     * Returns an ordering that orders two {@code double} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [2] < [1], [1, 2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(double[], double[])}.
     */
-   public static Ordering<double[]> reversed()
+   public static Comparator<double[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
-   private static abstract class LexicographicalOrdering extends Ordering<double[]> {
-      private static final Ordering<double[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<double[]> {
+      private static final Comparator<double[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(double left, double right)
          {
             return Double.compare(left, right);
          }
       };
-      private static final Ordering<double[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<double[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(double left, double right)
          {
             return Double.compare(right, left);
@@ -628,7 +627,7 @@ public final class Doubles {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

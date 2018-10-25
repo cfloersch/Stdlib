@@ -10,7 +10,7 @@ import static java.lang.String.format;
 /**
  * StringPrep API implements the StingPrep framework as described by
  * <a href="http://www.ietf.org/rfc/rfc3454.txt">RFC 3454</a>.
- * <p/>
+ * <p>
  * StringPrep prepares Unicode strings for use in network protocols. Profiles
  * of StingPrep are a set of rules and data from which the Unicode Strings
  * are prepared. Each profiles contains tables which describe how a code
@@ -24,7 +24,7 @@ import static java.lang.String.format;
  *     <li> Mapping Table: Contains code points that are deleted from the
  *          output or case mapped. </li>
  * </ul>
- * <p/>
+ * <p>
  * The procedure for preparing Unicode strings:
  * <ol>
  *      <li> Map: For each character in the input, check if it has a mapping
@@ -39,7 +39,7 @@ import static java.lang.String.format;
  *           satisfy the requirements for bidirectional strings, return an
  *           error.  </li>
  * </ol>
- * <p/>
+ * <p>
  * This implementation suffers from one incompatibility. The original StringPrep
  * spec was drafted at a time when a bug existed in the Unicode Normalization
  * Forms NFC and NFKC. The spec identifies these incorrect forms as part of its
@@ -113,7 +113,7 @@ public abstract class StringPrep {
 
    /**
     * Prepare the given string using the selected StringPrep profile.
-    * <p/>
+    * <p>
     * StringPrep defines two types of strings.
     * <ol>
     *    <li><b>Stored</b> strings which need to be encoded in a fashion that

@@ -2,10 +2,10 @@ package xpertss.threads;
 
 
 import xpertss.lang.Objects;
-import xpertss.function.Supplier;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Supplier;
 
 /**
  * Creates a new thread for each execution. If a thread factory is specified it will

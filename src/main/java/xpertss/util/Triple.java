@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * A triple consisting of three elements referred to as 'left', 'middle', and 'right'.
- * <p/>
+ * <p>
  * This implementation is immutable and thread-safe
  *
  * @param <L> The type of the left element
@@ -141,7 +141,7 @@ public class Triple<L,M,R> implements Serializable, Cloneable {
 
    /**
     * Create a Triple from the specified objects.
-    * <p/>
+    * <p>
     * This factory allows the triple to be created using inference to obtain the
     * generic types.
     *

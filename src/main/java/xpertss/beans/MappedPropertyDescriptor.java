@@ -166,7 +166,7 @@ public class MappedPropertyDescriptor extends PropertyDescriptor {
     *         the "Class" object may describe a built-in Java type such as "int".
     *         The result may be "null" if this is a mapped property that
     *         does not support non-keyed access.
-    *         <p/>
+    *         <p>
     *         This is the type that will be returned by the mappedReadMethod.
     */
    public Class getMappedPropertyType()

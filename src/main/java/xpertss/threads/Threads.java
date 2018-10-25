@@ -6,11 +6,8 @@
 package xpertss.threads;
 
 
-import xpertss.util.Ordering;
-import xpertss.function.Predicate;
-
-import java.nio.Buffer;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +16,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
+import java.util.function.Predicate;
 
 /**
  * Utility methods for working with threads, locks, and thread factories.
@@ -39,13 +37,13 @@ public final class Threads {
 
    /**
     * Causes the current thread to wait until it is signalled or interrupted.
-    * <p/>
+    * <p>
     * This method returns {@code true} if the wait was released due to being
     * signaled, {@code false} if the thread is interrupted externally.
-    * <p/>
+    * <p>
     * The calling thread's interrupted status will reflect whether it was
     * interrupted.
-    * <p/>
+    * <p>
     * If the calling thread does not hold the lock on the specified object
     * an {@link IllegalMonitorStateException} will be thrown.
     *
@@ -67,11 +65,11 @@ public final class Threads {
    /**
     * Causes the current thread to wait until it is signalled or interrupted,
     * or the specified waiting time elapses.
-    * <p/>
+    * <p>
     * This method returns {@code true} if the condition was released due to
     * being signaled, {@code false} if the timeout had expired or the thread
     * was interrupted externally.
-    * <p/>
+    * <p>
     * The calling thread's interrupted status will reflect whether it was
     * interrupted.
     *
@@ -96,7 +94,7 @@ public final class Threads {
     * Causes the calling thread to sleep for the specified amount of time.
     * It returns {@code true} if it waited for the specified time or {@code
     * false} if the sleep was interrupted.
-    * <p/>
+    * <p>
     * The calling thread's interrupted status will reflect whether it was
     * interrupted.
     *
@@ -118,10 +116,10 @@ public final class Threads {
    /**
     * Join with the specified thread. This will return {@code true} if the join
     * was accomplished or {@code false} if the join was interrupted.
-    * <p/>
+    * <p>
     * A {@link ThreadAccessException} is thrown if the calling thread is the
     * same as the specified thread.
-    * <p/>
+    * <p>
     * The calling thread's interrupted status will reflect whether it was
     * interrupted.
     *
@@ -145,10 +143,10 @@ public final class Threads {
     * Join on the specified thread if it can be done in the specified timeout. It
     * returns {@code true} if the join was successful, {@code false} if the join
     * timed out or was interrupted externally.
-    * <p/>
+    * <p>
     * A {@link ThreadAccessException} is thrown if the calling thread is the same
     * as the specified thread.
-    * <p/>
+    * <p>
     * The calling thread's interrupted status will reflect whether it was
     * interrupted.
     *
@@ -259,7 +257,7 @@ public final class Threads {
       Thread[] threads = new Thread[group.activeCount()];
       int size = group.enumerate(threads, false);
       for(int i = 0; i < size; i++) {
-         if(predicate == null || predicate.apply(threads[i])) result.add(threads[i]);
+         if(predicate == null || predicate.test(threads[i])) result.add(threads[i]);
       }
       return Collections.unmodifiableSet(result);
    }
@@ -269,7 +267,7 @@ public final class Threads {
 
    /**
     * Find the first thread with the given name.
-    * <p/>
+    * <p>
     * This will always scan the current thread's thread group and may also
     * include its descendants if requested to do so.
     *
@@ -286,7 +284,7 @@ public final class Threads {
 
    /**
     * Find the first thread with the given name.
-    * <p/>
+    * <p>
     * This will always scan the specified thread group and may also include its
     * descendants if requested to do so.
     *
@@ -319,7 +317,7 @@ public final class Threads {
 
    /**
     * Find the thread with the given id.
-    * <p/>
+    * <p>
     * This will always scan the current thread's thread group and may also
     * include its descendants if requested to do so.
     *
@@ -336,7 +334,7 @@ public final class Threads {
 
    /**
     * Find the first thread with the given name.
-    * <p/>
+    * <p>
     * This will always scan the specified thread group and may also include its
     * descendants if requested to do so.
     *
@@ -387,7 +385,7 @@ public final class Threads {
 
    /**
     * Returns the first thread group with the given name.
-    * <p/>
+    * <p>
     * This will always scan the current thread's thread group and it's
     * descendants.
     *
@@ -401,7 +399,7 @@ public final class Threads {
 
    /**
     * Returns the first thread group with the given name.
-    * <p/>
+    * <p>
     * This will always scan the specified thread group and it's descendants.
     *
     * @param name The name of the thread group to find.
@@ -467,7 +465,7 @@ public final class Threads {
       ThreadGroup[] groups = new ThreadGroup[group.activeGroupCount()];
       int size = group.enumerate(groups, false);
       for(int i = 0; i < size; i++) {
-         if(predicate == null || predicate.apply(groups[i])) result.add(groups[i]);
+         if(predicate == null || predicate.test(groups[i])) result.add(groups[i]);
       }
       return Collections.unmodifiableSet(result);
    }
@@ -479,35 +477,35 @@ public final class Threads {
 
 
    /**
-    * Returns an {@link Ordering} that will order threads according to their thread
+    * Returns an {@link Comparator} that will order threads according to their thread
     * priority in descending order, or highest priority to lowest priority.
-    * <p/>
+    * <p>
     * The given ordering does not support {@code null} elements.
     */
-   public static Ordering<Thread> decending()
+   public static Comparator<Thread> decending()
    {
       return PriorityOrdering.DESCENDING;
    }
 
    /**
-    * Returns an {@link Ordering} that will order threads according to their thread
+    * Returns an {@link Comparator} that will order threads according to their thread
     * priority in ascending order, or lowest priority to highest priority.
-    * <p/>
+    * <p>
     * The given ordering does not support {@code null} elements.
     */
-   public static Ordering<Thread> ascending()
+   public static Comparator<Thread> ascending()
    {
       return PriorityOrdering.ASCENDING;
    }
 
-   private static abstract class PriorityOrdering extends Ordering<Thread> {
-      private static final Ordering<Thread> DESCENDING = new PriorityOrdering() {
+   private static abstract class PriorityOrdering implements Comparator<Thread> {
+      private static final Comparator<Thread> DESCENDING = new PriorityOrdering() {
          @Override public int compare(Thread left, Thread right)
          {
             return Integer.signum(right.getPriority() - left.getPriority());
          }
       };
-      private static final Ordering<Thread> ASCENDING = new PriorityOrdering() {
+      private static final Comparator<Thread> ASCENDING = new PriorityOrdering() {
          @Override public int compare(Thread left, Thread right)
          {
             return Integer.signum(left.getPriority() - right.getPriority());
@@ -531,7 +529,7 @@ public final class Threads {
 
    private enum AlivePredicate implements Predicate<Thread> {
       INSTANCE;
-      @Override public boolean apply(Thread input) {
+      @Override public boolean test(Thread input) {
          return input.isAlive();
       }
    }
@@ -548,7 +546,7 @@ public final class Threads {
 
    private enum DaemonPredicate implements Predicate<Thread> {
       INSTANCE;
-      @Override public boolean apply(Thread input) {
+      @Override public boolean test(Thread input) {
          return input.isDaemon();
       }
    }

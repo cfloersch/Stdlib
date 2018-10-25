@@ -1,8 +1,7 @@
 package xpertss.lang;
 
-import xpertss.util.Ordering;
-
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static java.lang.String.format;
 import static xpertss.lang.Numbers.gte;
@@ -465,7 +464,7 @@ public final class Shorts {
     * Returns the absolute value of the given {@code short} value. If the argument
     * is not negative, the argument is returned. If the argument is negative, the
     * negation of the argument is returned.
-    * <p/>
+    * <p>
     * If the value equals {@link Short#MIN_VALUE} an exception will be thrown to
     * indicate the action is impossible to perform without overflow.
     *
@@ -553,14 +552,14 @@ public final class Shorts {
     * Returns an ordering that orders two {@code short} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(short[], short[])}.
     */
-   public static Ordering<short[]> natural()
+   public static Comparator<short[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -569,27 +568,27 @@ public final class Shorts {
     * Returns an ordering that orders two {@code short} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [2] < [1], [1, 2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(short[], short[])}.
     */
-   public static Ordering<short[]> reversed()
+   public static Comparator<short[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
    @SuppressWarnings("SuspiciousNameCombination")
-   private static abstract class LexicographicalOrdering extends Ordering<short[]> {
-      private static final Ordering<short[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<short[]> {
+      private static final Comparator<short[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(short left, short right)
          {
             return Short.compare(left, right);
          }
       };
-      private static final Ordering<short[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<short[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(short left, short right)
          {
             return Short.compare(left, right);
@@ -635,7 +634,7 @@ public final class Shorts {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

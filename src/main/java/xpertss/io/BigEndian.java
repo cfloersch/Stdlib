@@ -2,7 +2,7 @@ package xpertss.io;
 
 /**
  * Utility class for operating with numeric types in a big endian format.
- * <p/>
+ * <p>
  * BigEndian is also sometime referred to as network byte order.
  */
 @SuppressWarnings("UnusedDeclaration")

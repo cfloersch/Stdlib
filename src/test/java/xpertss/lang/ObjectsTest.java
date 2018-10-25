@@ -6,13 +6,13 @@
 package xpertss.lang;
 
 import org.junit.Test;
-import xpertss.function.Function;
-import xpertss.util.Ordering;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 import static junit.framework.Assert.*;
 import static org.junit.Assert.assertFalse;
@@ -41,13 +41,7 @@ public class ObjectsTest {
       Person chris = new Person("Chris", "Flo");
       Person doug = new Person("Doug", "Flo");
       Person singer = new Person("Chris", "Singer");
-      Ordering<Person> ordering = Ordering.comparing(new Function<Person, String>() {
-         @Override
-         public String apply(Person input)
-         {
-            return input.getLastName();
-         }
-      }).thenComparing(new Function<Person, Comparable>() {
+      Comparator<Person> ordering = Comparator.comparing((Function<Person, String>) input -> input.getLastName()).thenComparing(new Function<Person, Comparable>() {
          @Override
          public Comparable apply(Person input)
          {
@@ -63,7 +57,7 @@ public class ObjectsTest {
    public void testOrderingOptimization()
    {
       assertSame(Objects.ordering(), Objects.ordering());
-      assertNotSame(Objects.ordering(Ordering.natural()), Objects.ordering(Ordering.natural()));
+      assertNotSame(Objects.ordering(Comparator.<String>naturalOrder()), Objects.ordering(Comparator.<String>naturalOrder()));
    }
 
 
@@ -381,8 +375,8 @@ public class ObjectsTest {
    @Test
    public void testMinWithComparator()
    {
-      assertEquals(5, (int) Objects.min(Ordering.<Integer>reversed(), 5,2,1,4));
-      assertEquals("d", Objects.min(Ordering.<String>reversed(), "c","d","a","b"));
+      assertEquals(5, (int) Objects.min(Comparator.<Integer>naturalOrder().reversed(), 5,2,1,4));
+      assertEquals("d", Objects.min(Comparator.<String>naturalOrder().reversed(), "c","d","a","b"));
    }
 
    @Test
@@ -395,8 +389,8 @@ public class ObjectsTest {
    @Test
    public void testMaxWithComparator()
    {
-      assertEquals(1, (int) Objects.max(Ordering.<Integer>reversed(), 5, 2, 1, 4));
-      assertEquals("a", Objects.max(Ordering.<String>reversed(), "c", "d", "a", "b"));
+      assertEquals(1, (int) Objects.max(Comparator.<Integer>naturalOrder().reversed(), 5, 2, 1, 4));
+      assertEquals("a", Objects.max(Comparator.<String>naturalOrder().reversed(), "c", "d", "a", "b"));
    }
 
 

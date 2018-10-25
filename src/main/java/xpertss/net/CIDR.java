@@ -1,6 +1,6 @@
 /**
  * Copyright 2016 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 2/26/2016
  */
@@ -75,7 +75,7 @@ public class CIDR {
     * if the argument falls between the CIDR's network address and broadcast address and
     * <tt>false</tt> otherwise.
     * <p><pre>
-    *    this.network < address < this.broadcast
+    *    this.network &lt; address &lt; this.broadcast
     * </pre>
     */
    public boolean contains(InetAddress address)

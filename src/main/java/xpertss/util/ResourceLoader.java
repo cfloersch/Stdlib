@@ -14,7 +14,7 @@ import java.util.Enumeration;
  * the most appropriate class loader to use for the given caller. This typically,
  * implies choosing between the current class loader and the context class loader
  * associated with the calling thread.
- * <p/>
+ * <p>
  * Example of its need. Suppose you create a service provider that is loaded by a
  * web container's class loader. Your service provider needs to be capable of loading
  * a configuration from a web application that is loaded in a child class loader. To

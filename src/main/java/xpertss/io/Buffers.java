@@ -1,6 +1,5 @@
 package xpertss.io;
 
-import xpertss.function.Predicate;
 import xpertss.lang.Integers;
 import xpertss.lang.Numbers;
 import xpertss.lang.Objects;
@@ -13,6 +12,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.util.function.Predicate;
 
 /**
  * A collection of utilities for working with {@link java.nio.Buffer}s.
@@ -57,7 +57,7 @@ public final class Buffers {
    /**
     * Safely copies data from the source buffer to the destination buffer ensuring
     * that an overflow does not occur. It returns the number of characters transferred.
-    * <p/>
+    * <p>
     * It is assumed that the source buffer is in a state ready for relative gets and
     * the destination buffer is in a state ready for relative puts.
     *
@@ -81,7 +81,7 @@ public final class Buffers {
    /**
     * Safely copies data from the source buffer to the destination buffer ensuring
     * that an overflow does not occur. It returns the number of bytes transferred.
-    * <p/>
+    * <p>
     * It is assumed that the source buffer is in a state ready for relative gets
     * and the destination buffer is in a state ready for relative puts.
     *
@@ -109,9 +109,9 @@ public final class Buffers {
    /**
     * Null safe method to convert the contents of a given {@link ByteBuffer} to a
     * string using the specified {@link Charset} to decode the bytes.
-    * <p/>
+    * <p>
     * If the byte buffer is {@code null} this will return {@code null}.
-    * <p/>
+    * <p>
     * If the {@link Charset} is {@code null} the default charset will be used.
     *
     * @param src The source bytes to decode
@@ -145,7 +145,7 @@ public final class Buffers {
    /**
     * Returns {@code true} if the buffer content starting at its current
     * position equals the content of the specified byte array.
-    * <p/>
+    * <p>
     * This function will not alter the buffer's position, mark, nor limit.
     *
     * @param buffer The data to compare
@@ -163,10 +163,10 @@ public final class Buffers {
    /**
     * Returns {@code true} if the buffer content starting at the specified
     * offset equals the content of the specified byte array.
-    * <p/>
+    * <p>
     * Returns {@code false} if the specified offset is negative or if the
     * regions do not match.
-    * <p/>
+    * <p>
     * This function will not alter the buffer's position, mark, nor limit.
     *
     * @param buffer The data to compare
@@ -187,12 +187,12 @@ public final class Buffers {
     * offset equals the content of the specified byte array starting at its
     * specified offset and including the specified number of positions in
     * each.
-    * <p/>
+    * <p>
     * This will return {@code false} if either of the offsets are negative,
     * if the offset + len would overflow the buffer or extend beyond the
     * bounds of the array, or if any of the bytes in the specified regions
     * do not match.
-    * <p/>
+    * <p>
     * This function will not alter the buffer's position, mark, nor limit.
     *
     * @param buffer The data to compare
@@ -248,7 +248,7 @@ public final class Buffers {
     * <p><pre>
     *    0f 23 3a 3f ff
     * </pre>
-    * <p/>
+    * <p>
     * This method will read length number of bytes from the specified offset
     * and will not advance the buffer's position.
     */
@@ -268,10 +268,10 @@ public final class Buffers {
    /**
     * Returns a string of hexadecimal digits from a ByteBuffer. Each byte is
     * converted to 2 hex symbols and a space.
-    * <p/><pre>
+    * <p><pre>
     *    0f 23 3a 3f ff
     * </pre>
-    * <p/>
+    * <p>
     * This method will read from the current position to the limit and will not
     * advance the buffer's position.
     */
@@ -290,7 +290,7 @@ public final class Buffers {
     * <p><pre>
     *    0f233a3fff
     * </pre>
-    * <p/>
+    * <p>
     * This method will read length number of bytes from the specified offset
     * and will not advance the buffer's position.
     */
@@ -310,13 +310,12 @@ public final class Buffers {
    /**
     * Returns a string of hexadecimal digits from a ByteBuffer. Each byte is
     * converted to 2 hex symbols.
-    * <p/><pre>
+    * <p><pre>
     *    0f233a3fff
     * </pre>
-    * <p/>
+    * <p>
     * This method will read from the current position to the limit and will not
     * advance the buffer's position.
-    * </pre>
     */
    public static String toHexString(ByteBuffer buffer)
    {
@@ -377,7 +376,7 @@ public final class Buffers {
 
    private enum HasRemainingPredicate implements Predicate<Buffer> {
       INSTANCE;
-      @Override public boolean apply(Buffer input) {
+      @Override public boolean test(Buffer input) {
          return input.hasRemaining();
       }
    }
@@ -394,7 +393,7 @@ public final class Buffers {
 
    private enum DirectPredicate implements Predicate<Buffer> {
       INSTANCE;
-      @Override public boolean apply(Buffer input) {
+      @Override public boolean test(Buffer input) {
          return input.isDirect();
       }
    }
@@ -410,7 +409,7 @@ public final class Buffers {
 
    private enum ReadOnlyPredicate implements Predicate<Buffer> {
       INSTANCE;
-      @Override public boolean apply(Buffer input) {
+      @Override public boolean test(Buffer input) {
          return input.isReadOnly();
       }
    }

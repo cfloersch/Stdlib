@@ -17,7 +17,7 @@ import java.util.concurrent.locks.LockSupport;
  * {@link java.util.concurrent.CyclicBarrier CyclicBarrier} and
  * {@link java.util.concurrent.CountDownLatch CountDownLatch} but
  * supporting more flexible usage.
- * <p/>
+ * <p>
  * <b>Registration.</b> Unlike the case for other barriers, the number
  * of parties <em>registered</em> to synchronize on a phase barrier
  * may vary over time.  Tasks may be registered at any time (using
@@ -30,7 +30,7 @@ import java.util.concurrent.locks.LockSupport;
  * bookkeeping, so tasks cannot query whether they are registered.
  * (However, you can introduce such bookkeeping by subclassing this
  * class.)
- * <p/>
+ * <p>
  * <b>Synchronization.</b> Like a {@code CyclicBarrier}, a {@code
  * PhaseBarrier} may be repeatedly awaited.  Method {@link
  * #arriveAndAwaitAdvance} has effect analogous to {@link
@@ -74,7 +74,7 @@ import java.util.concurrent.locks.LockSupport;
  *       when others are blocked waiting for a phase to advance.
  *
  * </ul>
- * <p/>
+ * <p>
  * <b>Termination.</b> A phase barrier may enter a <em>termination</em>
  * state, that may be checked using method {@link #isTerminated}. Upon
  * termination, all synchronization methods immediately return without
@@ -89,7 +89,7 @@ import java.util.concurrent.locks.LockSupport;
  * current phase number reaches a threshold. Method
  * {@link #forceTermination} is also available to abruptly release
  * waiting threads and allow them to terminate.
- * <p/>
+ * <p>
  * <b>Tiering.</b> Phase barriers may be <em>tiered</em> (i.e.,
  * constructed in tree structures) to reduce contention. Phase barriers
  * with large numbers of parties that would otherwise experience heavy
@@ -97,7 +97,7 @@ import java.util.concurrent.locks.LockSupport;
  * groups of sub-phase barriers share a common parent. This may greatly
  * increase throughput even though it incurs greater per-operation
  * overhead.
- * <p/>
+ * <p>
  * In a tree of tiered phase barriers, registration and deregistration
  * of child phase barriers with their parent are managed automatically.
  * Whenever the number of registered parties of a child phaser becomes
@@ -107,7 +107,7 @@ import java.util.concurrent.locks.LockSupport;
  * of registered parties becomes zero as the result of an invocation of
  * {@link #arriveAndDeregister}, the child phase barrier is deregistered
  * from its parent.
- * <p/>
+ * <p>
  * <b>Monitoring.</b> While synchronization methods may be invoked only
  * by registered parties, the current state of a phaser may be monitored
  * by any caller.  At any given moment there are {@link
@@ -119,9 +119,9 @@ import java.util.concurrent.locks.LockSupport;
  * useful for synchronization control.  Method {@link #toString}
  * returns snapshots of these state queries in a form convenient for
  * informal monitoring.
- * <p/>
+ * <p>
  * <b>Sample usages:</b>
- * <p/>
+ * <p>
  * A {@code PhaseBarrier} may be used instead of a {@code CountDownLatch}
  * to control a one-shot action serving a variable number of parties. The
  * typical idiom is for the method setting this up to first register, then
@@ -144,7 +144,7 @@ import java.util.concurrent.locks.LockSupport;
  *   // allow threads to start and deregister self
  *   phaser.arriveAndDeregister();
  * }}</pre>
- * <p/>
+ * <p>
  * One way to cause a set of threads to repeatedly perform actions for a
  * given number of iterations is to override {@code onAdvance}:
  *
@@ -177,7 +177,7 @@ import java.util.concurrent.locks.LockSupport;
  *   phaser.register();
  *   while (!phaser.isTerminated())
  *     phaser.arriveAndAwaitAdvance();}</pre>
- * <p/>
+ * <p>
  * Related constructions may be used to await particular phase numbers in
  * contexts where you are sure that the phase will never wrap around
  * {@code Integer.MAX_VALUE}. For example:
@@ -194,7 +194,7 @@ import java.util.concurrent.locks.LockSupport;
  *   phaser.arriveAndDeregister();
  * }}</pre>
  *
- * <p/>
+ * <p>
  * To create a set of {@code n} tasks using a tree of phase barriers, you
  * could use code of the following form, assuming a Task class with a
  * constructor accepting a {@code Phase Barrier} that it registers with
@@ -220,7 +220,7 @@ import java.util.concurrent.locks.LockSupport;
  * expected synchronization rates. A value as low as four may be
  * appropriate for extremely small per-phase task bodies (thus high rates),
  * or up to hundreds for extremely large ones.
- * <p/>
+ * <p>
  * <b>Implementation notes</b>: This implementation restricts the maximum
  * number of parties to 65535. Attempts to register additional parties result
  * in {@code IllegalStateException}. However, you can and should create tiered
@@ -585,7 +585,7 @@ public class PhaseBarrier {
 
    /**
     * Arrives at this phaser, without waiting for others to arrive.
-    * <p/>
+    * <p>
     * It is a usage error for an unregistered party to invoke this method.
     * However, this error may result in an {@code IllegalStateException}
     * only upon some subsequent operation on this phaser, if ever.
@@ -628,7 +628,7 @@ public class PhaseBarrier {
     * or timeout, you can arrange this with an analogous construction using one
     * of the other forms of the {@code awaitAdvance} method.  If instead you need
     * to deregister upon arrival, use {@code awaitAdvance(arriveAndDeregister())}.
-    * <p/>
+    * <p>
     * It is a usage error for an unregistered party to invoke this method. However,
     * this error may result in an {@code IllegalStateException} only upon some
     * subsequent operation on this phase barrier, if ever.
@@ -691,7 +691,7 @@ public class PhaseBarrier {
     * Awaits the phase of this phase barrier to advance from the given phase
     * value, returning immediately if the current phase is greater than the
     * given phase value or this phase barrier is terminated.
-    * <p/>
+    * <p>
     * It is assumed that callers of this method are not registered parties of
     * the phase barrier.
     *

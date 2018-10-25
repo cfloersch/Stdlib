@@ -4,9 +4,9 @@ import xpertss.lang.SyntaxException;
 
 /**
  * An exception thrown when an error occurs during parsing.
- * <p/>
+ * <p>
  * This exception includes the text being parsed and the error index.
- * <p/>
+ * <p>
  * This class is intended for use in a single thread.
  */
 public class ParseException extends SyntaxException {

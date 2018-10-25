@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * A simple service-provider loading facility.
- * <p/>
+ * <p>
  * A service is a well-known set of interfaces and (usually abstract) classes. A
  * service provider is a specific implementation of a service. The classes in a
  * provider typically implement the interfaces and subclass the classes defined
@@ -18,7 +18,7 @@ import java.util.*;
  * any of the usual extension directories. Providers can also be made available
  * by adding them to the application's class path or by some other
  * platform-specific means.
- * <p/>
+ * <p>
  * For the purpose of loading, a service is represented by a single type, that is,
  * a single interface or abstract class. (A concrete class can be used, but this
  * is not recommended.) A provider of a given service contains one or more concrete
@@ -30,7 +30,7 @@ import java.util.*;
  * single class or interface could possibly unify them, so no such type is defined
  * here. The only requirement enforced by this facility is that provider classes must
  * have a zero-argument constructor so that they can be instantiated during loading.
- * <p/>
+ * <p>
  * A service provider is identified by placing a provider-configuration file in the
  * resource directory META-INF/services. The file's name is the fully-qualified binary
  * name of the service's type. The file contains a list of fully-qualified binary names
@@ -38,7 +38,7 @@ import java.util.*;
  * name, as well as blank lines, are ignored. The comment character is '#' ('\u0023',
  * NUMBER SIGN); on each line all characters following the first comment character are
  * ignored. The file must be encoded in UTF-8.
- * <p/>
+ * <p>
  * If a particular concrete provider class is named in more than one configuration file,
  * or is named in the same configuration file more than once, then the duplicates are
  * ignored. The configuration file naming a particular provider need not be in the same
@@ -46,17 +46,17 @@ import java.util.*;
  * accessible from the same class loader that was initially queried to locate the
  * configuration file; note that this is not necessarily the class loader from which the
  * file was actually loaded.
- * <p/>
+ * <p>
  * Providers are located and instantiated on construction. A service loader maintains a
  * cache of all providers for a given service. The cache can be cleared and reloaded via
  * the reload method.
- * <p/>
+ * <p>
  * Service loaders always execute in the security context of the caller. Trusted system
  * code should typically invoke the methods in this class, and the methods of the iterators
  * which they return, from within a privileged security context.
- * <p/>
+ * <p>
  * Instances of this class are not safe for use by multiple concurrent threads.
- * <p/>
+ * <p>
  * Unless otherwise specified, passing a null argument to any method in this class will
  * cause a NullPointerException to be thrown.
  */

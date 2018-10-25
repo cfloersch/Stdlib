@@ -1,6 +1,9 @@
 package xpertss.util;
 
 import org.junit.Test;
+import xpertss.util.Comparison;
+
+import java.util.Comparator;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -32,9 +35,9 @@ public class ComparisonTest {
    @Test
    public void testNullLeftBooleanComparison()
    {
-      Ordering<Boolean> ordering = Ordering.natural();
-      assertEquals(-1, Comparison.start().compare(null, false, Ordering.nullsFirst(ordering)).result());
-      assertEquals(1, Comparison.start().compare(null, false,  Ordering.nullsLast(ordering)).result());
+      Comparator<Boolean> ordering = Comparator.naturalOrder();
+      assertEquals(-1, Comparison.start().compare(null, false, Comparator.nullsFirst(ordering)).result());
+      assertEquals(1, Comparison.start().compare(null, false,  Comparator.nullsLast(ordering)).result());
    }
 
    @Test(expected = NullPointerException.class)
@@ -46,22 +49,22 @@ public class ComparisonTest {
    @Test
    public void testNullRightBooleanComparison()
    {
-      Ordering<Boolean> ordering = Ordering.natural();
-      assertEquals(1, Comparison.start().compare(false, null, Ordering.nullsFirst(ordering)).result());
-      assertEquals(-1, Comparison.start().compare(false, null, Ordering.nullsLast(ordering)).result());
+      Comparator<Boolean> ordering = Comparator.naturalOrder();
+      assertEquals(1, Comparison.start().compare(false, null, Comparator.nullsFirst(ordering)).result());
+      assertEquals(-1, Comparison.start().compare(false, null, Comparator.nullsLast(ordering)).result());
    }
 
    @Test
    public void testSimpleBooleanComparisonReverse()
    {
-      Ordering<Boolean> ordering = Ordering.reversed();
-      assertEquals(-1, Comparison.start().compare(true, false, ordering).result());
-      assertEquals(1, Comparison.start().compare(false, true, ordering).result());
+      Comparator<Boolean> ordering = Comparator.naturalOrder();
+      assertEquals(1, Comparison.start().compare(true, false, ordering).result());
+      assertEquals(-1, Comparison.start().compare(false, true, ordering).result());
       assertEquals(0, Comparison.start().compare(false, false, ordering).result());
       assertEquals(0, Comparison.start().compare(true, true, ordering).result());
 
-      assertEquals(-1, Comparison.start().compare(Boolean.TRUE, Boolean.FALSE, ordering).result());
-      assertEquals(1, Comparison.start().compare(Boolean.FALSE, Boolean.TRUE, ordering).result());
+      assertEquals(1, Comparison.start().compare(Boolean.TRUE, Boolean.FALSE, ordering).result());
+      assertEquals(-1, Comparison.start().compare(Boolean.FALSE, Boolean.TRUE, ordering).result());
       assertEquals(0, Comparison.start().compare(Boolean.FALSE, Boolean.FALSE, ordering).result());
       assertEquals(0, Comparison.start().compare(Boolean.TRUE, Boolean.TRUE, ordering).result());
    }

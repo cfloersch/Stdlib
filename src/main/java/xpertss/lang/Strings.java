@@ -1,10 +1,10 @@
 package xpertss.lang;
 
 
-import xpertss.function.Predicate;
 import xpertss.function.Predicates;
 
 import java.io.Serializable;
+import java.util.function.Predicate;
 
 import static java.lang.String.*;
 
@@ -84,7 +84,7 @@ public final class Strings {
       }
 
       @Override
-      public boolean apply(String t)
+      public boolean test(String t)
       {
          return target.equalsIgnoreCase(t);
       }
@@ -126,7 +126,7 @@ public final class Strings {
    private enum EmptyPredicate implements Predicate<String> {
       INSTANCE;
 
-      @Override public boolean apply(String input)
+      @Override public boolean test(String input)
       {
          return isEmpty(input);
       }
@@ -141,12 +141,7 @@ public final class Strings {
     */
    public static Predicate<String> startsWith(final String prefix)
    {
-      return new Predicate<String>() {
-         @Override public boolean apply(String input)
-         {
-            return input.startsWith(prefix);
-         }
-      };
+      return input -> input.startsWith(prefix);
    }
 
    /**
@@ -155,12 +150,7 @@ public final class Strings {
     */
    public static Predicate<String> endsWith(final String suffix)
    {
-      return new Predicate<String>() {
-         @Override public boolean apply(String input)
-         {
-            return input.endsWith(suffix);
-         }
-      };
+      return input -> input.endsWith(suffix);
    }
 
    /**
@@ -169,12 +159,7 @@ public final class Strings {
     */
    public static Predicate<String> contains(final String s)
    {
-      return new Predicate<String>() {
-         @Override public boolean apply(String input)
-         {
-            return input.contains(s);
-         }
-      };
+      return input -> input.contains(s);
    }
 
 
@@ -384,7 +369,7 @@ public final class Strings {
 
    /**
     * Removes single or double quotes from the given string if its quoted.
-    * <p/>
+    * <p>
     * <pre>
     *   for input string = "mystr1" output will be = mystr1
     *   for input string = 'mystr2' output will be = mystr2

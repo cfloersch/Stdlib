@@ -5,9 +5,6 @@
  */
 package xpertss.util;
 
-import xpertss.function.Function;
-import xpertss.function.Predicate;
-import xpertss.function.UnaryOperator;
 import xpertss.lang.Classes;
 import xpertss.lang.Objects;
 
@@ -17,6 +14,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 /**
  * General utility methods for Lists.
@@ -57,7 +57,7 @@ public final class Lists {
    /**
     * Creates and returns a new list containing elements that result from applying a given
     * function to the elements of the source list.
-    * <p/>
+    * <p>
     * The returned list will be an instance of the supplied list if the supplied list can
     * be duplicated using the {@link Lists#newList(java.util.List)} method. Otherwise, the
     * returned list will be an {@link java.util.ArrayList}.
@@ -79,7 +79,7 @@ public final class Lists {
    /**
     * Creates and returns a new list containing the elements from the source list which
     * satisfy the predicate.
-    * <p/>
+    * <p>
     * The returned list will be an instance of the supplied list if the supplied list can
     * be duplicated using the {@link Lists#newList(java.util.List)} method. Otherwise, the
     * returned list will be an {@link java.util.ArrayList}.
@@ -93,7 +93,7 @@ public final class Lists {
    public static <T> List<T> filter(List<T> src, Predicate<T> predicate)
    {
       List<T> result = newList(src);
-      for(T item : src) if(predicate.apply(item)) result.add(item);
+      for(T item : src) if(predicate.test(item)) result.add(item);
       return result;
    }
 
@@ -117,7 +117,7 @@ public final class Lists {
    public static <E> void add(List<E> list, Predicate<E> predicate, E ... items)
    {
       for(E arg : Objects.notNull(items, "items")) {
-         if(predicate == null || predicate.apply(arg)) list.add(arg);
+         if(predicate == null || predicate.test(arg)) list.add(arg);
       }
    }
 
@@ -131,7 +131,7 @@ public final class Lists {
    public static <E> void retain(List<E> src, Predicate<? super E> predicate)
    {
       for(Iterator<E> it = src.iterator(); it.hasNext(); ) {
-         if(!predicate.apply(it.next())) it.remove();
+         if(!predicate.test(it.next())) it.remove();
       }
    }
 
@@ -145,7 +145,7 @@ public final class Lists {
    public static <E> void remove(List<E> src, Predicate<? super E> predicate)
    {
       for(Iterator<E> it = src.iterator(); it.hasNext(); ) {
-         if(predicate.apply(it.next())) it.remove();
+         if(predicate.test(it.next())) it.remove();
       }
    }
 
@@ -302,7 +302,7 @@ public final class Lists {
     * Create a new empty list of the same type as the supplied list if possible or
     * a {@link java.util.ArrayList} if creating an instance of the given list is
     * impossible.
-    * <p/>
+    * <p>
     * This method uses reflection to create a new instance of the given list type.
     * To be successful the list implementation in use must implement a public zero
     * argument constructor. As such jdk standard wrapper and view implementations

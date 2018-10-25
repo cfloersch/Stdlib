@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * A pair consisting of two elements referred to as 'left' and 'right'.
- * <p/>
+ * <p>
  * This implementation is immutable and thread-safe.
  *
  * @param <L> The type of the left element
@@ -31,7 +31,7 @@ public class Pair<L,R>  implements Serializable, Cloneable {
 
    /**
     * Gets the left element from this pair.
-    * <p/>
+    * <p>
     * When treated as a key-value pair, this is the key.
     *
     * @return the left element, may be {@code null}
@@ -40,7 +40,7 @@ public class Pair<L,R>  implements Serializable, Cloneable {
 
    /**
     * Gets the right element from this pair.
-    * <p/>
+    * <p>
     * When treated as a key-value pair, this is the value.
     *
     * @return the right element, may be {@code null}
@@ -120,7 +120,7 @@ public class Pair<L,R>  implements Serializable, Cloneable {
 
    /**
     * Create a Pair of elements from the specified objects.
-    * <p/>
+    * <p>
     * This factory allows the pair to be created using inference to obtain the
     * generic types.
     *

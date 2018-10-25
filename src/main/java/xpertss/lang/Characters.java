@@ -381,7 +381,7 @@ public final class Characters {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

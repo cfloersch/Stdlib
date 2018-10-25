@@ -14,7 +14,7 @@ import static xpertss.lang.Strings.notEmpty;
 
 /**
  * This comparator compares two beans by the specified bean property.
- * <p/>
+ * <p>
  * It is also possible to compare beans based on nested, indexed, combined,
  * mapped bean properties. Please see the {@link PropertyUtils} documentation
  * for all property name possibilities.

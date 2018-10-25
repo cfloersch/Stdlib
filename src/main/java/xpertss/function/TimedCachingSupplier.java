@@ -12,18 +12,20 @@ import xpertss.time.TimeProvider;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * A TimedCachingSupplier caches an item supplied by an underlying supplier for a given
  * amount of time represented by duration. It will synchronously update the cached item
  * upon the first access after the cached item becomes expired.
- * <p/>
+ * <p>
  * Accessing the cached item will block if the cached item has not been loaded initially
  * or if the access time is greater than its expiration period.
- * <p/>
+ * <p>
  * This supplier ensures that only a single thread is used to update or load the underlying
  * cached item at a time avoiding the stampede effect.
- * <p/>
+ * <p>
  * If the underlying supplier returns {@code null} it will be assumed that the load failed
  * and  {@code null} will be returned to the caller. Subsequent threads will again attempt
  * to reload the cache returning {@code null} only if their respective attempt to load or
@@ -44,13 +46,7 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
       final Function<K,Supplier<V>> source = Objects.notNull(provider);
       final long fMaxAge = Numbers.gt(0L, maxAge, "maxAge");
       final TimeUnit fUnit = Objects.notNull(unit);
-      return new Function<K, Supplier<V>>() {
-         @Override
-         public Supplier<V> apply(K input)
-         {
-            return new TimedCachingSupplier<>(source.apply(input), fMaxAge, fUnit);
-         }
-      };
+      return input -> new TimedCachingSupplier<>(source.apply(input), fMaxAge, fUnit);
    }
 
 

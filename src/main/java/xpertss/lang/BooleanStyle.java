@@ -2,18 +2,18 @@ package xpertss.lang;
 
 /**
  * Enumeration of various styles used to encode boolean values into strings.
- * <p/>
+ * <p>
  * {@link Booleans#parse(CharSequence)} is very lenient when it comes to what it will
  * allow as input. The parse methods defined below are much more strict, requiring
  * the supplied string to conform to the style.
- * <p/>
+ * <p>
  * All implementations of {@link #parse(CharSequence)} are null-safe.
  */
 public enum BooleanStyle {
 
    /**
     * Parses <b>True</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>True</b> for {@code true} and <b>False</b> for {@code false}
     */
    TrueFalseTitleCase {
@@ -29,7 +29,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>true</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>true</b> for {@code true} and <b>false</b> for {@code false}
     */
    TrueFalseLowerCase {
@@ -45,7 +45,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>TRUE</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>TRUE</b> for {@code true} and <b>FALSE</b> for {@code false}
     */
    TrueFalseUpperCase {
@@ -62,7 +62,7 @@ public enum BooleanStyle {
    /**
     * Parses any case of <b>true</b> into {@code true}, everything else into
     * {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>true</b> for {@code true} and <b>false</b> for {@code false}
     */
    TrueFalseIgnoreCase {
@@ -78,7 +78,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>T</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>T</b> for {@code true} and <b>F</b> for {@code false}
     */
    TrueFalseUpperChar {
@@ -94,7 +94,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>t</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>t</b> for {@code true} and <b>f</b> for {@code false}
     */
    TrueFalseLowerChar {
@@ -111,7 +111,7 @@ public enum BooleanStyle {
    /**
     * Parses <b>T</b> or <b>t</b> into {@code true}, everything else into
     * {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>t</b> for {@code true} and <b>f</b> for {@code false}
     */
    TrueFalseAnyChar {
@@ -128,7 +128,7 @@ public enum BooleanStyle {
 
    /**
     * Parses <b>On</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>On</b> for {@code true} and <b>Off</b> for {@code false}
     */
    OnOffTitleCase {
@@ -144,7 +144,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>on</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>on</b> for {@code true} and <b>off</b> for {@code false}
     */
    OnOffLowerCase {
@@ -160,7 +160,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>ON</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>ON</b> for {@code true} and <b>OFF</b> for {@code false}
     */
    OnOffUpperCase {
@@ -177,7 +177,7 @@ public enum BooleanStyle {
    /**
     * Parses <b>On</b>, <b>ON</b>, <b>on</b>, or <b>oN</b> into {@code true},
     * everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>on</b> for {@code true} and <b>off</b> for {@code false}
     */
    OnOffIgnoreCase {
@@ -194,7 +194,7 @@ public enum BooleanStyle {
 
    /**
     * Parses <b>Yes</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>Yes</b> for {@code true} and <b>No</b> for {@code false}
     */
    YesNoTitleCase {
@@ -210,7 +210,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>yes</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>yes</b> for {@code true} and <b>no</b> for {@code false}
     */
    YesNoLowerCase {
@@ -226,7 +226,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>YES</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>YES</b> for {@code true} and <b>NO</b> for {@code false}
     */
    YesNoUpperCase {
@@ -243,7 +243,7 @@ public enum BooleanStyle {
    /**
     * Parses any case of <b>Yes</b> into {@code true}, everything else into
     * {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>yes</b> for {@code true} and <b>no</b> for {@code false}
     */
    YesNoIgnoreCase {
@@ -259,7 +259,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>Y</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>Y</b> for {@code true} and <b>N</b> for {@code false}
     */
    YesNoUpperChar {
@@ -275,7 +275,7 @@ public enum BooleanStyle {
    },
    /**
     * Parses <b>y</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>y</b> for {@code true} and <b>n</b> for {@code false}
     */
    YesNoLowerChar {
@@ -292,7 +292,7 @@ public enum BooleanStyle {
    /**
     * Parses <b>Y</b> or <b>y</b> into {@code true}, everything else into
     * {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>y</b> for {@code true} and <b>n</b> for {@code false}
     */
    YesNoAnyChar {
@@ -309,7 +309,7 @@ public enum BooleanStyle {
 
    /**
     * Parses <b>1</b> into {@code true}, everything else into {@code false}.
-    * <p/>
+    * <p>
     * Uses <b>1</b> for {@code true} and <b>0</b> for {@code false}
     */
    ZeroOne {
@@ -339,7 +339,7 @@ public enum BooleanStyle {
 
    /**
     * Utility method to parse a boolean string using multiple boolean styles.
-    * <p/>
+    * <p>
     * This method is null-safe.
     *
     * @param str The possibly {@code null} string to parse

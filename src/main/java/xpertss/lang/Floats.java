@@ -1,9 +1,8 @@
 package xpertss.lang;
 
 
-import xpertss.util.Ordering;
-
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.POSITIVE_INFINITY;
@@ -385,7 +384,7 @@ public final class Floats {
    /**
     * Find the most frequently occurring item(s) returning an empty array if all
     * items are unique.
-    * <p/>
+    * <p>
     * If there are multiple most frequent items because they all have the same
     * count within the set, the returned array will include them all sorted from
     * smallest to largest.
@@ -462,10 +461,10 @@ public final class Floats {
     * Returns the {@code float} value that is equal to the specified {@code value},
     * if possible or throw an exception if the conversion would result in an
     * underflow or overflow.
-    * <p/>
+    * <p>
     * This method will also throw an exception if the specified {@code double} is
     * not an actual number as identified by {@link Float#NaN}.
-    * <p/>
+    * <p>
     * Keep in mind that floating point numbers work very differently than integers.
     * Equality is less clear cut and the formatted output when converted to strings
     * are often less precise for single precision types than double precision types.
@@ -494,8 +493,8 @@ public final class Floats {
     * Floats can only accurately represent integer numbers with its 24 bit mantissa.
     * This method will cast a {@code long} to a {@code float} only if its range falls
     * within the range representable by a float without losing precision.
-    * <p/>
-    * The acceptable range of a long is -16777216 <= x <= 16777216
+    * <p>
+    * The acceptable range of a long is -16777216 &lt;= x &lt;= 16777216
     *
     *
     * @param value any value in the range of the {@code float} type
@@ -519,10 +518,10 @@ public final class Floats {
     * {@code float} value to it.  This will return (+/-) {@link Float#MAX_VALUE}
     * if the down cast results in overflow.  This will return (+/-) {@link Float
     * #MIN_VALUE} if the down cast results in underflow.
-    * <p/>
+    * <p>
     * If the specified value is {@link Double#NaN} then {@link Float#NaN} will be
     * returned.
-    * <p/>
+    * <p>
     * In all cases the sign of the input is preserved.
     *
     * @param value any {@code double} value
@@ -578,14 +577,14 @@ public final class Floats {
     * Returns an ordering that orders two {@code float} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(float[], float[])}.
     */
-   public static Ordering<float[]> natural()
+   public static Comparator<float[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -594,26 +593,26 @@ public final class Floats {
     * Returns an ordering that orders two {@code float} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [2] < [1], [1, 2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(float[], float[])}.
     */
-   public static Ordering<float[]> reversed()
+   public static Comparator<float[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
-   private static abstract class LexicographicalOrdering extends Ordering<float[]> {
-      private static final Ordering<float[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<float[]> {
+      private static final Comparator<float[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(float left, float right)
          {
             return Float.compare(left, right);
          }
       };
-      private static final Ordering<float[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<float[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(float left, float right)
          {
             return Float.compare(right, left);
@@ -655,7 +654,7 @@ public final class Floats {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

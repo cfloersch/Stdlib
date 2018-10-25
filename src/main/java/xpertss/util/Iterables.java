@@ -1,12 +1,12 @@
 package xpertss.util;
 
-import xpertss.function.Consumer;
-import xpertss.function.Predicate;
 import xpertss.lang.Objects;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static xpertss.lang.Objects.notNull;
 
@@ -23,21 +23,21 @@ public final class Iterables {
     * is, it orders them, using {@link Comparable#compareTo(Object)}, the first pair
     * of values that follow any common prefix, or when one iterable is a prefix of
     * the other, treats the shorter iterable as the lesser.
-    * <p/>
+    * <p>
     * For example, {@code [] < [1] < [1, 1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * This ordering does not support {@code null} elements.
     *
     * @see <a href="http://en.wikipedia.org/wiki/Lexicographical_order">
     *     Lexicographical order article at Wikipedia</a>
     */
-   public static <T extends Comparable<? super T>> Ordering<Iterable<T>> ordering()
+   public static <T extends Comparable<? super T>> Comparator<Iterable<T>> ordering()
    {
       return Objects.cast(LexicographicalOrdering.INSTANCE);
    }
 
-   private static class LexicographicalOrdering extends Ordering<Iterable<Comparable>> {
-      private static final Ordering<Iterable<Comparable>> INSTANCE = new LexicographicalOrdering();
+   private static class LexicographicalOrdering implements Comparator<Iterable<Comparable>> {
+      private static final Comparator<Iterable<Comparable>> INSTANCE = new LexicographicalOrdering();
 
       @Override public int compare(Iterable<Comparable> leftIterable, Iterable<Comparable> rightIterable)
       {
@@ -56,7 +56,7 @@ public final class Iterables {
    /**
     * Returns an ordering that orders two {@link Iterable}s according to the rules
     * of the given {@link Comparator}.
-    * <p/>
+    * <p>
     * It orders two {@link Iterable}s using {@link Comparator#compare(Object,Object)}
     * on each element. If the two iterables share a common prefix then the iterable
     * with fewer elements is considered to be less than one with more elements.
@@ -64,17 +64,16 @@ public final class Iterables {
     * @param comparator The comparator to apply to the iterable's elements
     * @throws NullPointerException If the comparator is {@code null}
     */
-   public static <T> Ordering<Iterable<T>> ordering(Comparator<T> comparator)
+   public static <T> Comparator<Iterable<T>> ordering(final Comparator<T> comparator)
    {
-      final Ordering<T> ordering = Ordering.from(notNull(comparator));
-      return new Ordering<Iterable<T>>() {
+      return new Comparator<Iterable<T>>() {
          @Override public int compare(Iterable<T> leftIterable, Iterable<T> rightIterable)
          {
             Iterator<T> left = leftIterable.iterator();
             Iterator<T> right = rightIterable.iterator();
             while (left.hasNext()) {
                if (!right.hasNext()) return 1; // because it's longer
-               int result = ordering.compare(left.next(), right.next());
+               int result = comparator.compare(left.next(), right.next());
                if (result != 0) return result;
             }
             if (right.hasNext()) return -1; // because it's longer
@@ -96,7 +95,7 @@ public final class Iterables {
     */
    public static <T> void forEach(Iterable<T> items, Consumer<? super T> action)
    {
-      for(T item : items) action.apply(item);
+      for(T item : items) action.accept(item);
    }
 
 
@@ -229,7 +228,7 @@ public final class Iterables {
    {
       notNull(predicate, "predicate");
       for(T item : notNull(iterable, "iterable")) {
-         if(predicate.apply(item)) return true;
+         if(predicate.test(item)) return true;
       }
       return false;
    }
@@ -244,7 +243,7 @@ public final class Iterables {
    {
       notNull(predicate, "predicate");
       for(T item : notNull(iterable, "iterable")) {
-         if(!predicate.apply(item)) return false;
+         if(!predicate.test(item)) return false;
       }
       return true;
    }
@@ -259,7 +258,7 @@ public final class Iterables {
    {
       notNull(predicate, "predicate");
       for(T item : notNull(iterable, "iterable")) {
-         if(predicate.apply(item)) return false;
+         if(predicate.test(item)) return false;
       }
       return true;
    }

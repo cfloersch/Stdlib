@@ -1,6 +1,5 @@
 package xpertss.lang;
 
-import xpertss.function.Consumer;
 import xpertss.util.Sets;
 
 import java.lang.annotation.Annotation;
@@ -8,6 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * General utility methods for working with annotations, handling meta-annotations,
@@ -60,7 +60,7 @@ public final class Annotations {
       final Set<Annotation> result = Sets.newLinkedHashSet();
       Classes.walk(clazz, new Consumer<Class>() {
          @Override
-         public void apply(Class aClass)
+         public void accept(Class aClass)
          {
             for(Annotation ann : aClass.getDeclaredAnnotations()) {
                result.addAll(getMetaAnnotations(ann));

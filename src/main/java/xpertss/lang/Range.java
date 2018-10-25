@@ -110,7 +110,7 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
     * Check to see if the Range contains the supplied number. Returns <tt>true</tt>
     * if the argument number falls within the Range and <tt>false</tt> otherwise.
     * <p><pre>
-    *    this.min <= number < this.max
+    *    this.min &lt;= number &lt; this.max
     * </pre>
     */
    public boolean contains(T number)
@@ -124,7 +124,7 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
     * <tt>true</tt> if the argument number falls within the Range and <tt>false</tt>
     * otherwise.
     * <p><pre>
-    *    this.min <= number <= this.max
+    *    this.min &lt;= number &lt;= this.max
     * </pre>
     */
    public boolean within(T number)
@@ -138,7 +138,7 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
     * <tt>true</tt> if the argument number falls within the Range and <tt>false</tt>
     * otherwise.
     * <p><pre>
-    *    this.min < number < this.max
+    *    this.min &lt; number &lt; this.max
     * </pre>
     */
    public boolean between(T number)

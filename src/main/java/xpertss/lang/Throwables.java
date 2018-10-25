@@ -69,7 +69,7 @@ public final class Throwables {
     * Iterates through the causal chain of the given {@link Throwable} and returns the
     * first instance of the requested type. If the requested type is not found this
     * will return {@code null}.
-    * <p/>
+    * <p>
     * This implementation will return the element only if it is an exact match of the
     * request type. It does not return instances of the requested type.
     *
@@ -100,7 +100,7 @@ public final class Throwables {
     * This can be useful for those who want to log stack trace information
     * without filling up their disk or in cases where compactness are critical
     * like network logging facilities.
-    * <p/>
+    * <p>
     * In cases where the throwable contains a root cause this will only output
     * the stack frames of the root cause itself, not all of its wrappers.
     */

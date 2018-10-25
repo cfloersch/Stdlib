@@ -5,6 +5,7 @@ import xpertss.util.Iterables;
 import xpertss.util.Lists;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
@@ -24,33 +25,33 @@ public class ConsumersTest {
       Consumer<String> second = mock(Consumer.class);
 
       Consumer<String> consumer = Consumers.compose(first, second);
-      consumer.apply("Hello");
-      consumer.apply("Goodbye");
-      verify(first, times(2)).apply(anyString());
-      verify(second, times(2)).apply(anyString());
-      verify(first).apply(eq("Hello"));
-      verify(first).apply(eq("Goodbye"));
-      verify(second).apply(eq("Hello"));
-      verify(second).apply(eq("Goodbye"));
+      consumer.accept("Hello");
+      consumer.accept("Goodbye");
+      verify(first, times(2)).accept(anyString());
+      verify(second, times(2)).accept(anyString());
+      verify(first).accept(eq("Hello"));
+      verify(first).accept(eq("Goodbye"));
+      verify(second).accept(eq("Hello"));
+      verify(second).accept(eq("Goodbye"));
    }
 
    @Test
    public void testComposeOrdering()
    {
       Consumer<String> first = mock(Consumer.class);
-      doThrow(new RuntimeException()).when(first).apply(anyString());
+      doThrow(new RuntimeException()).when(first).accept(anyString());
       Consumer<String> second = mock(Consumer.class);
 
       Consumer<String> consumer = Consumers.compose(first, second);
       try {
-         consumer.apply("Hello");
+         consumer.accept("Hello");
          fail();
       } catch(Exception e) { /* Ignore */}
 
-      verify(first, times(1)).apply(anyString());
-      verify(second, times(0)).apply(anyString());
-      verify(first).apply(eq("Hello"));
-      verify(second, times(0)).apply(eq("Hello"));
+      verify(first, times(1)).accept(anyString());
+      verify(second, times(0)).accept(anyString());
+      verify(first).accept(eq("Hello"));
+      verify(second, times(0)).accept(eq("Hello"));
    }
 
    @Test
@@ -58,31 +59,31 @@ public class ConsumersTest {
    {
       Consumer<String> first = mock(Consumer.class);
       Consumer<String> second = mock(Consumer.class);
-      Consumers.compose(null, second).apply("Hello");
-      Consumers.compose(first, null).apply("Hello");
-      Consumers.compose(first, second, null).apply("Hello");
-      Consumers.compose((Consumer<String>)null).apply("Hello");
-      Consumers.compose((Consumer<String>[])null).apply("Hello");
-      Consumers.compose().apply("Hello");
+      Consumers.compose(null, second).accept("Hello");
+      Consumers.compose(first, null).accept("Hello");
+      Consumers.compose(first, second, null).accept("Hello");
+      Consumers.compose((Consumer<String>)null).accept("Hello");
+      Consumers.compose((Consumer<String>[])null).accept("Hello");
+      Consumers.compose().accept("Hello");
 
-      verify(first, times(2)).apply(anyString());
-      verify(second, times(2)).apply(anyString());
+      verify(first, times(2)).accept(anyString());
+      verify(second, times(2)).accept(anyString());
    }
 
    @Test
    public void testStdOut()
    {
-      Consumers.stdOut().apply("Hello");
-      Consumers.stdOut().apply(3);
-      Consumers.stdOut().apply(Thread.currentThread());
+      Consumers.stdOut().accept("Hello");
+      Consumers.stdOut().accept(3);
+      Consumers.stdOut().accept(Thread.currentThread());
    }
 
    @Test
    public void testStdErr()
    {
-      Consumers.stdErr().apply("Hello");
-      Consumers.stdErr().apply(3);
-      Consumers.stdErr().apply(Thread.currentThread());
+      Consumers.stdErr().accept("Hello");
+      Consumers.stdErr().accept(3);
+      Consumers.stdErr().accept(Thread.currentThread());
    }
 
 
@@ -91,12 +92,8 @@ public class ConsumersTest {
    {
       List<String> strings = Lists.of("Hello", "goodbye");
       final List<String> result = Lists.newArrayList();
-      Iterables.forEach(strings, new Consumer<String>() {
-         @Override
-         public void apply(String s)
-         {
-            if(s != null && s.length() > 0 && Character.isLowerCase(s.charAt(0))) result.add(s);
-         }
+      Iterables.forEach(strings, s -> {
+         if(s != null && s.length() > 0 && Character.isLowerCase(s.charAt(0))) result.add(s);
       });
       assertEquals(Lists.of("goodbye"), result);
    }

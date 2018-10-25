@@ -44,7 +44,7 @@ public class AuthKeySetCallback implements Callback {
 
    /**
     * Returns the algorithm the requested key should be usable with.
-    * <p/>
+    * <p>
     * If the requester has not specified a particular algorithm this will return
     * {@code null}.
     */

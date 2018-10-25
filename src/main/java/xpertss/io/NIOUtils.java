@@ -3,8 +3,6 @@
  */
 package xpertss.io;
 
-import xpertss.function.Predicate;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
@@ -22,6 +20,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.function.Predicate;
 
 /**
  * Utility methods for operating with NIO Buffers, Channels, and Selectors.
@@ -305,7 +304,7 @@ public final class NIOUtils {
 
    /**
     * Create a {@link Predicate} that tests whether a file exists.
-    * <p/>
+    * <p>
     * The options parameter may be used to indicate how symbolic links are handled
     * for the case that the file is a symbolic link. By default, symbolic links are
     * followed. If the option NOFOLLOW_LINKS is present then symbolic links are not
@@ -314,23 +313,18 @@ public final class NIOUtils {
    public static Predicate<Path> exists(LinkOption... options)
    {
       final LinkOption[] linkOptions = options;
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.exists(input, linkOptions);
-         }
-      };
+      return input -> Files.exists(input, linkOptions);
    }
 
    /**
     * Create a {@link Predicate} that tests whether a file is a directory.
-    * <p/>
+    * <p>
     * The options array may be used to indicate how symbolic links are handled for
     * the case that the file is a symbolic link. By default, symbolic links are
     * followed and the file attribute of the final target of the link is read. If
     * the option {@link LinkOption#NOFOLLOW_LINKS} is present then symbolic links
     * are not followed.
-    * <p/>
+    * <p>
     * This implementation will treat {@link IOException}s as if the file is not
     * a directory.
     *
@@ -339,24 +333,19 @@ public final class NIOUtils {
    public static Predicate<Path> isDirectory(LinkOption... options)
    {
       final LinkOption[] linkOptions = options;
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.isDirectory(input, linkOptions);
-         }
-      };
+      return input -> Files.isDirectory(input, linkOptions);
    }
 
    /**
     * Create a {@link Predicate} that  tests whether a file is a regular file with
     * opaque content.
-    * <p/>
+    * <p>
     * The options array may be used to indicate how symbolic links are handled for
     * the case that the file is a symbolic link. By default, symbolic links are
     * followed and the file attribute of the final target of the link is read. If
     * the option {@link LinkOption#NOFOLLOW_LINKS} is present then symbolic links
     * are not followed.
-    * <p/>
+    * <p>
     * This implementation will treat {@link IOException}s as if the file is not
     * a regular file.
     *
@@ -365,29 +354,24 @@ public final class NIOUtils {
    public static Predicate<Path> isFile(LinkOption... options)
    {
       final LinkOption[] linkOptions = options;
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.isRegularFile(input, linkOptions);
-         }
-      };
+      return input -> Files.isRegularFile(input, linkOptions);
    }
 
 
    /**
     * Create a {@link Predicate} that tests whether a file is executable.
-    * <p/>
+    * <p>
     * This implementation checks that a file exists and that this Java virtual machine
     * has appropriate privileges to execute the file. The semantics may differ when
     * checking access to a directory. For example, on UNIX systems, checking for
     * execute access checks that the Java virtual machine has permission to search the
     * directory in order to access file or subdirectories.
-    * <p/>
+    * <p>
     * Depending on the platform, this implementation may require to read file permissions,
     * access control lists, or other file attributes in order to check the effective
     * access to the file. Consequently, this implementation may not be atomic with respect
     * to other file system operations.
-    * <p/>
+    * <p>
     * Note that the result of this implementation is immediately outdated, there is no
     * guarantee that a subsequent attempt to execute the file will succeed (or even that
     * it will access the same file). Care should be taken when using this method in
@@ -395,26 +379,21 @@ public final class NIOUtils {
     */
    public static Predicate<Path> isExecutable()
    {
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.isExecutable(input);
-         }
-      };
+      return input -> Files.isExecutable(input);
    }
 
 
    /**
     * Create a {@link Predicate} that tests whether a file is readable.
-    * <p/>
+    * <p>
     * This implementation checks that a file exists and that this Java virtual machine has
     * appropriate privileges that would allow it open the file for reading.
-    * <p/>
+    * <p>
     * Depending on the platform, this method may require to read file permissions, access
     * control lists, or other file attributes in order to check the effective access to the
     * file. Consequently, this method may not be atomic with respect to other file system
     * operations.
-    * <p/>
+    * <p>
     * Note that the result of this method is immediately outdated, there is no guarantee that
     * a subsequent attempt to open the file for reading will succeed (or even that it will
     * access the same file). Care should be taken when using this method in security
@@ -422,25 +401,20 @@ public final class NIOUtils {
     */
    public static Predicate<Path> isReadable()
    {
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.isReadable(input);
-         }
-      };
+      return input -> Files.isReadable(input);
    }
 
    /**
     * Create a {@link Predicate} that tests whether a file is writable.
-    * <p/>
+    * <p>
     * This implementation checks that a file exists and that this Java virtual machine has
     * appropriate privileges that would allow it open the file for writing.
-    * <p/>
+    * <p>
     * Depending on the platform, this method may require to read file permissions, access
     * control lists, or other file attributes in order to check the effective access to the
     * file. Consequently, this method may not be atomic with respect to other file system
     * operations.
-    * <p/>
+    * <p>
     * Note that the result of this method is immediately outdated, there is no guarantee that
     * a subsequent attempt to open the file for writing will succeed (or even that it will
     * access the same file). Care should be taken when using this method in security
@@ -448,47 +422,34 @@ public final class NIOUtils {
     */
    public static Predicate<Path> isWritable()
    {
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.isWritable(input);
-         }
-      };
+      return input -> Files.isWritable(input);
    }
 
    /**
     * Create a {@link Predicate} that tests whether a file is a symbolic link.
-    * <p/>
+    * <p>
     * This implementation will treat {@link IOException}s as if the file is not a symbolic
     * link.
     */
    public static Predicate<Path> isSymbolicLink()
    {
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            return Files.isSymbolicLink(input);
-         }
-      };
+      return input -> Files.isSymbolicLink(input);
    }
 
    /**
     * Create a {@link Predicate} that tests whether a file is considered hidden.
-    * <p/>
+    * <p>
     * The exact definition of hidden is platform or provider dependent. On UNIX for example a
     * file is considered to be hidden if its name begins with a period character ('.').  On
     * Windows a file is considered hidden if it isn't a directory and the DOS hidden attribute
     * is set.
-    * <p/>
+    * <p>
     * This implementation will treat {@link IOException}s as if the file is not hidden.
     */
    public static Predicate<Path> isHidden()
    {
-      return new Predicate<Path>() {
-         @Override public boolean apply(Path input)
-         {
-            try { return Files.isHidden(input); } catch(Exception e) { return false; }
-         }
+      return input -> {
+         try { return Files.isHidden(input); } catch(Exception e) { return false; }
       };
    }
 

@@ -1,8 +1,7 @@
 package xpertss.lang;
 
-import xpertss.util.Ordering;
-
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static java.lang.String.format;
 import static xpertss.lang.Numbers.gte;
@@ -465,7 +464,7 @@ public final class Bytes {
     * Returns the absolute value of the given {@code byte} value. If the argument
     * is not negative, the argument is returned. If the argument is negative, the
     * negation of the argument is returned.
-    * <p/>
+    * <p>
     * If the value equals {@link Byte#MIN_VALUE} an exception will be thrown to
     * indicate the action is impossible to perform without overflow.
     *
@@ -546,14 +545,14 @@ public final class Bytes {
     * Returns an ordering that orders two {@code byte} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(byte[], byte[])}.
     */
-   public static Ordering<byte[]> natural()
+   public static Comparator<byte[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -562,27 +561,27 @@ public final class Bytes {
     * Returns an ordering that orders two {@code byte} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [2] < [1], [1, 2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(byte[], byte[])}.
     */
-   public static Ordering<byte[]> reversed()
+   public static Comparator<byte[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
    @SuppressWarnings("SuspiciousNameCombination")
-   private static abstract class LexicographicalOrdering extends Ordering<byte[]> {
-      private static final Ordering<byte[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<byte[]> {
+      private static final Comparator<byte[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(byte left, byte right)
          {
             return Byte.compare(left, right);
          }
       };
-      private static final Ordering<byte[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<byte[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(byte left, byte right)
          {
             return Byte.compare(right, left);
@@ -625,7 +624,7 @@ public final class Bytes {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

@@ -2,6 +2,8 @@ package xpertss.function;
 
 import xpertss.lang.Objects;
 
+import java.util.function.Consumer;
+
 /**
  * Utility methods useful when operating with {@link Consumer}s.
  *
@@ -11,7 +13,7 @@ public final class Consumers {
 
    private Consumers() { }
 
-   private static final Consumer<Object> NOOP = new Consumer<Object>() { @Override public void apply(Object o) { } };
+   private static final Consumer<Object> NOOP = o -> { };
 
    /**
     * Simple no-op consumer.
@@ -41,13 +43,13 @@ public final class Consumers {
 
    private enum StdIO implements Consumer<Object> {
       StdOut {
-         @Override public void apply(Object s)
+         @Override public void accept(Object s)
          {
             if(s != null) System.out.println(s);
          }
       },
       StdErr {
-         @Override public void apply(Object s)
+         @Override public void accept(Object s)
          {
             if(s != null) System.err.println(s);
          }
@@ -59,7 +61,7 @@ public final class Consumers {
     * Returns a composed {@link Consumer} that performs, in sequence, each of the specified
     * operations.  If any of the operations throw an exception, the remaining operations are
     * not executed and the exception is relayed to the caller of the composed operation.
-    * <p/>
+    * <p>
     * If any of the consumers are {@code null} they will be skipped. An empty consumer set
     * will result in a NO-OP.
     *
@@ -70,12 +72,9 @@ public final class Consumers {
    public static <T> Consumer<T> compose(Consumer<? super T> ... consumers)
    {
       final Consumer<? super T>[] composed = Objects.clone(consumers);
-      return new Consumer<T>() {
-         @Override public void apply(T t)
-         {
-            for(int i = 0; composed != null && i < composed.length; i++) {
-               if(composed[i] != null) composed[i].apply(t);
-            }
+      return t -> {
+         for(int i = 0; composed != null && i < composed.length; i++) {
+            if(composed[i] != null) composed[i].accept(t);
          }
       };
    }

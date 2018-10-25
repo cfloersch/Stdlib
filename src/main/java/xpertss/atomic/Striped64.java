@@ -77,7 +77,7 @@ abstract class Striped64 extends Number {
     * Padded variant of AtomicLong supporting only raw accesses plus CAS.
     * The value field is placed between pads, hoping that the JVM doesn't
     * reorder them.
-    * <p/>
+    * <p>
     * JVM intrinsics note: It would be possible to use a release-only
     * form of CAS here, if it were provided.
     */

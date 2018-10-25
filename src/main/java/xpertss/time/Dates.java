@@ -1,12 +1,12 @@
 package xpertss.time;
 
-import xpertss.function.Predicate;
 import xpertss.lang.CharSequences;
 import xpertss.lang.Objects;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.function.Predicate;
 
 import static java.lang.String.format;
 
@@ -162,12 +162,7 @@ public final class Dates {
    public static Predicate<Date> before(Date d)
    {
       final Date date = d;
-      return new Predicate<Date>() {
-         @Override public boolean apply(Date input)
-         {
-            return input.before(date);
-         }
-      };
+      return input -> input.before(date);
    }
 
    /**
@@ -177,12 +172,7 @@ public final class Dates {
    public static Predicate<Date> after(Date d)
    {
       final Date date = d;
-      return new Predicate<Date>() {
-         @Override public boolean apply(Date input)
-         {
-            return input.after(date);
-         }
-      };
+      return input -> input.after(date);
    }
 
 
@@ -253,7 +243,7 @@ public final class Dates {
     * between the given maximum and minimum, otherwise it will throw an
     * {@link IllegalArgumentException} identifying the specified argument.
     * <p>
-    * An argument is said to be between when minimum < arg < maximum
+    * An argument is said to be between when minimum &lt; arg &lt; maximum
     */
    public static Date between(Date minimum, Date maximum, Date arg, String argName)
    {
@@ -268,7 +258,7 @@ public final class Dates {
     * within the given range, otherwise it will throw an {@link IllegalArgumentException}
     * identifying the specified argument.
     * <p>
-    * An argument is said to be within when minimum <= arg <= maximum
+    * An argument is said to be within when minimum &lt;= arg &lt;= maximum
     */
    public static Date within(Date minimum, Date maximum, Date arg, String argName)
    {
@@ -283,7 +273,7 @@ public final class Dates {
     * within the given range, otherwise it will throw an {@link IllegalArgumentException}
     * identifying the specified argument.
     * <p>
-    * An argument is said to be contained when minimum <= arg < maximum
+    * An argument is said to be contained when minimum &lt;= arg &lt; maximum
     */
    public static Date contains(Date minimum, Date maximum, Date arg, String argName)
    {

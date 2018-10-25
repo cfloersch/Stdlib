@@ -15,13 +15,13 @@ import java.util.*;
  * Utility methods for using Java Reflection APIs to facilitate generic property getter
  * and setter operations on Java objects.  Much of this code was originally included in
  * <code>BeanUtils</code>, but has been separated because of the volume of code involved.
- * <p/>
+ * <p>
  * In general, the objects that are examined and modified using these methods are expected
  * to conform to the property getter and setter method naming conventions described in the
  * JavaBeans Specification (Version 1.0.1). No data type conversions are performed, and
  * there are no usage of any <code>PropertyEditor</code> classes that have been registered,
  * although a convenient way to access the registered classes themselves is included.
- * <p/>
+ * <p>
  * For the purposes of this class, five formats for referencing a particular property value
  * of a bean are defined, with the layout of an identifying String in parentheses:
  * <ul>
@@ -127,7 +127,7 @@ public class PropertyUtils {
     * No conversions are performed on the actual property values -- it is assumed
     * that the values retrieved from the origin bean are assignment-compatible with
     * the types expected by the destination bean.
-    * <p/>
+    * <p>
     * If the origin "bean" is actually a <code>Map</code>, it is assumed to contain
     * String-valued <strong>simple</strong> property names as the keys, pointing at
     * the corresponding property values that will be set in the destination bean.
@@ -315,7 +315,7 @@ public class PropertyUtils {
     * for this property (if any).  This method follows the same name resolution rules used
     * by <code>getPropertyDescriptor()</code>, so if the last element of a name reference
     * is indexed, the property editor for the underlying property's class is returned.
-    * <p/>
+    * <p>
     * Note that <code>null</code> will be returned if there is no property, or if there is
     * no registered property editor class.  Because this return value is ambiguous, you
     * should determine the existence of the property itself by other means.

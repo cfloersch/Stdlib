@@ -5,8 +5,6 @@
  */
 package xpertss.util;
 
-import xpertss.function.Function;
-import xpertss.function.Predicate;
 import xpertss.lang.Classes;
 import xpertss.lang.Objects;
 
@@ -21,6 +19,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * General utility functions for Sets.
@@ -58,7 +58,7 @@ public final class Sets {
    /**
     * Returns a set containing elements that result from applying a given function to
     * the elements of the source set.
-    * <p/>
+    * <p>
     * The returned set will be an instance of the supplied set if the supplied set can
     * be duplicated using the {@link Sets#newSet(java.util.Set)} method. Otherwise, the
     * returned set will be a {@link java.util.LinkedHashSet}.
@@ -80,7 +80,7 @@ public final class Sets {
    /**
     * Creates and returns a new set containing the elements from the source set which
     * satisfy the predicate.
-    * <p/>
+    * <p>
     * The returned set will be an instance of the supplied set if the supplied set can
     * be duplicated using the {@link Sets#newSet(java.util.Set)} method. Otherwise, the
     * returned set will be a {@link java.util.LinkedHashSet}.
@@ -94,7 +94,7 @@ public final class Sets {
    public static <T> Set<T> filter(Set<T> src, Predicate<T> predicate)
    {
       Set<T> result = newSet(src);
-      for(T item : src) if(predicate.apply(item)) result.add(item);
+      for(T item : src) if(predicate.test(item)) result.add(item);
       return result;
    }
 
@@ -117,7 +117,7 @@ public final class Sets {
    public static <E> void add(Set<E> src, Predicate<E> predicate, E ... items)
    {
       for(E arg : Objects.notNull(items, "items")) {
-         if(predicate == null || predicate.apply(arg)) src.add(arg);
+         if(predicate == null || predicate.test(arg)) src.add(arg);
       }
    }
 
@@ -131,7 +131,7 @@ public final class Sets {
    public static <E> void retain(Set<E> src, Predicate<? super E> predicate)
    {
       for(Iterator<E> it = src.iterator(); it.hasNext(); ) {
-         if(!predicate.apply(it.next())) it.remove();
+         if(!predicate.test(it.next())) it.remove();
       }
    }
 
@@ -145,7 +145,7 @@ public final class Sets {
    public static <E> void remove(Set<E> src, Predicate<? super E> predicate)
    {
       for(Iterator<E> it = src.iterator(); it.hasNext(); ) {
-         if(predicate.apply(it.next())) it.remove();
+         if(predicate.test(it.next())) it.remove();
       }
    }
 
@@ -283,13 +283,13 @@ public final class Sets {
     * Create a new empty set of the same type as the supplied set if possible or
     * a {@link java.util.LinkedHashSet} if creating an instance of the given set
     * is impossible.
-    * <p/>
+    * <p>
     * This method uses reflection to create a new instance of the given set type.
     * If the given set type is an instance of {@link SortedSet} and its comparator
     * method returns a non-null result, then this implementation will look for a
     * constructor with a single {@link Comparator} argument. Otherwise, it will
     * look for a zero argument constructor.
-    * <p/>
+    * <p>
     * Set implementations that do not expose constructors with the appropriate
     * argument sets can not be duplicated. As such many of the wrapper and view
     * implementations found throughout the core jdk and some third party

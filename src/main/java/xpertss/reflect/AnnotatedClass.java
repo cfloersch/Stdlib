@@ -1,13 +1,11 @@
 /**
  * Copyright 2016 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 6/5/2016
  */
 package xpertss.reflect;
 
-import xpertss.function.Consumer;
-import xpertss.function.Predicate;
 import xpertss.lang.Annotations;
 import xpertss.lang.Classes;
 import xpertss.lang.Objects;
@@ -24,6 +22,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static java.lang.String.format;
 import static xpertss.lang.Objects.*;
@@ -115,7 +115,7 @@ public final class AnnotatedClass implements Annotated {
 
    /**
     * Factory method that instantiates an instance for a given class.
-    * <p/>
+    * <p>
     * TODO It would be nice to construct this with a Type vs a Class
     */
    public static AnnotatedClass of(Class<?> cls)
@@ -253,7 +253,7 @@ public final class AnnotatedClass implements Annotated {
    {
       Predicate<AnnotatedWithParams> filter = Utils.parameters(params);
       for(AnnotatedCreator creator : creators) {
-         if(filter.apply(creator)) return creator;
+         if(filter.test(creator)) return creator;
       }
       return null;
    }
@@ -261,19 +261,14 @@ public final class AnnotatedClass implements Annotated {
    public <A extends Annotation> AnnotatedCreator[] getCreators(Class<A> annotationClass)
    {
       final Class<A> ann = annotationClass;
-      return getCreators(new Predicate<AnnotatedCreator>() {
-         @Override
-         public boolean apply(AnnotatedCreator input) {
-            return input.hasAnnotation(ann);
-         }
-      });
+      return getCreators(input -> input.hasAnnotation(ann));
    }
 
    public AnnotatedCreator[] getCreators(Predicate<AnnotatedCreator> selector)
    {
       Set<AnnotatedCreator> results = Sets.newLinkedHashSet();
       for(AnnotatedCreator creator : creators) {
-         if(selector.apply(creator)) results.add(creator);
+         if(selector.test(creator)) results.add(creator);
       }
       return results.toArray(new AnnotatedCreator[results.size()]);
    }
@@ -311,7 +306,7 @@ public final class AnnotatedClass implements Annotated {
    {
       Set<AnnotatedAccessor> results = Sets.newLinkedHashSet();
       for(AnnotatedAccessor accessor : accessors) {
-         if(selector.apply(accessor)) results.add(accessor);
+         if(selector.test(accessor)) results.add(accessor);
       }
       return results.toArray(new AnnotatedAccessor[results.size()]);
    }
@@ -319,12 +314,7 @@ public final class AnnotatedClass implements Annotated {
    public <A extends Annotation> AnnotatedAccessor[] getAccessors(Class<A> annotationClass)
    {
       final Class<A> ann = annotationClass;
-      return getAccessors(new Predicate<AnnotatedAccessor>() {
-         @Override
-         public boolean apply(AnnotatedAccessor input) {
-            return input.hasAnnotation(ann);
-         }
-      });
+      return getAccessors(input -> input.hasAnnotation(ann));
    }
 
    public AnnotatedAccessor[] getAccessors()
@@ -352,7 +342,7 @@ public final class AnnotatedClass implements Annotated {
    {
       Set<AnnotatedMutator> results = Sets.newLinkedHashSet();
       for(AnnotatedMutator mutator : mutators) {
-         if(selector.apply(mutator)) results.add(mutator);
+         if(selector.test(mutator)) results.add(mutator);
       }
       return results.toArray(new AnnotatedMutator[results.size()]);
    }
@@ -360,12 +350,7 @@ public final class AnnotatedClass implements Annotated {
    public <A extends Annotation> AnnotatedMutator[] getMutators(Class<A> annotationClass)
    {
       final Class<A> ann = annotationClass;
-      return getMutators(new Predicate<AnnotatedMutator>() {
-         @Override
-         public boolean apply(AnnotatedMutator input) {
-            return input.hasAnnotation(ann);
-         }
-      });
+      return getMutators(input -> input.hasAnnotation(ann));
    }
 
    public AnnotatedMutator[] getMutators()
@@ -380,12 +365,7 @@ public final class AnnotatedClass implements Annotated {
    public AnnotatedField getField(String propName)
    {
       final String name = propName;
-      AnnotatedField[] results = getFields(new Predicate<AnnotatedField>() {
-         @Override
-         public boolean apply(AnnotatedField input) {
-            return Strings.equal(input.getName(), name);
-         }
-      });
+      AnnotatedField[] results = getFields(input -> Strings.equal(input.getName(), name));
       return (results.length > 0) ? results[0] : null;
    }
 
@@ -393,7 +373,7 @@ public final class AnnotatedClass implements Annotated {
    {
       Set<AnnotatedField> results = Sets.newLinkedHashSet();
       for(AnnotatedField field : fields) {
-         if(selector.apply(field)) results.add(field);
+         if(selector.test(field)) results.add(field);
       }
       return results.toArray(new AnnotatedField[results.size()]);
    }
@@ -401,12 +381,7 @@ public final class AnnotatedClass implements Annotated {
    public <A extends Annotation> AnnotatedField[] getFields(Class<A> annotationClass)
    {
       final Class<A> ann = annotationClass;
-      return getFields(new Predicate<AnnotatedField>() {
-         @Override
-         public boolean apply(AnnotatedField input) {
-            return input.hasAnnotation(ann);
-         }
-      });
+      return getFields(input -> input.hasAnnotation(ann));
    }
 
    public AnnotatedField[] getFields()
@@ -424,7 +399,7 @@ public final class AnnotatedClass implements Annotated {
       Predicate<AnnotatedWithParams> selector = Utils.parameters(paramTypes);
       for(AnnotatedMethod method : methods) {
          if(Strings.equal(name, method.getName())) {
-            if(selector.apply(method)) return method;
+            if(selector.test(method)) return method;
          }
       }
       return null;
@@ -434,7 +409,7 @@ public final class AnnotatedClass implements Annotated {
    {
       Set<AnnotatedMethod> results = Sets.newLinkedHashSet();
       for(AnnotatedMethod method : methods) {
-         if(selector.apply(method)) results.add(method);
+         if(selector.test(method)) results.add(method);
       }
       return results.toArray(new AnnotatedMethod[results.size()]);
    }
@@ -442,12 +417,7 @@ public final class AnnotatedClass implements Annotated {
    public <A extends Annotation> AnnotatedMethod[] getMethods(Class<A> annotationClass)
    {
       final Class<A> ann = annotationClass;
-      return getMethods(new Predicate<AnnotatedMethod>() {
-         @Override
-         public boolean apply(AnnotatedMethod input) {
-            return input.hasAnnotation(ann);
-         }
-      });
+      return getMethods(input -> input.hasAnnotation(ann));
    }
 
    public AnnotatedMethod[] getMethods()
@@ -497,7 +467,7 @@ public final class AnnotatedClass implements Annotated {
       }
 
       @Override
-      public void apply(Field field)
+      public void accept(Field field)
       {
          fields.add(new AnnotatedField(context, field, AnnotationMap.of(field)));
       }
@@ -520,7 +490,7 @@ public final class AnnotatedClass implements Annotated {
       }
 
       @Override
-      public void apply(Method method)
+      public void accept(Method method)
       {
          MethodKey key = MethodKey.of(method);
          AnnotatedMethod annotated = methods.get(key);
@@ -554,7 +524,7 @@ public final class AnnotatedClass implements Annotated {
       AnnotationMap annotations;
 
       @Override
-      public void apply(Class aClass)
+      public void accept(Class aClass)
       {
          Set<Annotation> ann = Annotations.getAnnotations((AnnotatedElement)aClass);
          if(annotations == null) {

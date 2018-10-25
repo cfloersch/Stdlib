@@ -1,9 +1,6 @@
 package xpertss.util;
 
 import org.junit.Test;
-import xpertss.function.Consumer;
-import xpertss.function.Predicate;
-import xpertss.lang.Objects;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +17,7 @@ public class IterablesTest {
    public void testOrderingOptimization()
    {
       assertSame(Iterables.ordering(), Iterables.ordering());
-      assertNotSame(Iterables.ordering(Ordering.natural()), Iterables.ordering(Ordering.natural()));
+      assertNotSame(Iterables.ordering(Comparator.<String>naturalOrder()), Iterables.ordering(Comparator.<String>naturalOrder()));
    }
 
    @Test
@@ -45,7 +42,7 @@ public class IterablesTest {
       assertEquals(0, comparator.compare(zero, Lists.<String>of()));
       assertEquals(0, comparator.compare(right, Lists.of("Goodbye")));
 
-      Comparator<Iterable<String>> reversedElem = Iterables.ordering(Ordering.<String>reversed());
+      Comparator<Iterable<String>> reversedElem = Iterables.ordering(Comparator.<String>naturalOrder().reversed());
       assertEquals(-1, reversedElem.compare(zero, one));
       assertEquals(-1, reversedElem.compare(one, two));
       assertEquals(1, reversedElem.compare(two, zero));
@@ -64,11 +61,8 @@ public class IterablesTest {
    {
       final List<String> copy = new ArrayList<>();
       List<String> source = Lists.of("Chris", "Carl", "Fred", "Bob", "Alex", "Craig");
-      Iterables.forEach(source, new Consumer<String>() {
-         @Override public void apply(String s)
-         {
-            if(s.toLowerCase().startsWith("c")) copy.add(s);
-         }
+      Iterables.forEach(source, s -> {
+         if(s.toLowerCase().startsWith("c")) copy.add(s);
       });
       assertEquals(Lists.of("Chris", "Carl", "Craig"), copy);
    }
@@ -80,54 +74,24 @@ public class IterablesTest {
    public void testAny()
    {
       List<String> source = Lists.of("Chris", "Carl", "Fred", "Bob", "Alex", "Craig");
-      assertTrue(Iterables.any(source, new Predicate<String>() {
-         @Override public boolean apply(String input)
-         {
-            return input.startsWith("C");
-         }
-      }));
-      assertFalse(Iterables.any(source, new Predicate<String>() {
-         @Override public boolean apply(String input)
-         {
-            return input.startsWith("c");
-         }
-      }));
+      assertTrue(Iterables.any(source, input -> input.startsWith("C")));
+      assertFalse(Iterables.any(source, input -> input.startsWith("c")));
    }
 
    @Test
    public void testAll()
    {
       List<String> source = Lists.of("Chris", "Carl", "Fred", "Bob", "Alex", "Craig");
-      assertTrue(Iterables.all(source, new Predicate<String>() {
-         @Override
-         public boolean apply(String input) {
-            return Character.isUpperCase(input.charAt(0));
-         }
-      }));
-      assertFalse(Iterables.all(source, new Predicate<String>() {
-         @Override
-         public boolean apply(String input) {
-            return input.startsWith("C");
-         }
-      }));
+      assertTrue(Iterables.all(source, input -> Character.isUpperCase(input.charAt(0))));
+      assertFalse(Iterables.all(source, input -> input.startsWith("C")));
    }
 
    @Test
    public void testNone()
    {
       List<String> source = Lists.of("Chris", "Carl", "Fred", "Bob", "Alex", "Craig");
-      assertTrue(Iterables.none(source, new Predicate<String>() {
-         @Override
-         public boolean apply(String input) {
-            return Character.isLowerCase(input.charAt(0));
-         }
-      }));
-      assertFalse(Iterables.none(source, new Predicate<String>() {
-         @Override
-         public boolean apply(String input) {
-            return input.startsWith("C");
-         }
-      }));
+      assertTrue(Iterables.none(source, input -> Character.isLowerCase(input.charAt(0))));
+      assertFalse(Iterables.none(source, input -> input.startsWith("C")));
    }
 
 
@@ -147,9 +111,9 @@ public class IterablesTest {
    public void testMinWithComparator()
    {
       List<Integer> numbers = Lists.of(2,5,1,4,3);
-      assertEquals(Integer.valueOf(5), Iterables.min(numbers, Ordering.<Integer>reversed()));
+      assertEquals(Integer.valueOf(5), Iterables.min(numbers, Comparator.<Integer>naturalOrder().reversed()));
       List<String> strings = Lists.of("b", "d",  "a", "c");
-      assertEquals("d", Iterables.min(strings, Ordering.<String>reversed()));
+      assertEquals("d", Iterables.min(strings, Comparator.<String>naturalOrder().reversed()));
    }
 
 
@@ -166,9 +130,9 @@ public class IterablesTest {
    public void testMaxWithComparator()
    {
       List<Integer> numbers = Lists.of(2,5,1,4,3);
-      assertEquals(Integer.valueOf(1), Iterables.max(numbers, Ordering.<Integer>reversed()));
+      assertEquals(Integer.valueOf(1), Iterables.max(numbers, Comparator.<Integer>naturalOrder().reversed()));
       List<String> strings = Lists.of("b", "d",  "a", "c");
-      assertEquals("a", Iterables.max(strings, Ordering.<String>reversed()));
+      assertEquals("a", Iterables.max(strings, Comparator.<String>naturalOrder().reversed()));
    }
 
 }

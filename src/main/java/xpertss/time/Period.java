@@ -112,7 +112,7 @@ public class Period implements java.io.Serializable, Comparable<Period> {
     * Check to see if the period contains the specified date. Returns <tt>true</tt> if
     * the argument date is contained in the period and <tt>false</tt> otherwise.
     * <p><pre>
-    *    this.start <= date < this.end
+    *    this.start &lt;= date &lt; this.end
     * </pre>
     */
    public boolean contains(Date date)
@@ -125,7 +125,7 @@ public class Period implements java.io.Serializable, Comparable<Period> {
     * Check to see if the supplied date falls within this period. Returns <tt>true</tt>
     * if the argument date falls within the period and <tt>false</tt> otherwise.
     * <p><pre>
-    *    this.start <= date <= this.end
+    *    this.start &lt;= date &lt;= this.end
     * </pre>
     */
    public boolean within(Date date)
@@ -139,7 +139,7 @@ public class Period implements java.io.Serializable, Comparable<Period> {
     * <tt>true</tt> if the argument date falls within the period and <tt>false</tt>
     * otherwise.
     * <p><pre>
-    *    this.start < date < this.end
+    *    this.start &lt; date &lt; this.end
     * </pre>
     */
    public boolean between(Date date)
@@ -351,7 +351,7 @@ public class Period implements java.io.Serializable, Comparable<Period> {
 
    /**
     * Converts this Period to a String using the specified DateFormat.
-    * <p/>
+    * <p>
     * TODO Rework this to use DateFormatter
     */
    public String toString(DateFormat format)

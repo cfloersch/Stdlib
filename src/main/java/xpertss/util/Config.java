@@ -232,7 +232,7 @@ public class Config {
    /**
     * Returns a new Config object which includes the properties of this config
     * overlaid with the specified properties.
-    * <p/>
+    * <p>
     * A common model is to load some sort of application properties and then
     * overlay it with system properties from the command line.
     *
@@ -281,7 +281,7 @@ public class Config {
 
    /**
     * Utility method to load a specified configuration.
-    * <p/>
+    * <p>
     * If overlay is {@code true} then the system properties will be overlaid over the
     * loaded configuration.
     *
@@ -308,10 +308,10 @@ public class Config {
 
    /**
     * Utility method to load a specified configuration.
-    * <p/>
+    * <p>
     * If overlay is {@code true} then the system properties will be overlaid over the
     * loaded configuration.
-    * <p/>
+    * <p>
     * This will attempt to resolve the {@code ctxUrlStr} against the most appropriate
     * class loader for the current operating environment.
     *

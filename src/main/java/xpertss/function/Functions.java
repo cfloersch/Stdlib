@@ -11,12 +11,14 @@ import xpertss.lang.Objects;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Static utility methods pertaining to Function instances.
  *
  * @see Function
- * @see BinaryFunction
+ * @see BiFunction
  */
 public final class Functions {
 
@@ -49,7 +51,7 @@ public final class Functions {
 
    /**
     * Returns a function which performs key-to-value lookup on {@code map}.
-    * <p/>
+    * <p>
     * The difference between a map and a function is that a map is defined on a set of
     * keys, while a function is defined on a type.  The function built by this method
     * returns {@code null} for all its arguments that do not belong to the map's keyset.
@@ -61,12 +63,7 @@ public final class Functions {
    public static <A,B> Function<A,B> forMap(Map<A,B> map)
    {
       final Map<A,B> delegate = Objects.notNull(map);
-      return new Function<A,B>() {
-         public B apply(A a)
-         {
-            return delegate.get(a);
-         }
-      };
+      return a -> delegate.get(a);
    }
 
 
@@ -88,12 +85,7 @@ public final class Functions {
    {
       final Function<B,C> funcG = Objects.notNull(outer);
       final Function<A,? extends B> funcF = Objects.notNull(inner);
-      return new Function<A,C> () {
-         public C apply(A a)
-         {
-            return funcG.apply(funcF.apply(a));
-         }
-      };
+      return a -> funcG.apply(funcF.apply(a));
    }
 
 
@@ -113,16 +105,11 @@ public final class Functions {
     * @param outer the outer function
     * @return Function&lt;T,U->V> composition of inner and outer
     */
-   public static <T, R, U, V> BinaryFunction<T, U, V> compose(BinaryFunction<T, U, R> inner, Function<? super R, ? extends V> outer)
+   public static <T, R, U, V> BiFunction<T, U, V> compose(BiFunction<T, U, R> inner, Function<? super R, ? extends V> outer)
    {
-      final BinaryFunction<T,U,R> binary = Objects.notNull(inner);
+      final BiFunction<T,U,R> binary = Objects.notNull(inner);
       final Function<? super R, ? extends V> func = Objects.notNull(outer);
-      return new BinaryFunction<T, U, V>() {
-         @Override
-         public V apply(T first, U second) {
-            return func.apply(binary.apply(first, second));
-         }
-      };
+      return (first, second) -> func.apply(binary.apply(first, second));
    }
 
 
@@ -138,7 +125,7 @@ public final class Functions {
     * Returns a function which guarantees that the delegate's {@link Function#apply(Object)}
     * method will be called by only a single thread at a time, making it thread-safe. This
     * implementation will synchronizes on the delegate before calling it.
-    * <p/>
+    * <p>
     * Using traditional synchronization is suitable where very little contention exists. As
     * lock contention goes up it scales poorly.
     *
@@ -168,26 +155,26 @@ public final class Functions {
 
 
    /**
-    * Returns a binary function that guarantees that the delegate's {@link BinaryFunction
+    * Returns a binary function that guarantees that the delegate's {@link BiFunction
     * #apply(Object,Object)} method will be called by only a single thread at a time, making
     * it thread-safe. This implementation will synchronizes on the delegate before calling it.
-    * <p/>
+    * <p>
     * Using traditional synchronization is suitable where very little contention exists. As
     * lock contention goes up it scales poorly.
     *
     * @throws NullPointerException if the specified {@code delegate} is {@code null}
-    * @see #lock(BinaryFunction)
+    * @see #lock(BiFunction)
     */
-   public static <T,U,R> BinaryFunction<T,U,R> synchronize(BinaryFunction<T,U,R> delegate)
+   public static <T,U,R> BiFunction<T,U,R> synchronize(BiFunction<T,U,R> delegate)
    {
       if(Classes.isInstanceOf(delegate, biLockers)) return delegate;
       return new SyncSafeBinaryFunction<>(delegate);
    }
 
-   private static class SyncSafeBinaryFunction<T,U,R> implements BinaryFunction<T,U,R>, Serializable {
-      final BinaryFunction<T,U,R> delegate;
+   private static class SyncSafeBinaryFunction<T,U,R> implements BiFunction<T,U,R>, Serializable {
+      final BiFunction<T,U,R> delegate;
 
-      SyncSafeBinaryFunction(BinaryFunction<T,U,R> delegate)
+      SyncSafeBinaryFunction(BiFunction<T,U,R> delegate)
       {
          this.delegate = Objects.notNull(delegate);
       }
@@ -205,7 +192,7 @@ public final class Functions {
     * method will be called by only a single thread at a time, making it thread-safe.  This
     * implementation  will acquire a  lock {@link java.util.concurrent.locks.ReentrantLock}
     * before calling the delegate.
-    * <p/>
+    * <p>
     * This implementation is very similar to the synchronized variant at low contention
     * levels even though it is less consistent.  However, at higher contention levels it
     * performs slightly better.
@@ -240,29 +227,29 @@ public final class Functions {
 
 
    /**
-    * Returns a binary function which guarantees that the delegate's {@link BinaryFunction
+    * Returns a binary function which guarantees that the delegate's {@link BiFunction
     * #apply(Object,Object)} method will be called by only a single thread at a time, making
     * it thread-safe.  This implementation  will acquire a lock
     * {@link java.util.concurrent.locks.ReentrantLock} before calling the delegate.
-    * <p/>
+    * <p>
     * This implementation is very similar to the synchronized variant at low contention
     * levels even though it is less consistent.  However, at higher contention levels it
     * performs slightly better.
     *
     * @throws NullPointerException if the specified {@code delegate} is {@code null}
-    * @see #synchronize(BinaryFunction)
+    * @see #synchronize(BiFunction)
     */
-   public static <T,U,R> BinaryFunction<T,U,R> lock(BinaryFunction<T,U,R> delegate)
+   public static <T,U,R> BiFunction<T,U,R> lock(BiFunction<T,U,R> delegate)
    {
       if(Classes.isInstanceOf(delegate, biLockers)) return delegate;
       return new LockSafeBinaryFunction<>(delegate);
    }
 
-   private static class LockSafeBinaryFunction<T,U,R> implements BinaryFunction<T,U,R>, Serializable {
+   private static class LockSafeBinaryFunction<T,U,R> implements BiFunction<T,U,R>, Serializable {
       final ReentrantLock lock = new ReentrantLock();
-      final BinaryFunction<T,U,R> delegate;
+      final BiFunction<T,U,R> delegate;
 
-      LockSafeBinaryFunction(BinaryFunction<T,U,R> delegate)
+      LockSafeBinaryFunction(BiFunction<T,U,R> delegate)
       {
          this.delegate = Objects.notNull(delegate);
       }

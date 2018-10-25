@@ -5,13 +5,12 @@
  */
 package xpertss.lang;
 
-import xpertss.function.Function;
-import xpertss.function.Predicate;
-
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Static utility methods pertaining to {@code enum} types.
@@ -25,7 +24,7 @@ public final class Enums {
     * Returns the {@link Annotation} for the given {@code enumValue}. For example, to get the
     * {@code Description} annotation on the {@code GOLF} constant of enum {@code Sport}, use
     * {@code Enums.getAnnotation(Sport.GOLF, Description.class)}.
-    * <p/>
+    * <p>
     * This will return {@code null} if the specified annotation is not found on the given
     * enum.
     *
@@ -44,7 +43,7 @@ public final class Enums {
 
    /**
     * Utility method to create an EnumSet from a var-args list of enum constants.
-    * <p/>
+    * <p>
     * Why this method is not part of the core jdk is beyond me. Who makes methods with variable
     * lengths of options manually??? By doing wht they did they made it truly variable length
     * and eliminated any possibility of using it to pass an array of items. Maybe that was their
@@ -73,12 +72,7 @@ public final class Enums {
    public static <T extends Enum<T>> Predicate<T> in(T ... constants)
    {
       final EnumSet<T> set = of(constants);
-      return new Predicate<T>() {
-         @Override public boolean apply(T input)
-         {
-            return set.contains(input);
-         }
-      };
+      return input -> set.contains(input);
    }
 
 

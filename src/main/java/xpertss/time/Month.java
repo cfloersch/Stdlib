@@ -4,11 +4,11 @@ import xpertss.lang.Numbers;
 
 /**
  * A month-of-year, such as 'July'.
- * <p/>
+ * <p>
  * Month is an enum representing the 12 months of the year - January, February,
  * March, April, May, June, July, August, September, October, November and
  * December.
- * <p/>
+ * <p>
  * In addition to the textual enum name, each month-of-year has an int value. The
  * int value follows normal usage and the ISO-8601 standard, from 1 (January) to
  * 12 (December). It is recommended that applications use the enum rather than
@@ -101,7 +101,7 @@ public enum Month {
 
    /**
     * Gets the length of this month in days.
-    * <p>>
+    * <p>
     * This takes a flag to determine whether to return the length for a leap year or not.
     * <p>
     * February has 28 days in a standard year and 29 days in a leap year. April, June,
@@ -115,7 +115,7 @@ public enum Month {
 
    /**
     * Gets the day-of-year for the first day of this month.
-    * <p/>
+    * <p>
     * This returns the sum of day numbers for all previous months taking into
     * account that february can occasionally have 29 days rather than 28.
     */
@@ -200,7 +200,7 @@ public enum Month {
 
    /**
     * Obtains an instance of Month from an int value.
-    * <p/>
+    * <p>
     * Month is an enum representing the 12 months of the year. This factory allows
     * the enum to be obtained from the int value. The int value follows the ISO-8601
     * standard, from 1 (January) to 12 (December).

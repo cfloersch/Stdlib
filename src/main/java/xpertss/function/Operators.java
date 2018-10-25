@@ -3,6 +3,8 @@ package xpertss.function;
 import xpertss.lang.Objects;
 
 import java.util.Comparator;
+import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 
 /**
  * Utility methods useful when operating with {@link BinaryOperator}s
@@ -28,12 +30,7 @@ public final class Operators {
    public static <T> BinaryOperator<T> minBy(Comparator<? super T> comparator)
    {
       final Comparator<? super T> comp = Objects.notNull(comparator);
-      return new BinaryOperator<T>() {
-         @Override
-         public T apply(T left, T right) {
-            return (comp.compare(left, right) <= 0) ? left : right;
-         }
-      };
+      return (left, right) -> (comp.compare(left, right) <= 0) ? left : right;
    }
 
    /**
@@ -49,12 +46,7 @@ public final class Operators {
    public static <T> BinaryOperator<T> maxBy(Comparator<? super T> comparator)
    {
       final Comparator<? super T> comp = Objects.notNull(comparator);
-      return new BinaryOperator<T>() {
-         @Override
-         public T apply(T left, T right) {
-            return (comp.compare(left, right) >= 0) ? left : right;
-         }
-      };
+      return (left, right) -> (comp.compare(left, right) >= 0) ? left : right;
    }
 
 

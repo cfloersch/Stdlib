@@ -257,11 +257,11 @@ public final class NetUtils {
     * Returns an array of InetAddresses containing {@code count} elements, beginning
     * with the specified base address and indexing the last octet by one for each
     * subsequent element.
-    * <p/>
+    * <p>
     * This will not overflow the given IP space so if the base IP of 255.255.255.254
     * is given and a count greater than 2 is specified this will return a collection
     * of only two addresses.
-    * <p/>
+    * <p>
     * This will return IPv6 addresses if the supplied address is IPv6 otherwise, it
     * will return IPv4 addresses.
     *
@@ -317,7 +317,7 @@ public final class NetUtils {
    /**
     * Returns the system's default interface. Returns {@code null} if there are no
     * non-loopback interfaces in the UP state.
-    * <p/>
+    * <p>
     * The default interface is the first interface returned by the system that is UP
     * and is not a loop back interface. It does not imply that it represents the
     * default route.
@@ -388,13 +388,13 @@ public final class NetUtils {
    /**
     * Determines if the supplied IP Address is a private non-routed IP
     * Address. RFC 1918 dictates the private IP space for IPv4
-    * <p/>
+    * <p>
     * <pre>
     *    10/8        - 10.0.0.0 through 10.255.255.255 (class A)
     *    172.16/12   - 172.16.0.0 through 172.31.255.255 (class B)
     *    192.168/16  - 192.168.0.0 through 192.168.255.255 (class C)
     * </pre>
-    * <p/>
+    * <p>
     * For IPv6 there are unique local addresses in the FD00::/8 space
     * as well as a deprecated site local addresses in the FEC0::/10
     * space which will both result in this returning {@code true}.

@@ -30,11 +30,11 @@ public final class Queues {
 
    /**
     * Returns the empty queue (immutable). This deque is serializable.
-    * <p/>
+    * <p>
     * This example illustrates the type-safe way to obtain an empty queue:
     *
     * <blockquote><pre>
-    *    Queue<String> s = Queues.emptyQueue();
+    *    Queue&lt;String&gt; s = Queues.emptyQueue();
     * </pre></blockquote>
     */
    @SuppressWarnings("unchecked")
@@ -54,10 +54,10 @@ public final class Queues {
 
    /**
     * Returns the empty deque (immutable). This deque is serializable.
-    * <p/>
+    * <p>
     * This example illustrates the type-safe way to obtain an empty deque:
     * <blockquote><pre>
-    *    Deque<String> s = Queues.emptyDeque();
+    *    Deque&lt;String&gt; s = Queues.emptyDeque();
     * </pre></blockquote>
     */
    @SuppressWarnings("unchecked")

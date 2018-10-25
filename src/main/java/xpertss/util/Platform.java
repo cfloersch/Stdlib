@@ -17,7 +17,7 @@ import java.security.Principal;
  * General utility class that provides access to some frequently accessed system
  * properties. This includes a means to identify the operating system class the
  * jvm is running on as well as the versions of the operating system and the jvm.
- * <p/>
+ * <p>
  * It also provides quick access to system paths like the users home directory,
  * the current working directory, the temp file directory, and the java install
  * directory.
@@ -144,7 +144,7 @@ public enum Platform {
    /**
     * Returns a string which represents the display name for the actual
     * underlying operating system. This value is not i18n.
-    * <p/>
+    * <p>
     * This is the result of {@code System.getProperty(os.name)}
     */
    public String getDisplayName() { return System.getProperty("os.name"); }
@@ -256,11 +256,11 @@ public enum Platform {
 
    /**
     * Returns an enumeration that represents the platform's operating system.
-    * <p/>
+    * <p>
     * If its not one of the well known operating systems this will return a
     * special type called {@link #Other}. That includes Netware, OS/2, VMS,
     * and many of the IBM operating systems.
-    * <p/>
+    * <p>
     * The generic {@link #Unix} type is returned for HP-UX, AIX, Irix, MPE/iX,
     * Digital Unix, NetBSD, OpenBSD, and FreeBSD.
     */

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * of variables may grow dynamically to reduce contention.  Method {@link #sum} (or,
  * equivalently {@link #doubleValue}) returns the current total combined across the
  * variables maintaining the sum.
- * <p/>
+ * <p>
  * This class extends {@link Number}, but does <em>not</em> define methods such as
  * {@code equals}, {@code hashCode} and {@code compareTo} because instances are
  * expected to be mutated, and so are not useful as collection keys.
@@ -30,7 +30,7 @@ public class DoubleAdder extends Striped64 implements Serializable {
     * for which bitwise equals works best anyway. In principle, the
     * long/double conversions used here should be essentially free on
     * most platforms since they just re-interpret bits.
-    * <p/>
+    * <p>
     * Similar conversions are used in other methods.
     */
    final long fn(long v, long x)

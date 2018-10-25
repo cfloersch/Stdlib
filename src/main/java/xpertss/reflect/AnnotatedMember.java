@@ -1,6 +1,6 @@
 /**
  * Copyright 2016 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 6/5/2016
  */
@@ -87,7 +87,7 @@ public interface AnnotatedMember extends Annotated {
    /**
     * Returns the Java language modifiers for the member represented by this object, as
     * an integer. The {@code Modifier} class should be used to decode the modifiers.
-    * <p/>
+    * <p>
     * TODO Hide this???
     */
    int getModifiers();

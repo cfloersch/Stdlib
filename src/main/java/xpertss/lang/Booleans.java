@@ -1,7 +1,7 @@
 package xpertss.lang;
 
 
-import xpertss.util.Ordering;
+import java.util.Comparator;
 
 import static java.lang.String.format;
 import static xpertss.lang.BooleanStyle.*;
@@ -352,7 +352,7 @@ public final class Booleans {
 
    /**
     * Negates the specified boolean.
-    * <p/>
+    * <p>
     * If {@code null} is passed in, {@code null} will be returned.
     */
    public static Boolean negate(Boolean bool)
@@ -435,14 +435,14 @@ public final class Booleans {
     * Returns an ordering that orders two {@code boolean} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [false] < [false, true] < [true]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with {@link
     * java.util.Arrays#equals(boolean[], boolean[])}.
     */
-   public static Ordering<boolean[]> natural()
+   public static Comparator<boolean[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -452,27 +452,27 @@ public final class Booleans {
     * Returns an ordering that orders two {@code byte} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [true] < [false], [false, true]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with {@link
     * java.util.Arrays#equals(boolean[], boolean[])}.
     */
-   public static Ordering<boolean[]> reversed()
+   public static Comparator<boolean[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
    @SuppressWarnings("SuspiciousNameCombination")
-   private static abstract class LexicographicalOrdering extends Ordering<boolean[]> {
-      private static final Ordering<boolean[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<boolean[]> {
+      private static final Comparator<boolean[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(boolean left, boolean right)
          {
             return Boolean.compare(left, right);
          }
       };
-      private static final Ordering<boolean[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<boolean[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(boolean left, boolean right)
          {
             return Boolean.compare(right, left);
@@ -515,7 +515,7 @@ public final class Booleans {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

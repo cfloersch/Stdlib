@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 /**
  * A standard set of fields.
- * <p/>
+ * <p>
  * The difference between DateField and DateUnit is the later is intended to
  * be used in relation to periods or durations while the former is used to
  * indicate date/time fields for truncation, comparison, and rounding.

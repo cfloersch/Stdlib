@@ -1,10 +1,9 @@
 package xpertss.lang;
 
-import xpertss.util.Ordering;
-
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static java.lang.String.format;
 import static xpertss.lang.Numbers.gte;
@@ -474,7 +473,7 @@ public final class Longs {
    /**
     * Find the most frequently occurring item(s) returning an empty array if all
     * items are unique.
-    * <p/>
+    * <p>
     * If there are multiple most frequent items because they all have the same
     * count within the set, the returned array will include them all sorted from
     * smallest to largest.
@@ -520,7 +519,7 @@ public final class Longs {
 
    /**
     * This computes the mean of the supplied set of numbers.
-    * <p/>
+    * <p>
     * The values will be converted to doubles, which causes a possible loss of
     * precision for longs of magnitude over 2^53 (slightly over 9e15).
     *
@@ -692,7 +691,7 @@ public final class Longs {
     * Returns the absolute value of the given {@code long} value. If the argument
     * is not negative, the argument is returned. If the argument is negative, the
     * negation of the argument is returned.
-    * <p/>
+    * <p>
     * If the value equals {@link Long#MIN_VALUE} an exception will be thrown to
     * indicate the action is impossible to perform without overflow.
     *
@@ -766,7 +765,7 @@ public final class Longs {
 
    /**
     * Returns {@code true} if {@code x} represents a power of two.
-    * <p/>
+    * <p>
     * This differs from {@code Long.bitCount(x) == 1}, because
     * {@code Long.bitCount(Long.MIN_VALUE) == 1}, but
     * {@link Long#MIN_VALUE} is not a power of two.
@@ -787,7 +786,7 @@ public final class Longs {
 
    /**
     * The following method will return a random number between {@code min} and {@code max}
-    * minus one. For example if you pass in the numbers 5 & 10 you will consistently get
+    * minus one. For example if you pass in the numbers 5 &amp; 10 you will consistently get
     * random numbers of 5,6,7,8, and 9 but will never get 10.
     *
     * @param min    The minimum number the random number should be
@@ -825,14 +824,14 @@ public final class Longs {
     * Returns an ordering that orders two {@code long} arrays using their natural
     * order. When one array is a prefix of the other, this treats the shorter array
     * as the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(long[], long[])}.
     */
-   public static Ordering<long[]> natural()
+   public static Comparator<long[]> natural()
    {
       return LexicographicalOrdering.NATURAL;
    }
@@ -841,27 +840,27 @@ public final class Longs {
     * Returns an ordering that orders two {@code long} arrays using the reverse of their
     * natural order. When one array is a prefix of the other, treats the shorter array as
     * the lesser. For example,
-    * <p/>
+    * <p>
     * {@code [] < [2] < [1], [1, 2]}.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(long[], long[])}.
     */
-   public static Ordering<long[]> reversed()
+   public static Comparator<long[]> reversed()
    {
       return LexicographicalOrdering.REVERSED;
    }
 
    @SuppressWarnings("SuspiciousNameCombination")
-   private static abstract class LexicographicalOrdering extends Ordering<long[]> {
-      private static final Ordering<long[]> NATURAL = new LexicographicalOrdering() {
+   private static abstract class LexicographicalOrdering implements Comparator<long[]> {
+      private static final Comparator<long[]> NATURAL = new LexicographicalOrdering() {
          @Override int compare(long left, long right)
          {
             return Long.compare(left, right);
          }
       };
-      private static final Ordering<long[]> REVERSED = new LexicographicalOrdering() {
+      private static final Comparator<long[]> REVERSED = new LexicographicalOrdering() {
          @Override int compare(long left, long right)
          {
             return Long.compare(right, left);
@@ -906,7 +905,7 @@ public final class Longs {
    /**
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it's length is zero.
-    * <p/>
+    * <p>
     * The resulting exception will contain the given {@code argName} as the message if
     * thrown.
     *

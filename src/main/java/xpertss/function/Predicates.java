@@ -16,11 +16,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
  * Static utility methods pertaining to {@code Predicate} instances.
- * <p/>
+ * <p>
  * All methods returns serializable predicates as long as they're given
  * serializable parameters.
  *
@@ -68,25 +70,25 @@ public final class Predicates {
 
    enum ObjectPredicate implements Predicate<Object> {
       AlwaysTrue {
-         @Override public boolean apply(Object o)
+         @Override public boolean test(Object o)
          {
             return true;
          }
       },
       AlwaysFalse {
-         @Override public boolean apply(Object o)
+         @Override public boolean test(Object o)
          {
             return false;
          }
       },
       IsNull {
-         @Override public boolean apply(Object o)
+         @Override public boolean test(Object o)
          {
             return o == null;
          }
       },
       NotNull {
-         @Override public boolean apply(Object o)
+         @Override public boolean test(Object o)
          {
             return o != null;
          }
@@ -121,9 +123,9 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
-         return !predicate.apply(t);
+         return !predicate.test(t);
       }
 
       @Override public int hashCode()
@@ -157,7 +159,7 @@ public final class Predicates {
     * evaluates to {@code true}. The components are evaluated in order, and
     * evaluation will be "short-circuited" as soon as a {@code false} predicate is
     * found.
-    * <p/>
+    * <p>
     * It defensively copies the array passed in, so future changes to it won't alter
     * the behavior of this predicate. If {@code components} is empty, the returned
     * predicate will always evaluate to {@code true}.
@@ -180,10 +182,10 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
          for (Predicate<? super T> predicate : components) {
-            if (!predicate.apply(t)) {
+            if (!predicate.test(t)) {
                return false;
             }
          }
@@ -252,10 +254,10 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
          for (Predicate<? super T> predicate : components) {
-            if (predicate.apply(t)) {
+            if (predicate.test(t)) {
                return true;
             }
          }
@@ -316,7 +318,7 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
          return target.equals(t);
       }
@@ -366,7 +368,7 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
          return target == t;
       }
@@ -402,9 +404,9 @@ public final class Predicates {
     * Returns a predicate that evaluates to {@code true} if the object being tested is
     * an instance of the given class. If the object being tested is {@code null} this
     * predicate evaluates to {@code false}.
-    * <p/>
+    * <p>
     * <b>Warning:</b> contrary to the typical assumptions about predicates (as documented
-    * at {@link Predicate#apply}), the returned predicate may not be <i>consistent with
+    * at {@link Predicate#test}), the returned predicate may not be <i>consistent with
     * equals</i>. For example, {@code instanceOf(ArrayList.class)} will yield different
     * results for the two equal instances {@code Lists.newArrayList(1)} and
     * {@code Arrays.asList(1)}.
@@ -425,7 +427,7 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(Object o)
+      public boolean test(Object o)
       {
          return clazz.isInstance(o);
       }
@@ -477,7 +479,7 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(Class<?> input)
+      public boolean test(Class<?> input)
       {
          return clazz.isAssignableFrom(input);
       }
@@ -553,7 +555,7 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
          try {
             return target.contains(t);
@@ -615,9 +617,9 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(A a)
+      public boolean test(A a)
       {
-         return p.apply(f.apply(a));
+         return p.test(f.apply(a));
       }
 
       @Override
@@ -685,7 +687,7 @@ public final class Predicates {
       }
 
       @Override
-      public boolean apply(CharSequence t)
+      public boolean test(CharSequence t)
       {
          return pattern.matcher(t).find();
       }
@@ -724,9 +726,9 @@ public final class Predicates {
     * Returns a predicate implementation that evaluates to {@code true} the first time
     * an object is passed into the predicate.  It evaluates to {@code false} on all
     * subsequent times it sees the object.
-    * <p/>
+    * <p>
     * An object in this case is identified by it's {@link Object#equals(Object)} method.
-    * <p/>
+    * <p>
     * {@code null} is a permitted object, but like all other objects it will evaluate to
     * {@code false} every time it is seen after the first time.
     */
@@ -741,7 +743,7 @@ public final class Predicates {
       private UniquePredicate() { }
 
       @Override
-      public boolean apply(T t)
+      public boolean test(T t)
       {
          return seen.add(t);
       }
@@ -763,10 +765,10 @@ public final class Predicates {
    private static final Class[] lockers = { SyncSafePredicate.class, LockSafePredicate.class };
 
    /**
-    * Returns a predicate which guarantees that the delegate's {@link Predicate#apply(Object)}
+    * Returns a predicate which guarantees that the delegate's {@link Predicate#test(Object)}
     * method will be called by only a single thread at a time, making it thread-safe.  This
     * implementation will synchronizes on the delegate before calling it.
-    * <p/>
+    * <p>
     * Using traditional synchronization is suitable where very little contention exists. As
     * lock contention goes up it scales poorly.
     *
@@ -786,21 +788,21 @@ public final class Predicates {
       {
          this.delegate = Objects.notNull(delegate);
       }
-      public boolean apply(T item)
+      public boolean test(T item)
       {
          synchronized (delegate) {
-            return delegate.apply(item);
+            return delegate.test(item);
          }
       }
    }
 
 
    /**
-    * Returns a predicate which guarantees that the delegate's {@link Predicate#apply(Object)}
+    * Returns a predicate which guarantees that the delegate's {@link Predicate#test(Object)}
     * method will be called by only a single thread at a time, making it thread-safe.  This
     * implementation will acquire a lock {@link java.util.concurrent.locks.ReentrantLock}
     * before calling the delegate.
-    * <p/>
+    * <p>
     * This implementation is very similar to the synchronized variant at low contention levels
     * even though it is less consistent.  However, at higher contention levels it performs
     * slightly better.
@@ -822,11 +824,11 @@ public final class Predicates {
       {
          this.delegate = Objects.notNull(delegate);
       }
-      public boolean apply(T item)
+      public boolean test(T item)
       {
          try {
             lock.lock();
-            return delegate.apply(item);
+            return delegate.test(item);
          } finally {
             lock.unlock();
          }

@@ -14,12 +14,12 @@ import java.util.Set;
  * manages resources for a locale in a convenient and easy to use map. See
  * <code>ResourceBundle</code> for more information about resource bundles in
  * general.
- * <p/>
+ * <p>
  * Unlike the default resource bundles shipped with the JDK this resource
  * bundle operates on a general data type which may be supplied by any number
  * of control implementations. The ones shipped with the JDK not only define
  * a structure they also define a file encoding and are tightly bound.
- * <p/>
+ * <p>
  * This bundle could easily be used with a control which parses the map data
  * from a properties file, or some other custom file format including java
  * serialized data, json data, or xml data.

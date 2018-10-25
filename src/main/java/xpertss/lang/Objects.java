@@ -1,12 +1,10 @@
 package xpertss.lang;
 
-import xpertss.util.Ordering;
-import xpertss.function.Supplier;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 
@@ -146,7 +144,7 @@ public final class Objects {
     * returned if all other objects are also {@code null}. Otherwise, equality is
     * determined by using the {@link Object#equals equals} method of the first argument
     * against all other elements in the input set.
-    * <p/>
+    * <p>
     * This method will return {@code false} if only a single object is specified.
     *
     * @param items Objects to check for equality
@@ -189,7 +187,7 @@ public final class Objects {
     * Generates a hash code for a sequence of input values. The hash code is generated
     * as if all the input values were placed into an array, and that array were hashed
     * by calling {@link Arrays#hashCode(Object[])}.
-    * <p/>
+    * <p>
     * This method is useful for implementing {@link Object#hashCode()} on objects
     * containing multiple fields. For example, if an object that has three fields,
     * {@code x}, {@code y}, and {@code z}, one could write:
@@ -304,7 +302,7 @@ public final class Objects {
 
    /**
     * Utility method to determine the component type to use for an array..
-    * <p/>
+    * <p>
     * If the given object is an array type then it will extract the array's
     * component type, otherwise, it will return the object's class type.
     *
@@ -391,7 +389,7 @@ public final class Objects {
     * Null safe method to sort an array according to the order induced by the
     * specified comparator. If the comparator is {@code null} the element's
     * natural ordering will be used.
-    * <p/>
+    * <p>
     * This modifies the order of the input array.
     *
     * @param input The input array to sort
@@ -706,11 +704,11 @@ public final class Objects {
     * orders them, using {@link Comparable#compareTo(Object)}, the first pair of
     * values that follow any common prefix, or when one array is a prefix of the
     * other, treats the shorter array as the lesser.
-    * <p/>
+    * <p>
     * For example, {@code [] < [1] < [1, 1] < [1, 2] < [2]}.
-    * <p/>
+    * <p>
     * This ordering does not support {@code null} elements.
-    * <p/>
+    * <p>
     * The returned ordering is inconsistent with {@link Object#equals(Object)} (since
     * arrays support only identity equality), but it is consistent with
     * {@link java.util.Arrays#equals(Object[], Object[])}.
@@ -718,13 +716,13 @@ public final class Objects {
     * @see <a href="http://en.wikipedia.org/wiki/Lexicographical_order">
     *     Lexicographical order article at Wikipedia</a>
     */
-   public static <T extends Comparable<? super T>> Ordering<T[]> ordering()
+   public static <T extends Comparable<? super T>> Comparator<T[]> ordering()
    {
       return Objects.cast(LexicographicalOrdering.INSTANCE);
    }
 
-   private static class LexicographicalOrdering extends Ordering<Comparable[]> {
-      private static final Ordering<Comparable[]> INSTANCE = new LexicographicalOrdering();
+   private static class LexicographicalOrdering implements Comparator<Comparable[]> {
+      private static final Comparator<Comparable[]> INSTANCE = new LexicographicalOrdering();
 
       @Override public int compare(Comparable[] left, Comparable[] right)
       {
@@ -740,7 +738,7 @@ public final class Objects {
    /**
     * Returns an ordering that orders two arrays according to the rules of the given
     * {@link Comparator}.
-    * <p/>
+    * <p>
     * It orders two arrays using {@link Comparator#compare(Object,Object)} on each
     * element of the array. If the two arrays share a common prefix then the array
     * with fewer elements is considered to be less than one with more elements.
@@ -748,19 +746,15 @@ public final class Objects {
     * @param comparator The comparator to apply to the array elements
     * @throws NullPointerException If the comparator is {@code null}
     */
-   public static <T> Ordering<T[]> ordering(Comparator<T> comparator)
+   public static <T> Comparator<T[]> ordering(final Comparator<T> comparator)
    {
-      final Ordering<T> ordering = Ordering.from(comparator);
-      return new Ordering<T[]>() {
-         @Override public int compare(T[] left, T[] right)
-         {
-            int minLength = Math.min(left.length, right.length);
-            for (int i = 0; i < minLength; i++) {
-               int result = ordering.compare(left[i], right[i]);
-               if (result != 0) return result;
-            }
-            return Integer.signum(left.length - right.length);
+      return (left, right) -> {
+         int minLength = Math.min(left.length, right.length);
+         for (int i = 0; i < minLength; i++) {
+            int result = comparator.compare(left[i], right[i]);
+            if (result != 0) return result;
          }
+         return Integer.signum(left.length - right.length);
       };
    }
 
@@ -804,7 +798,7 @@ public final class Objects {
     *     this.bar = Objects.notNull(bar);
     * }
     * </pre></blockquote>
-    * <p/>
+    * <p>
     * This variant does not provide a means to identify the offending argument if more
     * than one possibility exists.
     *
@@ -852,7 +846,7 @@ public final class Objects {
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it has a zero length.
     * It does not actually evaluate each array element to ensure they are not {@code null}.
-    * <p/>
+    * <p>
     * This variant does not identify the  offending argument.
     *
     * @param array   the array to check for nullity and length
@@ -872,7 +866,7 @@ public final class Objects {
     * Argument checking utility that will throw a {@link NullPointerException} if the given
     * array is {@code null} or an {@link IllegalArgumentException} if it has a zero length.
     * It does not actually evaluate each array element to ensure they are not {@code null}.
-    * <p/>
+    * <p>
     * This variant will include the given argument name in the exception to identify the
     * offending argument.
     *
@@ -913,7 +907,7 @@ public final class Objects {
     * Argument checking utility that will throw a {@link NullPointerException} if
     * the given array is {@code null} or any of it's elements are {@code null}.
     * Empty arrays will be accepted.
-    * <p/>
+    * <p>
     * This variant will include the given argument name in the exception to identify
     * the offending argument.
     *

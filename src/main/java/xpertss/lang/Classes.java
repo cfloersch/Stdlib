@@ -1,6 +1,5 @@
 package xpertss.lang;
 
-import xpertss.function.Consumer;
 import xpertss.function.Consumers;
 import xpertss.util.Sets;
 
@@ -12,6 +11,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static xpertss.lang.Objects.isOneOf;
 
@@ -252,11 +252,11 @@ public final class Classes {
     * the same as, or is a super class or super interface of, the class or interface
     * represented by the second argument. It returns {@code true} if so; otherwise it
     * returns {@code false}.
-    * <p/>
+    * <p>
     * If the first argument represents a primitive type, this method returns {@code true}
     * if the second argument is exactly the same class object; otherwise it returns
     * {@code false}.
-    * <p/>
+    * <p>
     * If either of the arguments is {@code null} then {@code false} will be returned.
     *
     * @param toClass The class to be assigned
@@ -380,7 +380,7 @@ public final class Classes {
    public static void fields(Class<?> cls, Consumer<Field> consumer)
    {
       Objects.notNull(cls, "cls"); Objects.notNull(consumer, "consumer");
-      for(Field field : cls.getDeclaredFields()) consumer.apply(field);
+      for(Field field : cls.getDeclaredFields()) consumer.accept(field);
    }
 
    /**
@@ -390,7 +390,7 @@ public final class Classes {
    public static void methods(Class<?> cls, Consumer<Method> consumer)
    {
       Objects.notNull(cls, "cls"); Objects.notNull(consumer, "consumer");
-      for(Method method : cls.getDeclaredMethods()) consumer.apply(method);
+      for(Method method : cls.getDeclaredMethods()) consumer.accept(method);
    }
 
 
@@ -401,12 +401,8 @@ public final class Classes {
    public static Set<Field> findFields(Class<?> cls)
    {
       final Set<Field> fields = Sets.newLinkedHashSet();
-      walk(cls, null, new Consumer<Field>() {
-         @Override
-         public void apply(Field field)
-         {
-            if(!field.getDeclaringClass().isInterface()) fields.add(field);
-         }
+      walk(cls, null, field -> {
+         if(!field.getDeclaringClass().isInterface()) fields.add(field);
       }, null);
       return fields;
    }
@@ -418,13 +414,7 @@ public final class Classes {
    public static Set<Method> findMethods(Class<?> cls)
    {
       final Set<Method> methods = Sets.newLinkedHashSet();
-      walk(cls, null, null, new Consumer<Method>() {
-         @Override
-         public void apply(Method method)
-         {
-            methods.add(method);
-         }
-      });
+      walk(cls, null, null, method -> methods.add(method));
       return methods;
    }
 
@@ -435,13 +425,7 @@ public final class Classes {
    public static Set<Class<?>> findSuperClasses(Class<?> cls)
    {
       final Set<Class<?>> classes = Sets.newLinkedHashSet();
-      walk(cls, new Consumer<Class>() {
-         @Override
-         public void apply(Class clazz)
-         {
-            classes.add(clazz);
-         }
-      }, null, null);
+      walk(cls, clazz -> classes.add(clazz), null, null);
       return classes;
    }
 
@@ -450,7 +434,7 @@ public final class Classes {
     * Walk the given class hierarchy consuming classes, fields, methods, or all of the
     * above. The classes consumer, fields consumer or the methods consumer may be {@code
     * null} if you're not interested in consuming those.
-    * <p/>
+    * <p>
     * This will visit the fields and methods of the given class first. It will then
     * recurse into any declared interfaces, walking up the interface's super class
     * structure before coming back and walking up the given classes' super class
@@ -468,7 +452,7 @@ public final class Classes {
       fields = Objects.ifNull(fields, Consumers.<Field>noop());
       methods = Objects.ifNull(methods, Consumers.<Method>noop());
       while(!isOneOf(cls, null, Object.class)) {
-         classes.apply(cls); fields(cls, fields); methods(cls, methods);
+         classes.accept(cls); fields(cls, fields); methods(cls, methods);
          for(Class<?> inter : cls.getInterfaces()) {
             walk(inter, classes, fields, methods);
          }

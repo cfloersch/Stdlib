@@ -10,19 +10,20 @@ import xpertss.lang.Objects;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.concurrent.locks.ReentrantLock;
-
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 
 /**
  * A SoftCachingSupplier caches an item supplied by an underlying supplier in a soft
  * reference.
- * <p/>
+ * <p>
  * Accessing the cached item will block if the cached item has not been loaded initially
  * or if the soft reference has been cleared by the vm due to low memory conditions.
- * <p/>
+ * <p>
  * This supplier ensures that only a single thread is used to load the underlying cached
  * item at a time avoiding the stampede effect.
- * <p/>
+ * <p>
  * If the underlying supplier returns {@code null} it will be assumed that the load failed
  * and  {@code null} will be returned to the caller. Subsequent threads will again attempt
  * to load the cache returning {@code null} only if their respective attempt to load also
@@ -40,13 +41,7 @@ public final class SoftCachingSupplier<T> implements Supplier<T> {
    public static <K,V> Function<K,Supplier<V>> compose(Function<K,Supplier<V>> provider)
    {
       final Function<K,Supplier<V>> source = Objects.notNull(provider);
-      return new Function<K, Supplier<V>>() {
-         @Override
-         public Supplier<V> apply(K input)
-         {
-            return new SoftCachingSupplier<>(source.apply(input));
-         }
-      };
+      return input -> new SoftCachingSupplier<>(source.apply(input));
    }
 
 
@@ -59,6 +54,7 @@ public final class SoftCachingSupplier<T> implements Supplier<T> {
     * Construct an instance of Memoizing supplier that will load its cache item from
     * the given delegate.
     *
+    * @param delegate The underlying supplier of the cached items
     * @throws NullPointerException if delegate is {@code null}
     */
    public SoftCachingSupplier(Supplier<T> delegate)

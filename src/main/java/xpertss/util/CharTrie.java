@@ -15,10 +15,10 @@ import java.util.Arrays;
  * prefix of the string associated with that node, and the root is associated
  * with the empty string. Values are normally not associated with every node,
  * only with leaves and some inner nodes that correspond to keys of interest.
- * <p/>
+ * <p>
  * This class is NOT thread safe and external thread synchronization will be
  * necessary if multiple concurrent threads read and write to it.
- * <p/>
+ * <p>
  * TODO I was thinking of reimplementing this using a base of 256 (aka a byte)
  * then I could take any character (1 byte or 2) and the tree could be based
  * not on binarySearch but an actual index. In this case a word of 20 characters
@@ -84,7 +84,7 @@ public class CharTrie<T> {
    /**
     * Get the value associated with this Trie or {@code null} if no value is
     * associated.
-    * <p/>
+    * <p>
     * Many of the middle nodes will not have any value associated with them.
     */
    public T get()
@@ -96,7 +96,7 @@ public class CharTrie<T> {
    /**
     * Returns the child Trie of this Trie identified by the specified character or
     * {@code null} if no such child exists.
-    * <p/>
+    * <p>
     * The returned Trie will be read-only. Calls to {@link #put(CharSequence, Object)}
     * will throw {@link UnsupportedOperationException}
     */
@@ -110,10 +110,10 @@ public class CharTrie<T> {
 
    /**
     * Map the given value into this Trie hierarchy using the specified key.
-    * <p/>
+    * <p>
     * Returns the previously mapped value if one existed or {@code null} if
     * the key was not previously mapped to a value.
-    * <p/>
+    * <p>
     * This method may only be called on the root node.
     *
     * @throws NullPointerException if the value is {@code null}

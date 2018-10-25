@@ -15,6 +15,8 @@ import xpertss.time.TimeProvider;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 
 /**
@@ -22,13 +24,13 @@ import java.util.concurrent.locks.AbstractQueuedSynchronizer;
  * of time represented by max age. It will asynchronously update the cached item upon the first
  * access after the cached item becomes stale assuming that access occurs before the item has
  * exceeded its maximum stale period.
- * <p/>
+ * <p>
  * Accessing the cached item will block if the cached item has not been loaded initially or
  * if the access time is greater than max stale period.
- * <p/>
+ * <p>
  * This supplier ensures that only a single thread is used to update or load the underlying
  * cached item at a time avoiding the stampede effect.
- * <p/>
+ * <p>
  * If the underlying supplier returns {@code null} it will be assumed that the load failed.
  * The previously loaded item will continue to be returned until a successful load occurs or
  * max stale is reached. Subsequent calls to get will result in additional attempts to load
@@ -53,13 +55,7 @@ public final class StaleCachingSupplier<T> implements Supplier<T> {
       final long fMaxAge = Numbers.gt(0L, maxAge, "maxAge");
       final long fMaxStale = Numbers.gte(0L, maxStale, "maxStale");
       final TimeUnit fUnit = Objects.notNull(unit);
-      return new Function<K, Supplier<V>>() {
-         @Override
-         public Supplier<V> apply(K input)
-         {
-            return new StaleCachingSupplier<>(source.apply(input), fMaxAge, fMaxStale, fUnit);
-         }
-      };
+      return input -> new StaleCachingSupplier<>(source.apply(input), fMaxAge, fMaxStale, fUnit);
    }
 
 
@@ -93,12 +89,12 @@ public final class StaleCachingSupplier<T> implements Supplier<T> {
    /**
     * Create a caching supplier that uses the specified supplier to obtain its cached
     * values.
-    * <p/>
+    * <p>
     * The item will be cached in memory for at least max age. At the end of the object's
     * lifetime it will be reloaded asynchronously and a stale copy returned if the max
     * stale time has not been exceeded. Otherwise, it will be reloaded and cached in a
     * blocking fashion.
-    * <p/>
+    * <p>
     * The max age and max stale are relative units. In absolute terms, max stale is
     * added to the end of the computed max age time.
     *
