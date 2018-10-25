@@ -131,7 +131,7 @@
         <url>https://github.com/cfloersch/stdlib</url>
         <connection>scm:git:git://git@github.com/cfloersch/stdlib.git</connection>
         <developerConnection>scm:git:git@github.com:cfloersch/stdlib.git</developerConnection>
-        <tag>stdlib-1.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
 
