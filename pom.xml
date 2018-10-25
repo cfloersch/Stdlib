@@ -96,6 +96,9 @@
                         <version>2.2</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <arguments>-Dmaven.test.skip=true</arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
