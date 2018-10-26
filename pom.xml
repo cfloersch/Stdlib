@@ -54,8 +54,8 @@
                 <version>2.3.2</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -177,6 +177,7 @@
                         <configuration>
                             <aggregate>true</aggregate>
                             <links><link>http://docs.oracle.com/javase/8/docs/api/</link></links>
+                            <additionalparam>-Xdoclint:none</additionalparam>
                             <encoding>UTF-8</encoding>
                         </configuration>
                         <executions>
