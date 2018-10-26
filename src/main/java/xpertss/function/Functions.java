@@ -79,7 +79,7 @@ public final class Functions {
     *
     * @param inner the inner function
     * @param outer the outer function
-    * @return Function&lt;A->C> composition of inner and outer
+    * @return Function&lt;A-&gt;C&gt; composition of inner and outer
     */
    public static <A,B,C> Function<A,C> compose(Function<A,? extends B> inner, Function<B,C> outer)
    {
@@ -103,7 +103,7 @@ public final class Functions {
     *
     * @param inner the inner function
     * @param outer the outer function
-    * @return Function&lt;T,U->V> composition of inner and outer
+    * @return Function&lt;T,U-&gt;V&gt; composition of inner and outer
     */
    public static <T, R, U, V> BiFunction<T, U, V> compose(BiFunction<T, U, R> inner, Function<? super R, ? extends V> outer)
    {

@@ -13,11 +13,10 @@ import java.security.PrivilegedAction;
  * multivalued properties like indexed properties but that are accessed with a
  * String key instead of an index. Such property values are typically stored in a
  * Map collection. For this class to work properly, a mapped value must have
- * getter and setter methods of the form
- * <p><code>getProperty(String key)<code> and
- * <p><code>setProperty(String key, Object value)<code>,
- * <p>where <code><strong>Property</strong></code> must be replaced
- * by the name of the property.
+ * getter and setter methods of the form <p>{@code getProperty(String key)} and
+ * <p>{@code setProperty(String key, Object value)},
+ * <p>where <strong>Property</strong>
+ * must be replaced by the name of the property.
  *
  * @see java.beans.PropertyDescriptor
  */
@@ -191,6 +190,7 @@ public class MappedPropertyDescriptor extends PropertyDescriptor {
     * Sets the method that should be used to read one of the property value.
     *
     * @param mappedGetter The new getter method.
+    * @throws IntrospectionException if the method is not a read method
     */
    public void setMappedReadMethod(Method mappedGetter)
       throws IntrospectionException
@@ -214,6 +214,7 @@ public class MappedPropertyDescriptor extends PropertyDescriptor {
     * Sets the method that should be used to write the property value.
     *
     * @param mappedSetter The new setter method.
+    * @throws IntrospectionException if the method is not a write method
     */
    public void setMappedWriteMethod(Method mappedSetter)
       throws IntrospectionException
