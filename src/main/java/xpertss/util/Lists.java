@@ -18,6 +18,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import static java.lang.String.format;
+
 /**
  * General utility methods for Lists.
  */
@@ -48,6 +50,17 @@ public final class Lists {
    }
 
 
+   /**
+    * Tests a given list and throws a {@link IllegalArgumentException} if it is {@code null}
+    * or empty.
+    *
+    * @param list the list to test
+    * @param name the name of the property used in the exception message
+    */
+   public static void notEmpty(List list, String name)
+   {
+      if(list == null || list.isEmpty()) throw new IllegalArgumentException(format("%s cannot be empty"));
+   }
 
 
 

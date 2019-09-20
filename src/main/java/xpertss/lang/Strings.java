@@ -5,6 +5,7 @@ import xpertss.function.Predicates;
 
 import java.io.Serializable;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static java.lang.String.*;
 
@@ -61,6 +62,14 @@ public final class Strings {
       return (isEmpty(str)) ? def : str;
    }
 
+   /**
+    * Returns a default string returned from the provided supplier if the input string
+    * is empty.
+    */
+   public static String ifEmpty(String str, Supplier<String> supplier)
+   {
+      return (isEmpty(str)) ? supplier.get() : str;
+   }
 
 
 
