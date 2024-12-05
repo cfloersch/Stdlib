@@ -18,8 +18,8 @@ import static xpertss.lang.Objects.notNull;
 
 /**
  * A TimedCachingSupplier caches an item supplied by an underlying supplier for a given
- * amount of time represented by duration. It will synchronously update the cached item
- * upon the first access after the cached item becomes expired.
+ * amount of time. It will synchronously update the cached item upon the first access
+ * after the cached item becomes expired.
  * <p>
  * Accessing the cached item will block if the cached item has not been loaded initially
  * or if the access time is greater than its expiration period.
@@ -82,8 +82,8 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
     * an expires_in measured nanoseconds.
     *
     * @param delegate The delegate that will supply cache items
-    * @param expiry A function that given a time provider and a cache item,
-    *               returns the expires_in in nanoseconds
+    * @param expiry A function that given a cache item, returns the expires_in in
+    *                nanoseconds
     */
    public TimedCachingSupplier(Supplier<T> delegate, Function<T, Long> expiry)
    {
