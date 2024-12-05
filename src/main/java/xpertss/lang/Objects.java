@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static java.lang.String.format;
@@ -781,6 +782,52 @@ public final class Objects {
 
 
 
+   /**
+    * Returns {@code true} if one or more elements satisfy the predicate.
+    *
+    * @throws NullPointerException If elements or predicate are {@code null}
+    */
+   @SafeVarargs
+   public static <T> boolean any(Predicate<? super T> predicate, T ... elements)
+   {
+      notNull(predicate, "predicate");
+      for(T item : notNull(elements, "elements")) {
+         if(predicate.test(item)) return true;
+      }
+      return false;
+   }
+
+   /**
+    * Returns {@code true} if every element satisfies the predicate. If
+    * {@code elements} is empty, {@code true} is returned.
+    *
+    * @throws NullPointerException If elements or predicate are {@code null}
+    */
+   @SafeVarargs
+   public static <T> boolean all(Predicate<? super T> predicate, T ... elements)
+   {
+      notNull(predicate, "predicate");
+      for(T item : notNull(elements, "elements")) {
+         if(!predicate.test(item)) return false;
+      }
+      return true;
+   }
+
+   /**
+    * Returns {@code true} if none of the elements satisfy the predicate.
+    * If {@code elements} is empty, {@code true} is returned.
+    *
+    * @throws NullPointerException If elements or predicate are {@code null}
+    */
+   @SafeVarargs
+   public static <T> boolean none(Predicate<? super T> predicate, T ... elements)
+   {
+      notNull(predicate, "predicate");
+      for(T item : notNull(elements, "elements")) {
+         if(predicate.test(item)) return false;
+      }
+      return true;
+   }
 
 
 
