@@ -6,7 +6,6 @@
 package xpertss.function;
 
 import xpertss.lang.Numbers;
-import xpertss.lang.Objects;
 import xpertss.time.SystemTimeProvider;
 import xpertss.time.TimeProvider;
 
@@ -14,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static xpertss.lang.Objects.notNull;
 
 /**
  * A TimedCachingSupplier caches an item supplied by an underlying supplier for a given
@@ -43,24 +44,24 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
     */
    public static <K,V> Function<K,Supplier<V>> compose(Function<K,Supplier<V>> provider, long maxAge, TimeUnit unit)
    {
-      final Function<K,Supplier<V>> source = Objects.notNull(provider);
+      final Function<K,Supplier<V>> source = notNull(provider);
       final long fMaxAge = Numbers.gt(0L, maxAge, "maxAge");
-      final TimeUnit fUnit = Objects.notNull(unit);
+      final TimeUnit fUnit = notNull(unit);
       return input -> new TimedCachingSupplier<>(source.apply(input), fMaxAge, fUnit);
    }
 
 
    private final ReentrantLock lock = new ReentrantLock();
 
-   private final Supplier<T> delegate;
-   private final long durationNanos;
    private final TimeProvider timer;
+   private final Supplier<T> delegate;
+   private final Function<T, Long> expiry;
 
    private volatile Pair<T> pair;
 
 
    /**
-    * Constructs a new ExpiringSupplier that will use the specified delegate to
+    * Constructs a new TimedCachingSupplier that will use the specified delegate to
     * load its cache items. Those items will be cached for the specified duration.
     *
     * @param delegate The delegate that will supply cache items
@@ -72,13 +73,38 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
       this(new SystemTimeProvider(), delegate, duration, unit);
    }
 
+   /**
+    * Constructs a new TimedCachingSupplier that will use the specified delegate to
+    * load its cache items. Those items will be cached for a duration defined by the
+    * supplied Function.
+    * <p/>
+    * The Function should evaluate the item to cache and return a value representing
+    * an expires_in measured nanoseconds.
+    *
+    * @param delegate The delegate that will supply cache items
+    * @param expiry A function that given a time provider and a cache item,
+    *               returns the expires_in in nanoseconds
+    */
+   public TimedCachingSupplier(Supplier<T> delegate, Function<T, Long> expiry)
+   {
+      this(new SystemTimeProvider(), delegate, expiry);
+   }
+
 
    TimedCachingSupplier(TimeProvider timer, Supplier<T> delegate, long duration, TimeUnit unit)
    {
-      this.timer = Objects.notNull(timer, "timer");
-      this.delegate = Objects.notNull(delegate, "delegate");
-      this.durationNanos = unit.toNanos(Numbers.gte(0L, duration, "duration must not be negative"));
+      this.timer = notNull(timer, "timer");
+      this.delegate = notNull(delegate, "delegate");
+      this.expiry = new DurationExpiry(duration, notNull(unit, "unit"));
    }
+
+   TimedCachingSupplier(TimeProvider timer, Supplier<T> delegate, Function<T, Long> expiry)
+   {
+      this.timer = notNull(timer, "timer");
+      this.delegate = notNull(delegate, "delegate");
+      this.expiry = notNull(expiry, "expiry");
+   }
+
 
    @Override
    public T get()
@@ -91,7 +117,7 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
             if(isExpired(copy)) {
                T value = delegate.get();
                if(value != null) {
-                  copy = pair = new Pair<>(value, timer.nanoTime());
+                  copy = pair = new Pair<>(value, timer.nanoTime() + expiry.apply(value));
                } else {
                   return null;
                }
@@ -105,25 +131,25 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
 
    private boolean isExpired(Pair<T> copy)
    {
-      return (copy == null || timer.nanoTime() - copy.getTimestamp() > durationNanos);
+      return (copy == null || timer.nanoTime() > copy.getExpiryNanos());
    }
 
 
    private static class Pair<T> {
 
       final T reference;
-      final long timestamp;
+      final long expiryNanos;
 
 
-      Pair(T reference, long timestamp)
+      Pair(T reference, long expiryNanos)
       {
          this.reference = reference;
-         this.timestamp = timestamp;
+         this.expiryNanos = expiryNanos;
       }
 
-      public long getTimestamp()
+      public long getExpiryNanos()
       {
-         return timestamp;
+         return expiryNanos;
       }
 
       public T get()
@@ -133,4 +159,20 @@ public final class TimedCachingSupplier<T> implements Supplier<T> {
 
    }
 
+   private class DurationExpiry implements Function<T, Long> {
+
+      private final long duration;
+
+      private DurationExpiry(long duration, TimeUnit unit)
+      {
+         this.duration = unit.toNanos(Numbers.gte(0L, duration, "duration must not be negative"));
+      }
+
+      @Override
+      public Long apply(T t)
+      {
+         return duration;
+      }
+
+   }
 }
