@@ -97,6 +97,13 @@ public enum Platform {
    WinRT(false, true),
 
    /**
+    * Windows 10, 11 and Server 2016. This value will be returned for all
+    * windows operating systems that have a version of 10.0 or higher until
+    * this class is updated with newer operating systems.
+    */
+   Win10(false, true),
+
+   /**
     * Mac operating systems that preceded the release of OS X
     */
    Mac(false, false),
@@ -277,6 +284,8 @@ public enum Platform {
             return Win9x;
          } else if(osName.contains("ce")) {
             return WinCE;
+         } else if(osVersion.isAtLeast(10, 0)) {
+            return Win10;
          } else if(osVersion.isAtLeast(6, 2)) {
             return WinRT;
          } else if(osVersion.isAtLeast(6, 0)) {

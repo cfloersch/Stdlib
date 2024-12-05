@@ -18,6 +18,11 @@ public class PlatformTest {
 
 
 
+   public void testCurrent()
+   {
+      System.out.println(Platform.osVersion());
+   }
+
    public void testCurrentOnWindowsSeven()
    {
       // difficult to test as properties are cached on class load
