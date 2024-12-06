@@ -20,7 +20,22 @@ public final class Streams {
 
    private Streams() { }
 
-   public static Stream<String> lines(Reader input) throws IOException
+   /**
+    * Returns a Stream, the elements of which are lines read from the specified Reader.
+    * The Stream is lazily populated, i.e., read only occurs during the terminal stream
+    * operation.
+    * <p/>
+    * Operation is unknown if anything else is operating on the supplied Reader during
+    * operation.
+    * <p/>
+    * If an IOException is thrown when accessing the underlying Reader, it is wrapped
+    * in an UncheckedIOException which will be thrown from the Stream method that
+    * caused the read to take place.
+    *
+    * @param input The source of string content
+    * @return a Stream<String> providing the lines of text described by the Reader
+    */
+   public static Stream<String> lines(Reader input)
    {
       BufferedReader br = new BufferedReader(input);
       try {
@@ -38,7 +53,25 @@ public final class Streams {
    }
 
 
-   public static Stream<String> lines(InputStream input, Charset cs) throws IOException
+   /**
+    * Returns a Stream, the elements of which are lines read from the specified InputStream.
+    * The Stream is lazily populated, i.e., read only occurs during the terminal stream
+    * operation.
+    * <p/>
+    * Operation is unknown if anything else is operating on the supplied InputStream during
+    * operation.
+    * <p/>
+    * If an IOException is thrown when accessing the underlying InputStream, it is wrapped
+    * in an UncheckedIOException which will be thrown from the Stream method that caused
+    * the read to take place.
+    * <p/>
+    * InputStream content is converted into String content using the specified Charset.
+    *
+    * @param input The source of string content
+    * @param cs The Charset used to convert the input into Strings.
+    * @return a Stream<String> providing the lines of text described by the InputStream
+    */
+   public static Stream<String> lines(InputStream input, Charset cs)
    {
       InputStreamReader reader = new InputStreamReader(input, cs);
       BufferedReader br = new BufferedReader(reader);
