@@ -325,13 +325,23 @@ public enum BooleanStyle {
    };
 
 
-
-
+   /**
+    * Parse the given string in the defined style into a boolean
+    *
+    * @param str The string to parse
+    * @return true or false
+    */
    public boolean parse(CharSequence str)
    {
       return CharSequences.equal("true", str);
    }
 
+   /**
+    * Returns the given boolean as a string in the given style.
+    *
+    * @param value true or false
+    * @return a string representation in the given style
+    */
    public String toString(boolean value)
    {
       return (value) ? "true" : "false";
