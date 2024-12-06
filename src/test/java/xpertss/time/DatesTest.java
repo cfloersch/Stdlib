@@ -1,13 +1,19 @@
 package xpertss.time;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.TimeZone;
 
-import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * User: cfloersch
@@ -163,19 +169,23 @@ public class DatesTest {
       assertSame(one, Dates.max(one, two, three));
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testMaxSetIsNull()
    {
-      Dates.max(null);
+      assertThrows(NullPointerException.class, ()->{
+         Dates.max(null);
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testMaxElementIsNull()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,2);
       Date two = cal.newDate(2012,1,1,0,0,0);
-      Dates.max(one, two, null);
+      assertThrows(NullPointerException.class, ()->{
+         Dates.max(one, two, null);
+      });
    }
 
    @Test
@@ -205,19 +215,23 @@ public class DatesTest {
       assertSame(three, Dates.min(one, two, three));
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testMinSetIsNull()
    {
-      Dates.min(null);
+      assertThrows(NullPointerException.class, ()->{
+         Dates.min(null);
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testMinElementIsNull()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,2);
       Date two = cal.newDate(2012,1,1,0,0,0);
-      Dates.min(one, two, null);
+      assertThrows(NullPointerException.class, ()->{
+         Dates.min(one, two, null);
+      });
    }
 
    @Test
@@ -249,10 +263,12 @@ public class DatesTest {
       assertTrue(Dates.equal(null,null,null));
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testEqualNullSet()
    {
-      Dates.equal(null);
+      assertThrows(NullPointerException.class, ()->{
+         Dates.equal(null);
+      });
    }
 
 
@@ -265,27 +281,33 @@ public class DatesTest {
       assertSame(one, Dates.gt(two,one, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testGreaterThanFalse()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,0);
       Date two = cal.newDate(2012,1,1,0,0,0);
-      Dates.gt(two, one, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.gt(two, one, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testGreaterThanNullArg()
    {
       Chronology cal = Chronology.create();
-      Dates.gt(cal.newDate(2012,1,1,0,0,0), null, "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.gt(cal.newDate(2012,1,1,0,0,0), null, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testGreaterThanNullMin()
    {
       Chronology cal = Chronology.create();
-      Dates.gt(null, cal.newDate(2012,1,1,0,0,0), "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.gt(null, cal.newDate(2012,1,1,0,0,0), "");
+      });
    }
 
 
@@ -298,27 +320,33 @@ public class DatesTest {
       assertSame(one, Dates.gte(two,one, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testGreaterThanEqualFalse()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,0);
       Date two = cal.newDate(2012,1,1,0,0,1);
-      Dates.gte(two, one, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.gte(two, one, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testGreaterThanEqualNullArg()
    {
       Chronology cal = Chronology.create();
-      Dates.gte(cal.newDate(2012,1,1,0,0,0), null, "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.gte(cal.newDate(2012,1,1,0,0,0), null, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testGreaterThanEqualNullMin()
    {
       Chronology cal = Chronology.create();
-      Dates.gte(null, cal.newDate(2012,1,1,0,0,0), "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.gte(null, cal.newDate(2012,1,1,0,0,0), "");
+      });
    }
 
 
@@ -331,27 +359,33 @@ public class DatesTest {
       assertSame(one, Dates.lt(two,one, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testLessThanFalse()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,0);
       Date two = cal.newDate(2012,1,1,0,0,0);
-      Dates.lt(two, one, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.lt(two, one, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testLessThanNullArg()
    {
       Chronology cal = Chronology.create();
-      Dates.lt(cal.newDate(2012,1,1,0,0,0), null, "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.lt(cal.newDate(2012,1,1,0,0,0), null, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testLessThanNullMax()
    {
       Chronology cal = Chronology.create();
-      Dates.lt(null, cal.newDate(2012,1,1,0,0,0), "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.lt(null, cal.newDate(2012,1,1,0,0,0), "");
+      });
    }
 
    @Test
@@ -363,29 +397,35 @@ public class DatesTest {
       assertSame(one, Dates.lte(two,one, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testLessThanEqualFalse()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,1);
       Date two = cal.newDate(2012,1,1,0,0,0);
-      Dates.lte(two, one, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.lte(two, one, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testLessThanEqualNullArg()
    {
       Chronology cal = Chronology.create();
       Date two = cal.newDate(2012,1,1,0,0,0);
-      Dates.lte(two, null, "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.lte(two, null, "");
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testLessThanEqualNullMax()
    {
       Chronology cal = Chronology.create();
       Date one = cal.newDate(2012,1,1,0,0,1);
-      Dates.lte(null, one, "");
+      assertThrows(NullPointerException.class, ()->{
+         Dates.lte(null, one, "");
+      });
    }
 
 
@@ -402,18 +442,22 @@ public class DatesTest {
       assertNotNull(Dates.between(lower, upper, cal.newDate(2012,12,31), ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testBetweenFailLowerBound()
    {
       Chronology cal = Chronology.create();
-      Dates.between(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2012,1,1), "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.between(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2012,1,1), "");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testBetweenFailUpperBound()
    {
       Chronology cal = Chronology.create();
-      Dates.between(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2013,1,1), "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.between(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2013,1,1), "");
+      });
    }
 
 
@@ -429,18 +473,22 @@ public class DatesTest {
       assertNotNull(Dates.within(lower, upper, cal.newDate(2013,1,1), ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testWithinFailLowerBound()
    {
       Chronology cal = Chronology.create();
-      Dates.within(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2011,12,31), "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.within(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2011,12,31), "");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testWithinFailUpperBound()
    {
       Chronology cal = Chronology.create();
-      Dates.within(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2013,1,2), "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.within(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2013,1,2), "");
+      });
    }
 
 
@@ -456,17 +504,21 @@ public class DatesTest {
       assertNotNull(Dates.contains(lower, upper, cal.newDate(2012,12,31), ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testContainsFailLowerBound()
    {
       Chronology cal = Chronology.create();
-      Dates.contains(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2011,12,31), "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.contains(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2011,12,31), "");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testContainsFailUpperBound()
    {
       Chronology cal = Chronology.create();
-      Dates.contains(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2013,1,1), "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Dates.contains(cal.newDate(2012,1,1), cal.newDate(2013,1,1), cal.newDate(2013,1,1), "");
+      });
    }
 }

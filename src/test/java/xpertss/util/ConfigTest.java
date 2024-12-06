@@ -1,11 +1,17 @@
 package xpertss.util;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+import xpertss.time.Day;
 
 import java.util.Arrays;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class ConfigTest {
 
@@ -53,10 +59,12 @@ public class ConfigTest {
    }
 
 
-   @Test(expected = ResourceNotFoundException.class)
+   @Test
    public void loadNonExistent()
    {
-      Config.load("/non-existent.txt", true);
+      assertThrows(ResourceNotFoundException.class, ()->{
+         Config.load("/non-existent.txt", true);
+      });
    }
 
 

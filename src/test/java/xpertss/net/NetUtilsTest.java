@@ -1,15 +1,17 @@
 package xpertss.net;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.io.BigEndian;
 
 import java.net.InetAddress;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * User: cfloersch
@@ -275,11 +277,13 @@ public class NetUtilsTest {
       assertEquals("10.148.0.0", NetUtils.getInetAddress(test, -256).getHostAddress());
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testInetDecrementOverflow()
    {
       InetAddress test = NetUtils.getInetAddress("0.0.0.1");
-      NetUtils.getInetAddress(test, -2);
+      assertThrows(ArithmeticException.class, ()->{
+         NetUtils.getInetAddress(test, -2);
+      });
    }
 
 
@@ -294,11 +298,13 @@ public class NetUtilsTest {
       assertEquals("10.148.2.0", NetUtils.getInetAddress(test, 256).getHostAddress());
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testInetIncrementOverflow()
    {
       InetAddress test = NetUtils.getInetAddress("255.255.255.255");
-      NetUtils.getInetAddress(test, 1);
+      assertThrows(ArithmeticException.class, ()->{
+         NetUtils.getInetAddress(test, 1);
+      });
    }
 
 
@@ -344,22 +350,28 @@ public class NetUtilsTest {
 
 
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetConsecutiveInetAddressNullInput()
    {
-      NetUtils.getInetAddresses(null, 2);
+      assertThrows(NullPointerException.class, ()->{
+         NetUtils.getInetAddresses(null, 2);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testGetConsecutiveInetAddressZeroCount()
    {
-      NetUtils.getInetAddresses(null, 0);
+      assertThrows(IllegalArgumentException.class, ()->{
+         NetUtils.getInetAddresses(null, 0);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testGetConsecutiveInetAddressNegativeCount()
    {
-      NetUtils.getInetAddresses(null, -1);
+      assertThrows(IllegalArgumentException.class, ()->{
+         NetUtils.getInetAddresses(null, -1);
+      });
    }
 
 

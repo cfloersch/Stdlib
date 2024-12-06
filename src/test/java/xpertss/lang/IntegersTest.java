@@ -1,12 +1,13 @@
 package xpertss.lang;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IntegersTest {
 
@@ -19,16 +20,20 @@ public class IntegersTest {
       assertEquals(1, Integers.min(1));
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testMinEmpty()
    {
-      Integers.min();
+      assertThrows(IllegalArgumentException.class, ()->{
+         Integers.min();
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testMinNull()
    {
-      Integers.min((int[])null);
+      assertThrows(NullPointerException.class, ()->{
+         Integers.min((int[])null);
+      });
    }
 
 
@@ -42,16 +47,20 @@ public class IntegersTest {
       assertEquals(1, Integers.max(1));
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testMaxEmpty()
    {
-      Integers.max();
+      assertThrows(IllegalArgumentException.class, ()->{
+         Integers.max();
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testMaxNull()
    {
-      Integers.max((int[]) null);
+      assertThrows(NullPointerException.class, ()->{
+         Integers.max((int[]) null);
+      });
    }
 
 
@@ -67,16 +76,20 @@ public class IntegersTest {
       assertEquals(3, Integers.median(1, 3, 4, 5, 2));
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testMedianEmpty()
    {
-      Integers.median();
+      assertThrows(IllegalArgumentException.class, ()->{
+         Integers.median();
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testMedianNull()
    {
-      Integers.median((int[]) null);
+      assertThrows(NullPointerException.class, ()->{
+         Integers.median((int[]) null);
+      });
    }
 
 
@@ -101,16 +114,20 @@ public class IntegersTest {
       assertTrue(Arrays.equals(three, Integers.mode(1,3,4,2,3,2,5,3,8,3,4)));
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testModeEmpty()
    {
-      Integers.mode();
+      assertThrows(IllegalArgumentException.class, ()->{
+         Integers.mode();
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testModeNull()
    {
-      Integers.mode((int[]) null);
+      assertThrows(NullPointerException.class, ()->{
+         Integers.mode((int[]) null);
+      });
    }
 
 
@@ -130,16 +147,20 @@ public class IntegersTest {
       assertEquals(Integer.MIN_VALUE, Integers.mean(Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE));
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testMeanEmpty()
    {
-      Integers.mean();
+      assertThrows(IllegalArgumentException.class, ()->{
+         Integers.mean();
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testMeanNull()
    {
-      Integers.mean((int[]) null);
+      assertThrows(NullPointerException.class, ()->{
+         Integers.mean((int[]) null);
+      });
    }
 
 

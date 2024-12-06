@@ -1,6 +1,6 @@
 package xpertss.text;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.time.Chronology;
 
 import java.util.LinkedHashMap;
@@ -8,7 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class MapMessageFormatTest {
 

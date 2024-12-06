@@ -1,10 +1,12 @@
 package xpertss.time;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertSame;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * User: cfloersch
@@ -125,22 +127,29 @@ public class MonthTest {
       }
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testNegativeIndex()
    {
-      Month.valueOf(-1);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Month.valueOf(-1);
+      });
+
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testZeroIndex()
    {
-      Month.valueOf(0);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Month.valueOf(0);
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testExcessiveIndex()
    {
-      Month.valueOf(13);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Month.valueOf(13);
+      });
    }
 
 

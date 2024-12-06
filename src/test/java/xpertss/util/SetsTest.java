@@ -5,7 +5,8 @@
  */
 package xpertss.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -18,7 +19,11 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import static junit.framework.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 
 public class SetsTest {
 

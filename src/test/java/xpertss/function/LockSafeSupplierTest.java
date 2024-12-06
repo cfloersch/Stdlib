@@ -1,6 +1,6 @@
 package xpertss.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.threads.PhaseBarrier;
 import xpertss.threads.NewThreadExecutor;
 

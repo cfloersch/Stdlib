@@ -5,14 +5,16 @@
  */
 package xpertss.util;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class PlatformTest {
 

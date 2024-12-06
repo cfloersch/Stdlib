@@ -5,10 +5,12 @@
  */
 package xpertss.function;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PredicatesTest {
 
@@ -56,10 +58,12 @@ public class PredicatesTest {
       assertTrue(Predicates.not(Predicates.alwaysTrue()).equals(Predicates.not(Predicates.alwaysTrue())));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testNotWithNull()
    {
-      Predicates.not(null);
+      assertThrows(NullPointerException.class, ()->{
+         Predicates.not(null);
+      });
    }
 
 }

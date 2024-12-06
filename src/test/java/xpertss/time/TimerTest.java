@@ -5,14 +5,14 @@
  */
 package xpertss.time;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
@@ -20,7 +20,7 @@ public class TimerTest {
 
    private TimeProvider provider;
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       provider = mock(TimeProvider.class);

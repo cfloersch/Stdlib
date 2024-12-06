@@ -1,11 +1,12 @@
 package xpertss.util;
 
-import org.junit.Test;
-import xpertss.util.Comparison;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class ComparisonTest {
@@ -26,10 +27,12 @@ public class ComparisonTest {
       assertEquals(0, Comparison.start().compare(Boolean.TRUE, Boolean.TRUE).result());
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testSimpleNullLeftBooleanComparison()
    {
-      Comparison.start().compare(null, false).result();
+      assertThrows(NullPointerException.class, ()->{
+         Comparison.start().compare(null, false).result();
+      });
    }
 
    @Test
@@ -40,10 +43,12 @@ public class ComparisonTest {
       assertEquals(1, Comparison.start().compare(null, false,  Comparator.nullsLast(ordering)).result());
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testSimpleNullRightBooleanComparison()
    {
-      Comparison.start().compare(false, null).result();
+      assertThrows(NullPointerException.class, ()->{
+         Comparison.start().compare(false, null).result();
+      });
    }
 
    @Test

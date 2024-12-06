@@ -1,6 +1,6 @@
 package xpertss.text;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.io.BigEndian;
 import xpertss.lang.Bytes;
 

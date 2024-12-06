@@ -1,14 +1,14 @@
 package xpertss.time;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static junit.framework.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
  */
 public class TimeProviderTest {
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       TimeProvider.stub(null);

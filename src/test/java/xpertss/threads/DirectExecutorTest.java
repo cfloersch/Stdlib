@@ -5,18 +5,20 @@
  */
 package xpertss.threads;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Executor;
 
-import static junit.framework.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 
 public class DirectExecutorTest {
 
    private Executor objectUdnerTest;
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       objectUdnerTest = new DirectExecutor();

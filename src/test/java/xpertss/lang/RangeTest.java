@@ -1,17 +1,18 @@
 package xpertss.lang;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * User: cfloersch
@@ -21,28 +22,36 @@ import static junit.framework.Assert.fail;
 public class RangeTest {
 
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testConstructionNullLower()
    {
-      Range<BigDecimal> bdr = new Range<BigDecimal>(null, BigDecimal.ONE);
+      assertThrows(NullPointerException.class, ()->{
+         Range<BigDecimal> bdr = new Range<BigDecimal>(null, BigDecimal.ONE);
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testConstructionNullUpper()
    {
-      Range<BigDecimal> bdr = new Range<BigDecimal>(BigDecimal.ONE, null);
+      assertThrows(NullPointerException.class, ()->{
+         Range<BigDecimal> bdr = new Range<BigDecimal>(BigDecimal.ONE, null);
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testConstructionUpperEqualsLower()
    {
-      Range<BigDecimal> bdr = new Range<BigDecimal>(BigDecimal.ONE, BigDecimal.ONE);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Range<BigDecimal> bdr = new Range<BigDecimal>(BigDecimal.ONE, BigDecimal.ONE);
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testConstructionUpperLessThanLower()
    {
-      Range<BigDecimal> bdr = new Range<BigDecimal>(BigDecimal.TEN, BigDecimal.ONE);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Range<BigDecimal> bdr = new Range<BigDecimal>(BigDecimal.TEN, BigDecimal.ONE);
+      });
    }
 
 
@@ -192,11 +201,13 @@ public class RangeTest {
       assertEquals(bo.hashCode(), bt.hashCode());
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testContainsNull()
    {
       Range<Byte> bo = new Range<Byte>(Byte.valueOf((byte)0x00), (byte)0x01);
-      bo.contains(null);
+      assertThrows(NullPointerException.class, ()->{
+         bo.contains(null);
+      });
    }
 
 
@@ -282,11 +293,13 @@ public class RangeTest {
       assertEquals(Range.AFTER, bo.compareTo(bt));
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testCompareToNull()
    {
       Range<Integer> io = new Range<Integer>(0,10);
-      io.compareTo(null);
+      assertThrows(NullPointerException.class, ()->{
+         io.compareTo(null);
+      });
    }
 
 

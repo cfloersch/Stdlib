@@ -5,9 +5,10 @@
  */
 package xpertss.util;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VersionTest {
 

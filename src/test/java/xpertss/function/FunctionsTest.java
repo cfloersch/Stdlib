@@ -5,17 +5,18 @@
  */
 package xpertss.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.lang.Numbers;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class FunctionsTest {
 
@@ -37,10 +38,12 @@ public class FunctionsTest {
       assertEquals("1.0", Functions.string().apply(d));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testToStringNull()
    {
-      Functions.string().apply(null);
+      assertThrows(NullPointerException.class, ()->{
+         Functions.string().apply(null);
+      });
    }
 
 
@@ -60,10 +63,12 @@ public class FunctionsTest {
       assertSame(map.get("4"), function.apply("4"));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testForMapNull()
    {
-      Functions.forMap(null);
+      assertThrows(NullPointerException.class, ()->{
+         Functions.forMap(null);
+      });
    }
 
    @Test

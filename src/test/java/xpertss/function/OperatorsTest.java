@@ -5,10 +5,11 @@
  */
 package xpertss.function;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class OperatorsTest {
 

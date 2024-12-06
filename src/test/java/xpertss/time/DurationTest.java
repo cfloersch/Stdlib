@@ -1,13 +1,13 @@
 package xpertss.time;
 
-import org.junit.Test;
 
-import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Test;
 
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  *
@@ -82,40 +82,52 @@ public class DurationTest {
 
 
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testNullString()
    {
-      Duration.parse(null, SECONDS);
+      assertThrows(NullPointerException.class, ()->{
+         Duration.parse(null, SECONDS);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testNullUnit()
    {
-      Duration.parse("10s", null);
+      assertThrows(NullPointerException.class, ()->{
+         Duration.parse("10s", null);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidUnitChars()
    {
-      Duration.parse("100dd", SECONDS);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Duration.parse("100dd", SECONDS);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidDigits()
    {
-      Duration.parse("3d3s", SECONDS);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Duration.parse("3d3s", SECONDS);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testNegativeDuration()
    {
-      Duration.parse("-3d", SECONDS);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Duration.parse("-3d", SECONDS);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidTimeUnit()
    {
-      Duration.parse("3M", SECONDS);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Duration.parse("3M", SECONDS);
+      });
    }
 
 

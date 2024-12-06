@@ -6,7 +6,7 @@
  */
 package xpertss.reflect;
 
-import org.junit.Test;
+
 import org.mockito.Mock;
 
 import javax.annotation.Nonnull;
@@ -21,7 +21,6 @@ public class BaseClass implements BaseInterface {
    protected String test = "base";
 
    @Override
-   @Test
    public void baseInterMethod(@Nullable String param)
    {
    }

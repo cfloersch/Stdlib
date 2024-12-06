@@ -93,6 +93,7 @@ public final class Dates {
     * @return The maximum date or {@code null} if the set was empty
     * @throws NullPointerException If the set or an element in the set is {@code null}
     */
+   @SafeVarargs
    public static Date max(Date ... set)
    {
       if(Objects.notNull(set).length < 1) return null;

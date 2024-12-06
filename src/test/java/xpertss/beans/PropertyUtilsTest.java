@@ -5,22 +5,24 @@
  */
 package xpertss.beans;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class PropertyUtilsTest {
 
    private SimpleBean objectToTestWith;
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       objectToTestWith = new SimpleBean();
@@ -68,10 +70,15 @@ public class PropertyUtilsTest {
       assertEquals("Hello", PropertyUtils.getProperty(objectToTestWith, "data[0]"));
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testGetInvalidIndexedPropertyThrowsIndexOutOfBoundsException() throws Exception
    {
-      PropertyUtils.getProperty(objectToTestWith, "data[1]");
+      IndexOutOfBoundsException thrown = assertThrows(IndexOutOfBoundsException.class, () -> {
+            PropertyUtils.getProperty(objectToTestWith, "data[1]");
+         },
+         "Expected IndexOutOfBoundsException"
+      );
+
    }
 
    @Test
@@ -94,10 +101,14 @@ public class PropertyUtilsTest {
       assertEquals("World", PropertyUtils.getProperty(testObj, "data[1]"));
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testIndexedGetterBadIndex() throws Exception
    {
-      PropertyUtils.getProperty(new IndexedBean(), "data[2]");
+      IndexOutOfBoundsException thrown = assertThrows(IndexOutOfBoundsException.class, () -> {
+            PropertyUtils.getProperty(new IndexedBean(), "data[2]");
+         },
+         "Expected IndexOutOfBoundsException"
+      );
    }
 
 

@@ -1,12 +1,14 @@
 package xpertss.text;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.io.Charsets;
 import xpertss.lang.SyntaxException;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 /**
  * Some additional test vectors
@@ -84,18 +86,24 @@ public class SaslPrepTest {
    }
 
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testProhibitedCharacter()
    {
       StringPrep prep = StringPrep.getInstance(Profile.SASLPrep);
-      prep.prepare("\u0007", false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare("\u0007", false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testBidirectionalFail()
    {
       StringPrep prep = StringPrep.getInstance(Profile.SASLPrep);
-      prep.prepare("\u0627\u0031", false);
+      assertThrows(SyntaxException.class, ()-> {
+         prep.prepare("\u0627\u0031", false);
+      });
+
+
    }
 
 

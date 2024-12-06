@@ -1,11 +1,13 @@
 package xpertss.io;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.lang.Bytes;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Copyright 2016 XpertSoftware

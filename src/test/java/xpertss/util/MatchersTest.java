@@ -1,12 +1,15 @@
 package xpertss.util;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /*
  * Copyright 2020 XpertSoftware

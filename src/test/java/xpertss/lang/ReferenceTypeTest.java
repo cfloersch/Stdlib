@@ -5,8 +5,8 @@
  */
 package xpertss.lang;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
@@ -14,16 +14,16 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReferenceTypeTest {
 
    private ReferenceQueue<String> queue;
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       queue = new ReferenceQueue<>();

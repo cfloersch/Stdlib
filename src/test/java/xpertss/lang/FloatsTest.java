@@ -6,12 +6,12 @@
 package xpertss.lang;
 
 
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FloatsTest {
 
@@ -78,34 +78,44 @@ public class FloatsTest {
       assertEquals(-Float.MAX_VALUE, Floats.safeCast(-Float.MAX_VALUE), .00001);
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeCastOverflowPositive()
    {
-      Floats.safeCast(Float.MAX_VALUE * 2D);
+      assertThrows(ArithmeticException.class, ()->{
+         Floats.safeCast(Float.MAX_VALUE * 2D);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeCastOverflowNegative()
    {
-      Floats.safeCast(-Float.MAX_VALUE * 2D);
+      assertThrows(ArithmeticException.class, ()->{
+         Floats.safeCast(-Float.MAX_VALUE * 2D);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeCastUnderflowPositive()
    {
-      Floats.safeCast(Float.MIN_VALUE / 2D);
+      assertThrows(ArithmeticException.class, ()->{
+         Floats.safeCast(Float.MIN_VALUE / 2D);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeCastUnderflowNegative()
    {
-      Floats.safeCast(-Float.MIN_VALUE / 2D);
+      assertThrows(ArithmeticException.class, ()->{
+         Floats.safeCast(-Float.MIN_VALUE / 2D);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeCastNegativeNaN()
    {
-      Floats.safeCast(-Float.NaN);
+      assertThrows(ArithmeticException.class, ()->{
+         Floats.safeCast(-Float.NaN);
+      });
    }
 
 

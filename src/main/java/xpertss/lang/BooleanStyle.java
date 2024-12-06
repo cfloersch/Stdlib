@@ -346,6 +346,7 @@ public enum BooleanStyle {
     * @param styles The set of styles to use to parse the string
     * @return {@code true} if any one of the styles returns {@code true}
     */
+   @SafeVarargs
    public static boolean parse(CharSequence str, BooleanStyle ... styles)
    {
       if(styles != null && !CharSequences.isEmpty(str)) {

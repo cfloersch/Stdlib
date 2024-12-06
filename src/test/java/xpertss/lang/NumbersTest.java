@@ -1,14 +1,16 @@
 package xpertss.lang;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * User: cfloersch
@@ -90,16 +92,20 @@ public class NumbersTest {
 
 
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testLessThanEdgeError()
    {
-      Numbers.lt(10,10,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.lt(10,10,"error");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testLessThanError()
    {
-      Numbers.lt(10,15,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.lt(10,15,"error");
+      });
    }
 
    @Test
@@ -109,16 +115,20 @@ public class NumbersTest {
    }
 
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testLessThanEqualError()
    {
-      Numbers.lte(10,15,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.lte(10,15,"error");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testLessThanEqualEdgeError()
    {
-      Numbers.lte(10,11,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.lte(10,11,"error");
+      });
    }
 
    @Test
@@ -135,16 +145,20 @@ public class NumbersTest {
 
 
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testGreaterThanEqualError()
    {
-      Numbers.gte(10,5,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.gte(10,5,"error");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testGreaterThanEqualEdgeError()
    {
-      Numbers.gte(10,9,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.gte(10,9,"error");
+      });
    }
 
    @Test
@@ -161,16 +175,20 @@ public class NumbersTest {
 
 
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testGreaterThanEdgeError()
    {
-      Numbers.gt(10,10,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.gt(10,10,"error");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testGreaterThanError()
    {
-      Numbers.gt(10,5,"error");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.gt(10,5,"error");
+      });
    }
 
    @Test
@@ -187,16 +205,20 @@ public class NumbersTest {
       assertEquals(Integer.valueOf(9), Numbers.between(0, 10, 9, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testBetweenFailLowerBound()
    {
-      Numbers.between(0, 10, 0, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.between(0, 10, 0, "");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testBetweenFailUpperBound()
    {
-      Numbers.between(0, 10, 10, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.between(0, 10, 10, "");
+      });
    }
 
 
@@ -210,16 +232,21 @@ public class NumbersTest {
       assertEquals(Integer.valueOf(10), Numbers.within(0, 10, 10, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testWithinFailLowerBound()
    {
-      Numbers.within(0, 10, -1, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.within(0, 10, -1, "");
+      });
+
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testWithinFailUpperBound()
    {
-      Numbers.within(0, 10, 11, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.within(0, 10, 11, "");
+      });
    }
 
 
@@ -231,16 +258,20 @@ public class NumbersTest {
       assertEquals(Integer.valueOf(9), Numbers.contains(0, 10, 9, ""));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testContainsFailLowerBound()
    {
-      Numbers.contains(0, 10, -1, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.contains(0, 10, -1, "");
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testContainsFailUpperBound()
    {
-      Numbers.contains(0, 10, 10, "");
+      assertThrows(IllegalArgumentException.class, ()->{
+         Numbers.contains(0, 10, 10, "");
+      });
    }
 
 
@@ -261,10 +292,12 @@ public class NumbersTest {
       assertFalse(Numbers.equal());
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testEqualNullSet()
    {
-      Numbers.equal(null);
+      assertThrows(NullPointerException.class, ()->{
+         Numbers.equal(null);
+      });
    }
 
 

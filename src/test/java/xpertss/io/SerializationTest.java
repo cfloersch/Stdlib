@@ -5,16 +5,17 @@
  */
 package xpertss.io;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.util.Lists;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotSame;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class SerializationTest {
 

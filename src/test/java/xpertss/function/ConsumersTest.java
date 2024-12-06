@@ -1,17 +1,20 @@
 package xpertss.function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.util.Iterables;
 import xpertss.util.Lists;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 /**
  * Created by cfloersch on 1/17/14.

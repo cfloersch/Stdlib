@@ -5,8 +5,8 @@
  */
 package xpertss.threads;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import xpertss.util.Sets;
 
 import java.util.Arrays;
@@ -17,14 +17,14 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Predicate;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,7 +35,7 @@ public class ThreadsTest {
    private Executor executor;
    private ReentrantLock lock;
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       executor = new NewThreadExecutor();
@@ -70,10 +70,12 @@ public class ThreadsTest {
 
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testAwaitConditionNullArgument()
    {
-      Threads.await(null);
+      assertThrows(NullPointerException.class, ()->{
+         Threads.await(null);
+      });
    }
 
    @Test
@@ -95,11 +97,13 @@ public class ThreadsTest {
       lock.unlock();
    }
 
-   @Test(expected = IllegalMonitorStateException.class)
+   @Test
    public void testAwaitConditionNoLock()
    {
       final Condition cond = lock.newCondition();
-      Threads.await(cond);
+      assertThrows(IllegalMonitorStateException.class, ()->{
+         Threads.await(cond);
+      });
    }
 
 
@@ -306,10 +310,12 @@ public class ThreadsTest {
       latch.countDown();
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetThreadsNullGroup()
    {
-      Threads.getThreads((ThreadGroup)null);
+      assertThrows(NullPointerException.class, ()->{
+         Threads.getThreads((ThreadGroup)null);
+      });
    }
 
 

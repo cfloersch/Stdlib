@@ -5,12 +5,14 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StringsTest {
 
@@ -28,34 +30,44 @@ public class StringsTest {
       assertEquals("", Strings.join(",", (String) null));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testJoinNullSeparator()
    {
-      Strings.join(null, "1", "2", "3");
+      assertThrows(NullPointerException.class, ()->{
+         Strings.join(null, "1", "2", "3");
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testJoinNullIterator()
    {
-      Strings.join(" ", (Iterable<String>)null);
+      assertThrows(NullPointerException.class, ()->{
+         Strings.join(" ", (Iterable<String>)null);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testJoinNullArray()
    {
-      Strings.join(" ", null, 0, 1);
+      assertThrows(NullPointerException.class, ()->{
+         Strings.join(" ", null, 0, 1);
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testJoinInvalidOffset()
    {
-      Strings.join(" ", new String[0], 1, 1);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Strings.join(" ", new String[0], 1, 1);
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testJoinInvalidLength()
    {
-      Strings.join(" ", new String[0], 0, 1);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Strings.join(" ", new String[0], 0, 1);
+      });
    }
 
 

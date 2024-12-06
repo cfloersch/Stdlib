@@ -1,14 +1,13 @@
 package xpertss.lang;
 
-import junit.framework.Assert;
-import org.junit.Test;
 
+
+import org.junit.jupiter.api.Test;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.ProtocolException;
 import java.sql.SQLException;
@@ -17,12 +16,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * User: cfloersch
@@ -146,7 +147,7 @@ public class ClassesTest {
       Constructor<String> cons = Classes.getConstructor(String.class, String.class);
       assertNotNull(cons);
       String str = Classes.newInstance(cons, "Hello");
-      Assert.assertEquals("Hello", str);
+      assertEquals("Hello", str);
    }
 
    @Test
@@ -209,16 +210,20 @@ public class ClassesTest {
       assertFalse(Classes.isSubclassOf(AbstractMap.class, LinkedHashMap.class));
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testIsSubClassOfNullSuper()
    {
-      assertFalse(Classes.isSubclassOf(LinkedHashMap.class, null));
+      assertThrows(NullPointerException.class, ()->{
+         Classes.isSubclassOf(LinkedHashMap.class, null);
+      });
    }
 
-   @Test (expected = NullPointerException.class)
+   @Test
    public void testIsSubClassOfNullSub()
    {
-      Classes.isSubclassOf(null, AbstractMap.class);
+      assertThrows(NullPointerException.class, ()->{
+         Classes.isSubclassOf(null, AbstractMap.class);
+      });
    }
 
 

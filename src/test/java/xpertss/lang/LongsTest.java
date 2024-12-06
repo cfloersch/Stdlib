@@ -5,13 +5,16 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.RoundingMode;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class LongsTest {
 
@@ -22,16 +25,20 @@ public class LongsTest {
       Longs.safeMultiply(Long.MIN_VALUE, 1);
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeMultiplyGreater()
    {
-      Longs.safeMultiply(Long.MAX_VALUE, 2);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeMultiply(Long.MAX_VALUE, 2);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeMultiplyLess()
    {
-      Longs.safeMultiply(Long.MIN_VALUE, 2);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeMultiply(Long.MIN_VALUE, 2);
+      });
    }
 
 
@@ -44,16 +51,20 @@ public class LongsTest {
       Longs.safeSubtract(Long.MAX_VALUE, 0);
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeSubtractGreater()
    {
-      Longs.safeSubtract(Long.MAX_VALUE, -1);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeSubtract(Long.MAX_VALUE, -1);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeSubtractLess()
    {
-      Longs.safeSubtract(Long.MIN_VALUE, 1);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeSubtract(Long.MIN_VALUE, 1);
+      });
    }
 
 
@@ -65,16 +76,20 @@ public class LongsTest {
       Longs.safeAdd(Long.MAX_VALUE, 0);
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeAddGreater()
    {
-      Longs.safeAdd(Long.MAX_VALUE, 1);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeAdd(Long.MAX_VALUE, 1);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testSafeAddLess()
    {
-      Longs.safeAdd(Long.MIN_VALUE, -1);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeAdd(Long.MIN_VALUE, -1);
+      });
    }
 
 
@@ -86,10 +101,12 @@ public class LongsTest {
       assertEquals(Long.MIN_VALUE + 1, Longs.safeNegate(Long.MAX_VALUE));
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testCheckedNegateOverflow()
    {
-      Longs.safeNegate(Long.MIN_VALUE);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.safeNegate(Long.MIN_VALUE);
+      });
    }
 
 
@@ -128,28 +145,36 @@ public class LongsTest {
 
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testRoundUnnecessary()
    {
-      Longs.round(2.2D, RoundingMode.UNNECESSARY);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.round(2.2D, RoundingMode.UNNECESSARY);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testRoundPositiveInfinity()
    {
-      Longs.round(Double.POSITIVE_INFINITY, RoundingMode.HALF_DOWN);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.round(Double.POSITIVE_INFINITY, RoundingMode.HALF_DOWN);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testRoundNegativeInfinity()
    {
-      Longs.round(Double.NEGATIVE_INFINITY, RoundingMode.HALF_UP);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.round(Double.NEGATIVE_INFINITY, RoundingMode.HALF_UP);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testRoundNaN()
    {
-      Longs.round(Double.NaN, RoundingMode.HALF_UP);
+      assertThrows(ArithmeticException.class, ()->{
+         Longs.round(Double.NaN, RoundingMode.HALF_UP);
+      });
    }
 
 

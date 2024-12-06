@@ -5,7 +5,7 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,9 +14,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
-import static junit.framework.Assert.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class ObjectsTest {
 
@@ -92,41 +97,53 @@ public class ObjectsTest {
       assertTrue(Arrays.equals(new Long[0], longs));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testSubsetNullSourceArray()
    {
-      Objects.subset(null, 0, 2);
+      assertThrows(NullPointerException.class, ()->{
+         Objects.subset(null, 0, 2);
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testSubsetEmptySourceArray()
    {
-      Objects.subset(new String[0], 0, 2);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.subset(new String[0], 0, 2);
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testSubsetNegativeOffset()
    {
-      Objects.subset(new String[] {"Hello", "There", "Cuttie"}, -1, 2);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.subset(new String[] {"Hello", "There", "Cuttie"}, -1, 2);
+      });
    }
 
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testSubsetNegativeLength()
    {
-      Objects.subset(new String[] {"Hello", "There", "Cuttie"}, 0, -1);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.subset(new String[] {"Hello", "There", "Cuttie"}, 0, -1);
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testSubsetInvalidArrayOffset()
    {
-      Objects.subset(new String[] {"Hello", "There", "Cuttie"}, 4, 2);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.subset(new String[] {"Hello", "There", "Cuttie"}, 4, 2);
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testSubsetInvalidArrayLength()
    {
-      Objects.subset(new String[] {"Hello", "There", "Cuttie"}, 1, 3);
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.subset(new String[] {"Hello", "There", "Cuttie"}, 1, 3);
+      });
    }
 
 
@@ -188,16 +205,20 @@ public class ObjectsTest {
       assertFalse(Objects.isSameType(1, "hi"));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsSameTypeNullLeft()
    {
-      Objects.isSameType(null,12);
+      assertThrows(NullPointerException.class, ()->{
+         Objects.isSameType(null,12);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsSameTypeNullRight()
    {
-      Objects.isSameType(1,null);
+      assertThrows(NullPointerException.class, ()->{
+         Objects.isSameType(1,null);
+      });
    }
 
 
@@ -259,11 +280,13 @@ public class ObjectsTest {
       assertTrue(Arrays.equals(new String[] {"two", "three"}, result));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testPrependNullArray()
    {
       String[] array = new String[] { "two", "three" };
-      String[] result = Objects.prepend(null, "one", "two");
+      assertThrows(NullPointerException.class, ()->{
+         String[] result = Objects.prepend(null, "one", "two");
+      });
    }
 
    @Test
@@ -284,11 +307,13 @@ public class ObjectsTest {
       assertTrue(Arrays.equals(new String[] {"two", "three"}, result));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testAppendNullArray()
    {
       String[] array = new String[] { "two", "three" };
-      String[] result = Objects.append(null, "four", "five");
+      assertThrows(NullPointerException.class, ()->{
+         String[] result = Objects.append(null, "four", "five");
+      });
    }
 
 
@@ -310,25 +335,31 @@ public class ObjectsTest {
       assertTrue(Arrays.equals(new String[] {"two", "three"}, result));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testInsertNullArray()
    {
       String[] array = new String[] { "two", "three" };
-      String[] result = Objects.insert(1, null, "four", "five");
+      assertThrows(NullPointerException.class, ()->{
+         String[] result = Objects.insert(1, null, "four", "five");
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testInsertNegativeIndex()
    {
       String[] array = new String[] { "two", "three" };
-      Objects.insert(-1, array, "four", "five");
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.insert(-1, array, "four", "five");
+      });
    }
 
-   @Test(expected = IndexOutOfBoundsException.class)
+   @Test
    public void testInsertIndexOutOfBounds()
    {
       String[] array = new String[] { "two", "three" };
-      Objects.insert(3, array, "four", "five");
+      assertThrows(IndexOutOfBoundsException.class, ()->{
+         Objects.insert(3, array, "four", "five");
+      });
    }
 
    @Test

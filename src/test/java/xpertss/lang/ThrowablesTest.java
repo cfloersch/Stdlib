@@ -5,13 +5,16 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.security.DigestException;
 
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class ThrowablesTest {
 
@@ -41,28 +44,36 @@ public class ThrowablesTest {
       assertSame(io, Throwables.getRootCause(io));
    }
 
-   @Test(expected = RuntimeException.class)
+   @Test
    public void testPropagateExceptionSubClass()
    {
-      Throwables.propagate(new DigestException());
+      assertThrows(RuntimeException.class, ()->{
+         Throwables.propagate(new DigestException());
+      });
    }
 
-   @Test(expected = SecurityException.class)
+   @Test
    public void testPropagateRuntimeExceptionSubClass()
    {
-      Throwables.propagate(new SecurityException());
+      assertThrows(SecurityException.class, ()->{
+         Throwables.propagate(new SecurityException());
+      });
    }
 
-   @Test(expected = InternalError.class)
+   @Test
    public void testPropagateErrorSubClass()
    {
-      Throwables.propagate(new InternalError());
+      assertThrows(InternalError.class, ()->{
+         Throwables.propagate(new InternalError());
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testPropagateNullThrowable()
    {
-      Throwables.propagate(null);
+      assertThrows(NullPointerException.class, ()->{
+         Throwables.propagate(null);
+      });
    }
 
 }

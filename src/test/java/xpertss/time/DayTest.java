@@ -1,11 +1,12 @@
 package xpertss.time;
 
-import org.junit.Test;
-import xpertss.time.Day;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 
-import static junit.framework.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,16 +75,20 @@ public class DayTest {
       assertSame(Day.Saturday, Day.valueOf(Calendar.SATURDAY));
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test 
    public void testValueOfFailLower()
    {
-      Day.valueOf(0);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Day.valueOf(0);
+      });
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testValueOfFailUpper()
    {
-      Day.valueOf(Day.values().length + 1);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Day.valueOf(Day.values().length + 1);
+      });
    }
 
 }

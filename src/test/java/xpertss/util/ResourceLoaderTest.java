@@ -1,9 +1,10 @@
 package xpertss.util;
 
-import org.junit.Test;
 
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Copyright 2018 XpertSoftware
@@ -19,10 +20,12 @@ public class ResourceLoaderTest {
       assertNull(ResourceLoader.getResource("doesnotexist.xml"));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetResourceWithNull()
    {
-      assertNull(ResourceLoader.getResource(null));
+      assertThrows(NullPointerException.class, ()->{
+         ResourceLoader.getResource(null);
+      });
    }
 
 }

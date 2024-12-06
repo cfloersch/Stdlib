@@ -1,11 +1,15 @@
 package xpertss.net;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Copyright 2016 XpertSoftware

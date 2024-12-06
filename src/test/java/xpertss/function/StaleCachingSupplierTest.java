@@ -1,7 +1,7 @@
 package xpertss.function;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import xpertss.threads.Threads;
@@ -16,9 +16,9 @@ import java.util.function.Supplier;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,7 +31,7 @@ public class StaleCachingSupplierTest {
 
    private StaleCachingSupplier<Integer> objectUnderTest;
 
-   @Before
+   @BeforeEach
    public void setUp() throws Exception {
       testSupplier = mock(Supplier.class);
       when(testSupplier.get()).thenReturn(33).thenReturn(44);

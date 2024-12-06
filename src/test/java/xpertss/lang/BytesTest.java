@@ -5,62 +5,78 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import xpertss.io.Charsets;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class BytesTest {
 
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testNullSrcThrowsNullPointerException()
    {
-      Bytes.regionMatches(null, 0, new byte[2], 0, 2);
+      assertThrows(NullPointerException.class, ()->{
+         Bytes.regionMatches(null, 0, new byte[2], 0, 2);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testNullOtherThrowsNullPointerException()
    {
-      Bytes.regionMatches(new byte[2], 0, null, 0, 2);
+      assertThrows(NullPointerException.class, ()->{
+         Bytes.regionMatches(new byte[2], 0, null, 0, 2);
+      });
    }
 
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testNegativeSrcOffsetThrowsIllegalArgumentException()
    {
-      Bytes.regionMatches(new byte[2], -1, new byte[2], 0, 2);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Bytes.regionMatches(new byte[2], -1, new byte[2], 0, 2);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testNegativeOtherOffsetThrowsIllegalArgumentException()
    {
-      Bytes.regionMatches(new byte[2], 0, new byte[2], -1, 2);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Bytes.regionMatches(new byte[2], 0, new byte[2], -1, 2);
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testNegativeLengthThrowsIllegalArgumentException()
    {
-      Bytes.regionMatches(new byte[2], 0, new byte[2], 0, -1);
+      assertThrows(IllegalArgumentException.class, ()->{
+         Bytes.regionMatches(new byte[2], 0, new byte[2], 0, -1);
+      });
    }
 
 
 
-   @Test(expected = ArrayIndexOutOfBoundsException.class)
+   @Test
    public void testRegionMatchesSrcArrayIndexOutOfBounds()
    {
-      Bytes.regionMatches(new byte[2], 2, new byte[4], 0, 2);
+      assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
+         Bytes.regionMatches(new byte[2], 2, new byte[4], 0, 2);
+      });
+
    }
 
-   @Test(expected = ArrayIndexOutOfBoundsException.class)
+   @Test
    public void testRegionMatchesOtherArrayIndexOutOfBounds()
    {
-      Bytes.regionMatches(new byte[4], 2, new byte[2], 2, 2);
+      assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
+         Bytes.regionMatches(new byte[4], 2, new byte[2], 2, 2);
+      });
    }
 
    @Test
@@ -101,18 +117,22 @@ public class BytesTest {
    }
 
 
-   @Test(expected = NumberFormatException.class)
+   @Test
    public void testFromHexOddDigitCount()
    {
       byte[] value = new byte[] { 0x01, (byte) 0xff };
-      assertTrue(Arrays.equals(value, Bytes.fromHexString("1ff")));
+      assertThrows(NumberFormatException.class, ()->{
+         Arrays.equals(value, Bytes.fromHexString("1ff"));
+      });
    }
 
-   @Test(expected = NumberFormatException.class)
+   @Test
    public void testFromHexInvalidCharacter()
    {
       byte[] value = new byte[] { 0x01, (byte) 0xff };
-      assertTrue(Arrays.equals(value, Bytes.fromHexString("01gf")));
+      assertThrows(NumberFormatException.class, ()->{
+         Arrays.equals(value, Bytes.fromHexString("01gf"));
+      });
    }
 
 

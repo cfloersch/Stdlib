@@ -1,8 +1,9 @@
 package xpertss.net;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * http://www.ietf.org/rfc/rfc3986.txt

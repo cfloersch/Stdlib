@@ -1,19 +1,22 @@
 package xpertss.io;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuffersTest {
 
    private ByteBuffer testData;
 
-   @Before
+   @BeforeEach
    public void setUp()
    {
       testData = Charsets.ISO_8859_1.encode("Test data");

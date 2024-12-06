@@ -1,13 +1,15 @@
 package xpertss.text;
 
-import org.junit.Test;
 
+import org.junit.jupiter.api.Test;
 import xpertss.io.Charsets;
 import xpertss.lang.SyntaxException;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class NamePrepTest {
 
@@ -138,164 +140,202 @@ public class NamePrepTest {
 
 
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsOne()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xC2, (byte) 0x85 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsTwo()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xE1, (byte) 0xA0, (byte) 0x8E };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsThree()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF0, (byte) 0x9D, (byte)0x85, (byte) 0xB5 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsFour()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xEF, (byte) 0x84, (byte) 0xA3 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsFive()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF3, (byte) 0xB1, (byte) 0x88, (byte) 0xB4 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsSix()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF4, (byte) 0x8F, (byte) 0x88, (byte) 0xB4 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsSeven()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF2, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsEight()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsNine()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xED, (byte) 0xBD, (byte) 0x82 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsTen()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xE2, (byte) 0xBF, (byte) 0xB5 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
 
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsEleven()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xE2, (byte) 0x80, (byte) 0x8E };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsTwelve()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xE2, (byte) 0x80, (byte) 0xAA };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsThirteen()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF3, (byte) 0xA0, (byte) 0x80, (byte) 0x81 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsFourteen()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF3, (byte) 0xA0, (byte) 0x81, (byte) 0x82 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailProhibitedCharsFifteen()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
 
 
 
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailBidiOne()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { 'f', 'o', 'o', (byte)0xD6, (byte) 0xBE, 'b', 'a', 'r' };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailBidiTwo()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { 'f', 'o', 'o', (byte)0xEF, (byte) 0xB5, (byte) 0x90, 'b', 'a', 'r' };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailBidiThree()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xD8, (byte) 0xA7, (byte) 0x31 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
 
 
-   @Test(expected = SyntaxException.class)
+   @Test
    public void testFailUnassigned()
    {
       StringPrep prep = StringPrep.getInstance(Profile.NamePrep);
       byte[] input = { (byte)0xF3, (byte) 0xA0, (byte) 0x80, (byte) 0x82 };
-      prep.prepare(new String(input, Charsets.UTF_8), false);
+      assertThrows(SyntaxException.class, ()->{
+         prep.prepare(new String(input, Charsets.UTF_8), false);
+      });
    }
 
 

@@ -5,13 +5,15 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.EnumSet;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class EnumsTest {
 
@@ -34,10 +36,12 @@ public class EnumsTest {
       assertEquals(0, set.size());
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testOfNullArray()
    {
-      Enums.of((Thread.State)null);
+      assertThrows(NullPointerException.class, ()->{
+         Enums.of((Thread.State)null);
+      });
    }
 
 }

@@ -1,6 +1,7 @@
 package xpertss.time;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.RoundingMode;
 import java.text.DateFormat;
@@ -8,9 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * User: cfloersch
@@ -44,11 +47,13 @@ public class ChronologyTest {
       assertFalse(cal.isLeapYear(cal.newDate(2100, 1, 1)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsLeapYearNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.isLeapYear(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isLeapYear(null);
+      });
    }
 
    @Test
@@ -60,11 +65,13 @@ public class ChronologyTest {
       assertFalse(cal.isModernEra(format.parse("2000-01-01 00:00:00.000 BC")));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsModernEraNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.isModernEra(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isModernEra(null);
+      });
    }
 
 
@@ -81,11 +88,13 @@ public class ChronologyTest {
       assertFalse(cal.isFirstDayOfWeek(cal.newDate(2012, 12, 1)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsFirstDayOfWeekNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.isFirstDayOfWeek(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isFirstDayOfWeek(null);
+      });
    }
 
 
@@ -103,11 +112,13 @@ public class ChronologyTest {
       assertFalse(cal.isLastDayOfWeek(cal.newDate(2012, 12, 27)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsLastDayOfWeekNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.isLastDayOfWeek(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isLastDayOfWeek(null);
+      });
    }
 
    @Test
@@ -134,11 +145,13 @@ public class ChronologyTest {
       assertTrue(cal.isLastDayOfMonth(cal.newDate(2012, 12, 31)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsLastDayOfMonthNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.isLastDayOfMonth(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isLastDayOfMonth(null);
+      });
    }
 
    @Test
@@ -155,11 +168,13 @@ public class ChronologyTest {
       assertEquals(Day.Sunday, cal.getDayOfWeek(cal.newDate(2012, 12, 23)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetDayOfWeekNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.getDayOfWeek(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.getDayOfWeek(null);
+      });
    }
 
    @Test
@@ -171,11 +186,13 @@ public class ChronologyTest {
       assertEquals(366, cal.getDayOfYear(cal.newDate(2012, 12, 31)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetDayOfYearNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.getDayOfYear(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.getDayOfYear(null);
+      });
    }
 
    @Test
@@ -188,11 +205,13 @@ public class ChronologyTest {
    }
 
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetWeekOfMonthNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.getWeekOfMonth(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.getWeekOfMonth(null);
+      });
    }
 
 
@@ -206,11 +225,13 @@ public class ChronologyTest {
       assertEquals(6, cal.getWeekOfYear(cal.newDate(2012, 2, 5)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetWeekOfYearNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.getWeekOfYear(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.getWeekOfYear(null);
+      });
    }
 
 
@@ -225,11 +246,13 @@ public class ChronologyTest {
       assertEquals(Month.December, cal.getMonthOfYear(cal.newDate(2012, 12, 5)));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testGetMonthOfYearNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.getMonthOfYear(null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.getMonthOfYear(null);
+      });
    }
 
 
@@ -343,18 +366,22 @@ public class ChronologyTest {
       assertEquals("2012-02-29 00:00:00.100 AD", format.format(nextday));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testAddNullDate()
    {
       Chronology cal = Chronology.create();
-      cal.add(null, 1500, DateUnit.Milliseconds);
+      assertThrows(NullPointerException.class, ()->{
+         cal.add(null, 1500, DateUnit.Milliseconds);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testAddNullUnit()
    {
       Chronology cal = Chronology.create();
-      cal.add(cal.newDate(2012, 2, 28, 23, 59, 50, 0), 1500, null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.add(cal.newDate(2012, 2, 28, 23, 59, 50, 0), 1500, null);
+      });
    }
 
 
@@ -431,20 +458,24 @@ public class ChronologyTest {
       assertEquals("2012-10-22 12:31:44.000 AD", format.format(trimDate));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testTruncateNullDate()
       throws Exception
    {
       Chronology cal = Chronology.create();
-      cal.truncate(null, DateField.Second);
+      assertThrows(NullPointerException.class, ()->{
+         cal.truncate(null, DateField.Second);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testTruncateNullField()
       throws Exception
    {
       Chronology cal = Chronology.create();
-      cal.truncate(cal.newDate(2012, 10, 22, 12, 31, 44, 432), null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.truncate(cal.newDate(2012, 10, 22, 12, 31, 44, 432), null);
+      });
    }
 
 
@@ -526,25 +557,31 @@ public class ChronologyTest {
       assertFalse(cal.isSame(cal.newDate(2012, 2, 28, 12, 15, 30, 999), cal.newDate(2012, 2, 28, 12, 15, 30, 0), DateField.Millisecond));
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsSameNullDateOne()
    {
       Chronology cal = Chronology.create();
-      cal.isSame(null, cal.newDate(2012, 2), DateField.Year);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isSame(null, cal.newDate(2012, 2), DateField.Year);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsSameNullDateTwo()
    {
       Chronology cal = Chronology.create();
-      cal.isSame(cal.newDate(2012, 2), null, DateField.Year);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isSame(cal.newDate(2012, 2), null, DateField.Year);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testIsSameNullDateField()
    {
       Chronology cal = Chronology.create();
-      cal.isSame(cal.newDate(2012, 2), cal.newDate(2012, 3), null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.isSame(cal.newDate(2012, 2), cal.newDate(2012, 3), null);
+      });
    }
 
 
@@ -558,46 +595,56 @@ public class ChronologyTest {
 
 
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testRoundDateNull()
    {
       Chronology cal = Chronology.create();
-      cal.round(null, DateField.Year, RoundingMode.HALF_DOWN);
+      assertThrows(NullPointerException.class, ()->{
+         cal.round(null, DateField.Year, RoundingMode.HALF_DOWN);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testRoundUnitNull()
    {
       Chronology cal = Chronology.create();
-      cal.round(new Date(), null, RoundingMode.HALF_DOWN);
+      assertThrows(NullPointerException.class, ()->{
+         cal.round(new Date(), null, RoundingMode.HALF_DOWN);
+      });
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testRoundModeNull()
    {
       Chronology cal = Chronology.create();
-      cal.round(new Date(), DateField.Year, null);
+      assertThrows(NullPointerException.class, ()->{
+         cal.round(new Date(), DateField.Year, null);
+      });
    }
 
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testRoundUnnecessaryErrorMillis()
       throws Exception
    {
       Chronology cal = Chronology.create();
 
       Date testDate = cal.newDate(1973, 1, 1, 0, 0, 0, 1);
-      cal.round(testDate, DateField.Year, RoundingMode.UNNECESSARY);
+      assertThrows(ArithmeticException.class, ()->{
+         cal.round(testDate, DateField.Year, RoundingMode.UNNECESSARY);
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testRoundUnnecessaryErrorDays()
       throws Exception
    {
       Chronology cal = Chronology.create();
 
       Date testDate = cal.newDate(1973, 1, 22, 0, 0, 0, 0);
-      cal.round(testDate, DateField.Year, RoundingMode.UNNECESSARY);
+      assertThrows(ArithmeticException.class, ()->{
+         cal.round(testDate, DateField.Year, RoundingMode.UNNECESSARY);
+      });
    }
 
 

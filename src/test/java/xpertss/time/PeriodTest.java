@@ -1,14 +1,17 @@
 package xpertss.time;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,31 +34,42 @@ public class PeriodTest {
       assertSame(end, range.getEnd());
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidDateRangeEndBeforeStart()
    {
       Chronology cal = Chronology.create();
-      Period range = new Period(cal.newDate(10, 22, 2012), cal.newDate(10, 22, 1973));
+      assertThrows(IllegalArgumentException.class, ()->{
+         Period range = new Period(cal.newDate(10, 22, 2012), cal.newDate(10, 22, 1973));
+      });
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testInvalidDateRangeEndEqualStart()
    {
       Chronology cal = Chronology.create();
-      Period range = new Period(cal.newDate(10, 22, 2012), cal.newDate(10, 22, 2012));
+      assertThrows(IllegalArgumentException.class, ()->{
+         Period range = new Period(cal.newDate(10, 22, 2012), cal.newDate(10, 22, 2012));
+      });
    }
 
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testStartDateNull()
    {
-      Period range = new Period(null, null);
+      Chronology cal = Chronology.create();
+      assertThrows(NullPointerException.class, ()->{
+         Period range = new Period(null, cal.newDate(10, 22, 2012));
+      });
+
    }
 
-   @Test(expected = NullPointerException.class)
+   @Test
    public void testEndDateNull()
    {
-      Period range = new Period(null, null);
+      Chronology cal = Chronology.create();
+      assertThrows(NullPointerException.class, ()->{
+         Period range = new Period(cal.newDate(10, 22, 2012), null);
+      });
    }
 
 

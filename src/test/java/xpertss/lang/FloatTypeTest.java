@@ -1,10 +1,12 @@
 package xpertss.lang;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static xpertss.lang.FloatType.*;
 
 public class FloatTypeTest {
@@ -55,10 +57,12 @@ public class FloatTypeTest {
 
 
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testDoubleOverflowAtMaxPlusOne()
    {
-      Decimal64.checkCast(maxPlusOne);
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal64.checkCast(maxPlusOne);
+      });
    }
 
    @Test
@@ -67,19 +71,23 @@ public class FloatTypeTest {
       Decimal64.checkCast(maxPlusOne.add(BigDecimal.ONE));
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testDoubleOverflowAtMaxPlusThree()
    {
       BigDecimal maxPlusTwo = maxPlusOne.add(BigDecimal.ONE);
-      Decimal64.checkCast(maxPlusTwo.add(BigDecimal.ONE));
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal64.checkCast(maxPlusTwo.add(BigDecimal.ONE));
+      });
    }
 
 
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testDoubleOverflowAtMinMinusOne()
    {
-      Decimal64.checkCast(minMinusOne);
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal64.checkCast(minMinusOne);
+      });
    }
 
    @Test
@@ -88,30 +96,38 @@ public class FloatTypeTest {
       Decimal64.checkCast(minMinusOne.subtract(BigDecimal.ONE));
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testDoubleOverflowAtMinMinusThree()
    {
       BigDecimal minMinusTwo = minMinusOne.subtract(BigDecimal.ONE);
-      Decimal64.checkCast(minMinusTwo.subtract(BigDecimal.ONE));
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal64.checkCast(minMinusTwo.subtract(BigDecimal.ONE));
+      });
    }
 
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testMaxDouble()
    {
-      Decimal32.checkCast(BigDecimal.valueOf(Double.MAX_VALUE));
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal32.checkCast(BigDecimal.valueOf(Double.MAX_VALUE));
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testMinDouble()
    {
-      Decimal32.checkCast(BigDecimal.valueOf(Double.MIN_VALUE));
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal32.checkCast(BigDecimal.valueOf(Double.MIN_VALUE));
+      });
    }
 
-   @Test(expected = ArithmeticException.class)
+   @Test
    public void testMinNormalDouble()
    {
-      Decimal32.checkCast(BigDecimal.valueOf(Double.MIN_NORMAL));
+      assertThrows(ArithmeticException.class, ()->{
+         Decimal32.checkCast(BigDecimal.valueOf(Double.MIN_NORMAL));
+      });
    }
 
 

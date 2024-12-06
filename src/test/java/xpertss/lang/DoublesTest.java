@@ -5,11 +5,11 @@
  */
 package xpertss.lang;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DoublesTest {
 

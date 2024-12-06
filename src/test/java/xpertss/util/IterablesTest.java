@@ -1,12 +1,18 @@
 package xpertss.util;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Created by cfloersch on 1/17/14.

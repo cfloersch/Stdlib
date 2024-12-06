@@ -1,8 +1,10 @@
 package xpertss.net;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created with IntelliJ IDEA.
@@ -99,11 +101,13 @@ public class QueryBuilderTest {
       assertEquals(3, builder.size());
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testAddNullKey()
    {
       QueryBuilder builder = QueryBuilder.create();
-      builder.add(null, "joe");
+      assertThrows(IllegalArgumentException.class, ()->{
+         builder.add(null, "joe");
+      });
    }
 
    @Test
@@ -115,11 +119,13 @@ public class QueryBuilderTest {
       assertEquals(3, builder.size());
    }
 
-   @Test (expected = IllegalArgumentException.class)
+   @Test
    public void testSetNullKey()
    {
       QueryBuilder builder = QueryBuilder.create("name=Chris&pass=password&name=&name=Beth");
-      builder.set(null, "joe");
+      assertThrows(IllegalArgumentException.class, ()->{
+         builder.set(null, "joe");
+      });
    }
 
    @Test
