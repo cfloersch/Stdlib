@@ -530,7 +530,7 @@ public final class Predicates {
 
    /**
     * Returns a predicate that evaluates to {@code true} if the object reference being tested
-    * is a member of the given array. It does a defensive copy the array passed in, so future
+    * is a member of the given array. It does a defensive copy of the array passed in, so future
     * changes to the array will not alter the behavior of the predicate.
     *
     * @param target the array that may contain the predicate input
@@ -715,6 +715,80 @@ public final class Predicates {
       public String toString()
       {
          return "ContainsPattern" + " {" + "pattern" + "=" + pattern + ", " + "flags" + "=" + Integer.toHexString(pattern.flags()) + "}";
+      }
+
+      private static final long serialVersionUID = 0;
+   }
+
+
+
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the {@code CharSequence} being
+    * tested matches the given regular expression pattern. The test used is equivalent to
+    * {@code Pattern.compile(pattern).matcher(arg).matches()}
+    *
+    * @throws java.util.regex.PatternSyntaxException if the pattern is invalid
+    * @throws NullPointerException if pattern is {@code null}
+    */
+   public static Predicate<CharSequence> matches(String pattern)
+   {
+      return new MatchesPatternPredicate(pattern);
+   }
+
+   /**
+    * Returns a predicate that evaluates to {@code true} if the {@code CharSequence} being
+    * tested matches the given regular expression pattern. The test used is equivalent to
+    * {@code pattern.matcher(arg).matches()}
+    *
+    * @throws NullPointerException if pattern is {@code null}
+    */
+   public static Predicate<CharSequence> matches(Pattern pattern)
+   {
+      return new MatchesPatternPredicate(pattern);
+   }
+
+   private static class MatchesPatternPredicate implements Predicate<CharSequence>, Serializable {
+      final Pattern pattern;
+
+      MatchesPatternPredicate(Pattern pattern) {
+         this.pattern = Objects.notNull(pattern);
+      }
+
+      MatchesPatternPredicate(String patternStr)
+      {
+         this(Pattern.compile(Objects.notNull(patternStr)));
+      }
+
+      @Override
+      public boolean test(CharSequence t)
+      {
+         return pattern.matcher(t).matches();
+      }
+
+      @Override
+      public int hashCode()
+      {
+         return Objects.hash(pattern.pattern(), pattern.flags());
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         if (obj instanceof MatchesPatternPredicate) {
+            MatchesPatternPredicate that = (MatchesPatternPredicate) obj;
+            // Pattern uses Object (identity) equality, so we have to reach
+            // inside to compare individual fields.
+            return Objects.equal(pattern.pattern(), that.pattern.pattern())
+                    && Objects.equal(pattern.flags(), that.pattern.flags());
+         }
+         return false;
+      }
+
+      @Override
+      public String toString()
+      {
+         return "MatchesPattern" + " {" + "pattern" + "=" + pattern + ", " + "flags" + "=" + Integer.toHexString(pattern.flags()) + "}";
       }
 
       private static final long serialVersionUID = 0;
