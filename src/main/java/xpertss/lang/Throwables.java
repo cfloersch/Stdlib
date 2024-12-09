@@ -7,6 +7,13 @@ package xpertss.lang;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * Static utility methods pertaining to instances of {@link Throwable}.
@@ -136,6 +143,45 @@ public final class Throwables {
       t.printStackTrace(new PrintWriter(sw, true));
       return sw.toString();
    }
+
+
+   /**
+    * Converts the given Throwable into a {@link Stream} of Throwables representing
+    * the causation tree of the given error.
+    * <p/>
+    * This can make operating on the causation tree more fluent within the modern
+    * confines of Java functional programming.
+    *
+    * @param t The throwable to stream
+    */
+   public static Stream<Throwable> causes(Throwable t)
+   {
+      if (t == null) return Stream.empty();
+      return stream(new Spliterators.AbstractSpliterator<Throwable>(Long.MAX_VALUE, Spliterator.ORDERED) {
+         private Throwable error = t;
+         @Override
+         public boolean tryAdvance(Consumer<? super Throwable> action)
+         {
+            if(error == null) return false;
+            action.accept(error);
+            error = error.getCause();
+            return true;
+         }
+      }, false);
+   }
+
+   /**
+    * Converts the specified Throwable's stack trace elements into a {@link Stream}
+    * allowing the caller to iterate the stacks using Java's functional programing
+    * model.
+    *
+    * @param t The source Throwable to generate stacks from
+    */
+   public static Stream<StackTraceElement> stacks(Throwable t)
+   {
+      return Arrays.stream(t.getStackTrace());
+   }
+
 
 
    /**
