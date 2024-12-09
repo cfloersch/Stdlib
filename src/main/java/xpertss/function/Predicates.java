@@ -513,8 +513,8 @@ public final class Predicates {
 
    /**
     * Returns a predicate that evaluates to {@code true} if the object reference being tested
-    * is a member of the given collection. It does a defensive copy the collection passed in,
-    * so future changes to the collection will not alter the behavior of the predicate.
+    * is a member of the given collection. It does a defensive copy of the collection passed
+    * in, so future changes to the collection will not alter the behavior of the predicate.
     *
     * @param target the collection that may contain the predicate input
     * @throws NullPointerException if target is {@code null}
