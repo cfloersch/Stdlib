@@ -85,6 +85,20 @@ public class ThrowablesTest {
    }
 
 
+   @Test
+   public void testIsChecked()
+   {
+      assertTrue(Throwables.isChecked(new Throwable()));
+      assertFalse(Throwables.isChecked(new Error()));
+      assertFalse(Throwables.isChecked(new InternalError()));
+      assertFalse(Throwables.isChecked(new RuntimeException()));
+      assertFalse(Throwables.isChecked(new SecurityException()));
+      assertTrue(Throwables.isChecked(new Exception()));
+      assertTrue(Throwables.isChecked(new IOException()));
+      assertFalse(Throwables.isChecked((Throwable) null));
+      assertFalse(Throwables.isChecked((Class<?>) null));
+      assertFalse(Throwables.isChecked(String.class));
+   }
 
 
 
