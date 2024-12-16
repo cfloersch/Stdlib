@@ -583,4 +583,46 @@ public final class Strings {
       return arg;
    }
 
+
+
+
+   /**
+    * Ensures that {@code index} specifies a valid <i>position</i> in an array, list or string of
+    * size {@code size}. A position index may range from zero to {@code size}, inclusive.
+    *
+    * @param index a user-supplied index identifying a position in an array, list or string
+    * @param size the size of that array, list or string
+    * @return the value of {@code index}
+    * @throws IndexOutOfBoundsException if {@code index} is negative or is greater than {@code size}
+    * @throws IllegalArgumentException if {@code size} is negative
+    */
+   public static int checkPositionIndex(int index, int size)
+   {
+      return checkPositionIndex(index, size, "index");
+   }
+
+   /**
+    * Ensures that {@code index} specifies a valid <i>position</i> in an array, list or string of
+    * size {@code size}. A position index may range from zero to {@code size}, inclusive.
+    *
+    * @param index a user-supplied index identifying a position in an array, list or string
+    * @param size the size of that array, list or string
+    * @param desc the text to use to describe this index in an error message
+    * @return the value of {@code index}
+    * @throws IndexOutOfBoundsException if {@code index} is negative or is greater than {@code size}
+    * @throws IllegalArgumentException if {@code size} is negative
+    */
+   public static int checkPositionIndex(int index, int size, String desc)
+   {
+      // Carefully optimized for execution by hotspot (explanatory comment above)
+      if (index < 0) {
+         throw new IndexOutOfBoundsException(format("%s (%s) must not be negative", desc, index));
+      } else if (size < 0) {
+         throw new IllegalArgumentException("negative size: " + size);
+      } else if(index > size) {
+         throw new IndexOutOfBoundsException(format("%s (%s) must not be greater than size (%s)", desc, index, size));
+      }
+      return index;
+   }
+
 }

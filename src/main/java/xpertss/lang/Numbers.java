@@ -150,6 +150,19 @@ public final class Numbers {
 
    // Argument checkers
 
+   /**
+    * Argument checking utility that will return the specified {@code arg} if it is equal to
+    * the specified base, otherwise it will throw an {@link IllegalArgumentException}
+    * identifying the specified argument.
+    */
+   public static <T extends Number & Comparable<T>> T eq(T base, T arg, String argName)
+   {
+      if(base.compareTo(arg) != 0)
+         throw new IllegalArgumentException(format("%s(%s) not equal to %s",
+                 argName, arg, base));
+      return arg;
+   }
+
 
    /**
     * Argument checking utility that will return the specified {@code arg} if it is greater than the

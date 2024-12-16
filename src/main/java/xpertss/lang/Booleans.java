@@ -535,4 +535,33 @@ public final class Booleans {
 
 
 
+
+   /**
+    * Argument checking utility that will throw an {@link IllegalArgumentException}
+    * if the supplied expression if {@code false}.
+    *
+    * @param expression  the expression to check
+    * @throws IllegalArgumentException if expression is {@code false}
+    */
+   public static void check(boolean expression)
+   {
+      if(!expression) throw new IllegalArgumentException();
+   }
+
+   /**
+    * Argument checking utility that will throw an {@link IllegalArgumentException}
+    * if the supplied expression if {@code false}.
+    * <p>
+    * The resulting exception will contain the given {@code argName} as the message
+    * if thrown.
+    *
+    * @param expression  the expression to check
+    * @param argName The argument name being inspected
+    * @throws IllegalArgumentException if expression is {@code false}
+    */
+   public static void check(boolean expression, String argName)
+   {
+      if(!expression) throw new IllegalArgumentException(format("%s is invalid", argName));
+   }
+
 }
