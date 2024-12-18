@@ -4,7 +4,7 @@
  * Created By: cfloersch
  * Date: 5/12/2022
  */
-package xpertss.io;
+package xpertss.stream;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -14,11 +14,35 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Collection;
+import java.util.Spliterators;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public final class Streams {
 
    private Streams() { }
+
+   /**
+    * Returns a sequential {@link Stream} of the remaining contents of {@code iterator}.
+    * Do not use {@code iterator} directly after passing it to this method.
+    */
+   public static <T extends Object> Stream<T> stream(Iterator<T> iterator)
+   {
+      return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
+   }
+
+   /**
+    * Returns a sequential {@link Stream} of the contents of {@code iterable}, delegating
+    * to {@link Collection#stream} if possible.
+    */
+   public static <T extends Object> Stream<T> stream(Iterable<T> iterable)
+   {
+      return (iterable instanceof Collection)
+         ? ((Collection<T>) iterable).stream()
+         : StreamSupport.stream(iterable.spliterator(), false);
+   }
 
    /**
     * Returns a Stream, the elements of which are lines read from the specified Reader.

@@ -361,7 +361,7 @@ public final class Splitter {
     public Stream<String> split(CharSequence sequence)
     {
         Spliterator<String> spliterator = strategy.spliterator(this, sequence);
-        return StreamSupport.stream(spliterator, spliterator.estimateSize() != Long.MAX_VALUE);
+        return StreamSupport.stream(spliterator, false);
     }
 
 
@@ -403,25 +403,7 @@ public final class Splitter {
             return (sequence.length() - offset) / length;
         }
 
-        // TODO One could argue if there were ever a string to split that needs to be parallelized?
-        @Override
-        public Spliterator<String> trySplit()
-        {
-            // TODO Adjust the length of each parallel segment based on some predefined segment LENGTH target
-            // For example if a segment length was 1024 then I would return null if the remaining was less than that
-            // However, if segment is a multiple of that I would possibly just split to that. Otherwise, I might
-            // divide the remainder in half (segment size > 512)
-            // segments are based on PARTS remaining or based on absolute length?
-            // We would definitely want to make the segment equal to a multiple of the length
-            int remaining = (sequence.length() - offset) / length;
-            if(remaining > 6) {
-                int start = offset;
-                int end = offset + ((remaining / 2) * length);
-                offset = end;
-                return new LengthSpliterator(splitter, sequence.subSequence(start, end), length);
-            }
-            return null;
-        }
+
     }
 
     private static abstract class StringSpliterator implements Spliterator<String> {
