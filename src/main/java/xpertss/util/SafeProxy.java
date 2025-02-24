@@ -10,14 +10,14 @@ import java.lang.reflect.Proxy;
 /**
  * This class will wrap a given class and proxy calls to it catching any runtime
  * exceptions that may be thrown. Those exceptions will be sent to the calling
- * thread's uncaught exception handler and null will be returned.
+ * thread's uncaught exception handler and {@code null} will be returned.
  *
  * @param <T>
  */
 public class SafeProxy <T> implements InvocationHandler {
 
     /**
-     * Construct an instance of the SafeDispatcher compatible with the given listener class.
+     * Construct an instance of the SafeProxy compatible with the given proxied class.
      */
     public static <T> T newInstance(Class<T> proxiedClass, T proxied)
     {
