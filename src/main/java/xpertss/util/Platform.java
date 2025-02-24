@@ -285,7 +285,7 @@ public enum Platform {
          } else if(osName.contains("ce")) {
             return WinCE;
          } else if(osVersion.isAtLeast(10, 0)) {
-            return Win10;
+            return Win10;  // Sometimes referred to as OneCore
          } else if(osVersion.isAtLeast(6, 2)) {
             return WinRT;
          } else if(osVersion.isAtLeast(6, 0)) {
