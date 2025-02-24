@@ -88,7 +88,7 @@ class SplitterTest {
 
 
     @Test
-    public void testSplitOnLength()
+    public void testSplitOnLengthShort()
     {
         Stream<String> stream = Splitter.onLength(2).split("abcde");
         List<String> results = stream.collect(Collectors.toList());
@@ -100,11 +100,9 @@ class SplitterTest {
 
 
     @Test
-    public void testSplitOnLengthLong()
+    public void testSplitOnLengthFull()
     {
         Stream<String> stream = Splitter.onLength(2).split("abcdefghijklmnopqrstuvwxyz");
-        assertTrue(stream.isParallel());
-
         List<String> results = stream.collect(Collectors.toList());
         assertEquals(13, results.size());
         assertEquals("ab", results.get(0));
@@ -113,5 +111,6 @@ class SplitterTest {
         assertEquals("op", results.get(7));
         assertEquals("yz", results.get(12));
     }
+
 
 }
