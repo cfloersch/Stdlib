@@ -7,7 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * General utility methods for working with annotations, handling meta-annotations,
@@ -55,16 +54,18 @@ public final class Annotations {
 
    // TODO All of these determine annotation equality using both type and property values??? Fix that???
 
+   /**
+    * This method walks the class hierarchy collecting all the annotations
+    * and their associated meta annotations returning them as a Set.
+    *
+    * @param clazz The class tree to walk
+    */
    public static Set<Annotation> getAnnotations(Class<?> clazz)
    {
       final Set<Annotation> result = Sets.newLinkedHashSet();
-      Classes.walk(clazz, new Consumer<Class>() {
-         @Override
-         public void accept(Class aClass)
-         {
-            for(Annotation ann : aClass.getDeclaredAnnotations()) {
-               result.addAll(getMetaAnnotations(ann));
-            }
+      Classes.walk(clazz, aClass -> {
+         for(Annotation ann : aClass.getDeclaredAnnotations()) {
+            result.addAll(getMetaAnnotations(ann));
          }
       }, null, null);
       return result;
