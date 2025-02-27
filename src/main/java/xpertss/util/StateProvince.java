@@ -56,27 +56,44 @@ public enum StateProvince {
       this.type = type;
    }
 
+   /**
+    * Returns the full display name of the State or Province.
+    */
    public String getDisplayName()
    {
       return name;
    }
 
-
+   /**
+    * Returns {@code true} if this is a state or territory on the main
+    * north american continent. For example the District of Columbia is
+    * part of the lower 48 but Alberta and Alaska are not.
+    */
    public boolean isLowerFortyEight()
    {
       return (type & CONTINENTAL) != 0;
    }
 
+   /**
+    * Returns {@code true} if this represents a Canadian province.
+    */
    public boolean isProvince()
    {
       return (type & PROVINCE) != 0;
    }
 
+   /**
+    * Returns {@code true} if this represents one of the 50 US States.
+    */
    public boolean isState()
    {
       return (type & STATE) != 0;
    }
 
+   /**
+    * Returns {@code true} if this represents one of the US territories
+    * to include the District of Columbia.
+    */
    public boolean isTerritory()
    {
       return (type & TERRITORY) != 0;
