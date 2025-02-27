@@ -14,7 +14,7 @@ public enum FloatType {
 
    /**
     * A 32 bit floating point value {@link Float} with 23 bits
-    * of precision and a 8 bit exponent.
+    * of precision and an 8 bit exponent.
     */
    Decimal32(23, 8, 7) {
 
@@ -34,7 +34,7 @@ public enum FloatType {
 
    /**
     * A 64 bit floating point value {@link Double} with 52 bits
-    * of precision and a 11 bit exponent.
+    * of precision and an 11 bit exponent.
     */
    Decimal64(52, 11, 16) {
 
