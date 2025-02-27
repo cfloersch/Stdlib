@@ -24,32 +24,34 @@ import java.net.InetSocketAddress;
  * password authentication that all protocol handlers use with the newer Callback
  * mechanism introduced with the JAAS package.
  */
-public class AuthenticatorCallbackWrapper extends Authenticator {
+public final class AuthenticatorCallbackWrapper extends Authenticator {
 
-   private CallbackHandler handler;
-   private String namePrompt;
-   private String passPrompt;
+   private final CallbackHandler handler;
+   private final String namePrompt;
+   private final String passPrompt;
 
    private String defaultUserName;
 
    /**
     * Construct a simple Authenticator wrapper with the supplied CallbackHandler
+    * <p/>
+    * It uses the default US English prompts {@code Username} and {@code Password}.
     *
     * @throws NullPointerException If the handler is {@code null}
     */
    public AuthenticatorCallbackWrapper(CallbackHandler handler)
    {
-      this.handler = Objects.notNull(handler);
+      this(handler, "Username", "Password");
    }
 
    /**
     * Construct a simple Authenticator wrapper with the supplied CallbackHandler
     *
     * @param handler - CallbackHandler implementation that will handle authentication requests
-    * @param namePrompt - The name label applied to the NameCallback. Ideal for Internationaliztion of
+    * @param namePrompt - The name label applied to the NameCallback. Ideal for Internationalization of
     *                      display labels
     * @param passPrompt - The password label applied to the PasswordCallback. Ideal for
-    *                      Internationaliztion of display label.
+    *                      Internationalization of display label.
     * @throws NullPointerException If the handler is {@code null}
     * @throws IllegalArgumentException If name or password are empty
     */
@@ -62,7 +64,7 @@ public class AuthenticatorCallbackWrapper extends Authenticator {
 
 
    /**
-    * Get the default user name. This value will allways be the last username entered and returned
+    * Get the default username. This value will always be the last username entered and returned
     * by the NameCallback.
     */
    public String getDefaultUserName()

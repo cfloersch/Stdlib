@@ -11,7 +11,8 @@ import java.security.cert.Certificate;
  * An example of this Callback's use would be with SSL where the server sends a
  * certificate chain that the client may use to authenticate the server. This
  * callback would contain the server's certificate chain that may be displayed
- * to the user for visual inspection.
+ * to the user for visual inspection or it may be verified using a certificate
+ * path algorithm.
  */
 public class CertificateCallback implements Callback {
 

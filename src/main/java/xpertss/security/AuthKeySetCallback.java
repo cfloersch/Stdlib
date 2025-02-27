@@ -8,6 +8,7 @@
  */
 package xpertss.security;
 
+import xpertss.lang.Destroyable;
 import xpertss.lang.Objects;
 
 import javax.security.auth.callback.Callback;
@@ -18,11 +19,11 @@ import java.security.cert.Certificate;
  * Callback used to request the client's public/private keys to use for certificate
  * based authentication and proof of ownership.
  */
-public class AuthKeySetCallback implements Callback {
+public final class AuthKeySetCallback implements Callback, Destroyable {
 
    private Certificate[] certChain;
    private PrivateKey priKey;
-   private String algorithm;
+   private String[] algorithms;
 
    /**
     * Create an auth key set callback that does not care what algorithm the returned
@@ -36,21 +37,21 @@ public class AuthKeySetCallback implements Callback {
     * Create an auth key set that requests a private key usable with the specified
     * algorithm.
     */
-   public AuthKeySetCallback(String algorithm)
+   public AuthKeySetCallback(String ... algorithms)
    {
-      this.algorithm = algorithm;
+      this.algorithms = algorithms;
    }
 
 
    /**
-    * Returns the algorithm the requested key should be usable with.
+    * Returns the supported algorithm(s) the request desires.
     * <p>
-    * If the requester has not specified a particular algorithm this will return
+    * If the requester has not specified any preferred algorithms this will return
     * {@code null}.
     */
-   public String getAlgorithm()
+   public String[] getAlgorithms()
    {
-      return algorithm;
+      return algorithms;
    }
 
 
@@ -82,6 +83,16 @@ public class AuthKeySetCallback implements Callback {
    public PrivateKey getPrivateKey()
    {
       return priKey;
+   }
+
+   @Override
+   public void destroy()
+   {
+      if(priKey instanceof Destroyable) {
+         ((Destroyable)priKey).destroy();
+      }
+      priKey = null;
+      certChain = null;
    }
 
 }
