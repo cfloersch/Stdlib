@@ -55,7 +55,7 @@ public final class Annotations {
    // TODO All of these determine annotation equality using both type and property values??? Fix that???
 
    /**
-    * This method walks the class hierarchy collecting all the annotations
+    * This method walks the class hierarchy collecting all the class annotations
     * and their associated meta annotations returning them as a Set.
     *
     * @param clazz The class tree to walk
