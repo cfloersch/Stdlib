@@ -97,7 +97,7 @@ public enum Platform {
    WinRT(false, true),
 
    /**
-    * Windows 10, 11 and Server 2016. This value will be returned for all
+    * Windows 10, 11 and Server 2016+. This value will be returned for all
     * windows operating systems that have a version of 10.0 or higher until
     * this class is updated with newer operating systems.
     */
