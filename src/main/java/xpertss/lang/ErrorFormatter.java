@@ -12,7 +12,7 @@ import java.util.function.Predicate;
  * printed. This is useful for logging frameworks that wish to attempt to minimize
  * the volume of data sent to the logs.
  * <pre>
- *         ErrorPrinter errPrinter = ErrorPrinter.create()
+ *         ErrorFormatter format = ErrorFormatter.create()
  *            .withShortClassNames()
  *            .withCauseFilter(t -> t.getCause() != null)
  *            .withStackFilter(t -> {
@@ -20,7 +20,7 @@ import java.util.function.Predicate;
  *                return clsName.startsWith("java")
  *                        || clsName.startsWith("javax");
  *            });
- *         errPrinter.print(e, System.err);
+ *         format.print(e, System.err);
  *
  * </pre>
  * The above example would print only the root cause for each error and it would
