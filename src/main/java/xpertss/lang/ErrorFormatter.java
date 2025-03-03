@@ -25,20 +25,21 @@ import java.util.function.Predicate;
  * </pre>
  * The above example would print only the root cause for each error and it would
  * shorten each line by stripping off the package prefix from class names. The stack
- * itself would omit any stack element that occured within a core j
+ * itself would omit any stack element that occurred within a core java or javax
+ * package class.
  */
-public final class ErrorPrinter {
+public final class ErrorFormatter {
 
 
     private Predicate<StackTraceElement> stackFilter;
     private Predicate<Throwable> causeFilter;
     private boolean stripPackage;
 
-    private ErrorPrinter() {}
+    private ErrorFormatter() {}
 
-    public static ErrorPrinter create()
+    public static ErrorFormatter create()
     {
-        return new ErrorPrinter();
+        return new ErrorFormatter();
     }
 
 
@@ -50,7 +51,7 @@ public final class ErrorPrinter {
      * This is usually used to filter out classes that belong to core JDK for example
      * or the framework the application is running in.
      */
-    public ErrorPrinter withStackFilter(Predicate<StackTraceElement> filter)
+    public ErrorFormatter withStackFilter(Predicate<StackTraceElement> filter)
     {
         this.stackFilter = filter;
         return this;
@@ -63,7 +64,7 @@ public final class ErrorPrinter {
      * <p/>
      * An example usage may be to filter out all causes other than the root cause.
      */
-    public ErrorPrinter withCauseFilter(Predicate<Throwable> filter)
+    public ErrorFormatter withCauseFilter(Predicate<Throwable> filter)
     {
         this.causeFilter = filter;
         return this;
@@ -73,7 +74,7 @@ public final class ErrorPrinter {
      * Strip the package name prefix from both the Throwable class and all of
      * the classes in the stack.
      */
-    public ErrorPrinter withShortClassNames()
+    public ErrorFormatter withShortClassNames()
     {
         this.stripPackage = true;
         return this;
@@ -83,7 +84,7 @@ public final class ErrorPrinter {
      * Strip the package name prefix from both the Throwable class and all of
      * the classes in the stack.
      */
-    public ErrorPrinter withFullClassNames()
+    public ErrorFormatter withFullClassNames()
     {
         this.stripPackage = false;
         return this;
