@@ -3,11 +3,6 @@ https://github.com/dandelion/dandelion/blob/1.0.0/dandelion-core/src/main/java/c
 
 
 
-Throwables
-   Build method to strip out stack trace elements that don't match a pattern. Thus
-   Spring apps for example could strip out all the proxy classes for example making
-   the stack trace more useable.
-
 
 xpertss.text
 

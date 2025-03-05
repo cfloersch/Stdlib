@@ -92,6 +92,11 @@ public final class Throwables {
 
 
 
+   private static final ErrorFormatter format = ErrorFormatter.create()
+                                                   .withShortClassNames()
+                                                   .withCauseFilter(t -> t.getCause() != null);
+
+
    /**
     * Returns an abbreviated version of the stack trace where only the first
     * five stack frames per exception are output without their package name
@@ -113,24 +118,7 @@ public final class Throwables {
     */
    public static String toShortString(Throwable t)
    {
-      while(t.getCause() != null) t = t.getCause();
-      StringBuilder buf = new StringBuilder();
-      buf.append(stripPackage(t.getClass().getName()));
-      if(!Strings.isEmpty(t.getMessage()))
-         buf.append(" - ").append(t.getMessage());
-      StackTraceElement[] ste = t.getStackTrace();
-      for(int i = 0; i < Math.min(ste.length, 5); i++) {
-         buf.append(System.getProperty("line.separator"));
-         buf.append("   ").append(stripPackage(ste[i].getClassName()));
-         buf.append(".").append(ste[i].getMethodName());
-         if(ste[i].isNativeMethod()) {
-            buf.append("(Native Method)");
-         } else if(ste[0].getLineNumber() >= 0) {
-            buf.append("(line:").append(ste[i].getLineNumber()).append(")");
-         } else
-            buf.append("(Unknown Source)");
-      }
-      return buf.toString();
+      return format.format(t);
    }
 
    /**
@@ -209,13 +197,6 @@ public final class Throwables {
          Throwable.class.isAssignableFrom(exceptionType) &&
          !(Error.class.isAssignableFrom(exceptionType) ||
             RuntimeException.class.isAssignableFrom(exceptionType));
-   }
-
-
-
-   private static String stripPackage(String name)
-   {
-      return name.substring(name.lastIndexOf('.') + 1);
    }
 
 
