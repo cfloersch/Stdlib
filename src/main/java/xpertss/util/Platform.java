@@ -294,7 +294,7 @@ public enum Platform {
          return WinNT;  // NT, 2000, 2003, and XP
       } else if(osName.contains("solaris") || osName.contains("sunos")) {
          return Solaris;
-      } else if(osName.contains("Linux")) {
+      } else if(osName.contains("linux")) {
          return (contains("java.vm.name", "dalvik")) ? Android : Linux;
       } else if(osName.contains("bsd")) {
          // NetBSD, OpenBSD, FreeBSD (possibly other BSDs)

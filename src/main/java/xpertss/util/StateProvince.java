@@ -2,7 +2,6 @@ package xpertss.util;
 
 /**
  * Simple Enumeration of US states, US Territories, and Canadian Provinces with helper methods.
- *
  * User: cfloersch
  * Date: 10/16/13
  * Time: 11:57 AM
@@ -47,8 +46,8 @@ public enum StateProvince {
    private static final int CONTINENTAL = 8;
 
 
-   private String name;
-   private int type;
+   private final String name;
+   private final int type;
 
    StateProvince(String name, int type)
    {

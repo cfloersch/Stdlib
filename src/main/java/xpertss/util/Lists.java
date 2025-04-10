@@ -57,9 +57,9 @@ public final class Lists {
     * @param list the list to test
     * @param name the name of the property used in the exception message
     */
-   public static void notEmpty(List list, String name)
+   public static void notEmpty(List<?> list, String name)
    {
-      if(list == null || list.isEmpty()) throw new IllegalArgumentException(format("%s cannot be empty"));
+      if(list == null || list.isEmpty()) throw new IllegalArgumentException(format("%s cannot be empty", name));
    }
 
 
@@ -198,7 +198,7 @@ public final class Lists {
     * @param list The list to evaluate
     * @return 0 for an empty or {@code null} list, otherwise the size.
     */
-   public static int size(List list)
+   public static int size(List<?> list)
    {
       return (list == null) ? 0 : list.size();
    }
@@ -213,7 +213,7 @@ public final class Lists {
     * @return {@code True} if the list is empty or {@code null}, {@code false}
     *          otherwise.
     */
-   public static boolean isEmpty(List list)
+   public static boolean isEmpty(List<?> list)
    {
       return (list == null) || list.isEmpty();
    }

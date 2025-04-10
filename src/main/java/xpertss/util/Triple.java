@@ -20,9 +20,9 @@ import java.io.Serializable;
  */
 public class Triple<L,M,R> implements Serializable, Cloneable {
 
-   private L left;
-   private M middle;
-   private R right;
+   private final L left;
+   private final M middle;
+   private final R right;
 
    private Triple(L left, M middle, R right)
    {
