@@ -3,7 +3,6 @@ package xpertss.lang;
 
 import xpertss.function.Predicates;
 
-import java.io.Serializable;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -79,48 +78,20 @@ public final class Strings {
     * Returns a predicate that evaluates to {@code true} if the string being tested
     * {@code equalsIgnoreCase()} the given target or both are {@code null}.
     */
-   public static Predicate<String> equalToIgnoreCase(String target)
+   public static Predicate<String> equalToIgnoreCase(final String target)
    {
-      return (target == null) ? Predicates.<String>isNull() : new IsEqualToIgnoreCasePredicate(target);
+      return (target == null) ? Predicates.<String>isNull() :
+                                 input -> input.equalsIgnoreCase(target);
    }
 
-   static class IsEqualToIgnoreCasePredicate implements Predicate<String>, Serializable {
-      private final String target;
-
-      private IsEqualToIgnoreCasePredicate(String target)
-      {
-         this.target = target;
-      }
-
-      @Override
-      public boolean test(String t)
-      {
-         return target.equalsIgnoreCase(t);
-      }
-
-      @Override
-      public int hashCode()
-      {
-         return target.hashCode();
-      }
-
-      @Override
-      public boolean equals(Object obj)
-      {
-         if (obj instanceof IsEqualToIgnoreCasePredicate) {
-            IsEqualToIgnoreCasePredicate that = (IsEqualToIgnoreCasePredicate) obj;
-            return target.equals(that.target);
-         }
-         return false;
-      }
-
-      @Override
-      public String toString()
-      {
-         return "IsEqualToIgnoreCase(" + target + ")";
-      }
-
-      private static final long serialVersionUID = 0;
+   /**
+    * Returns a predicate that evaluates to {@code true} if the string being tested
+    * {@code equals()} the given target or both are {@code null}.
+    */
+   public static Predicate<String> equals(final String target)
+   {
+      return (target == null) ? Predicates.<String>isNull() :
+                                 input -> input.equals(target);
    }
 
    /**
@@ -129,16 +100,7 @@ public final class Strings {
     */
    public static Predicate<String> empty()
    {
-      return EmptyPredicate.INSTANCE;
-   }
-
-   private enum EmptyPredicate implements Predicate<String> {
-      INSTANCE;
-
-      @Override public boolean test(String input)
-      {
-         return isEmpty(input);
-      }
+      return input -> isEmpty(input);
    }
 
 
@@ -171,7 +133,18 @@ public final class Strings {
       return input -> input.contains(s);
    }
 
-
+   /**
+    * A predicate that tells whether a given string matches the given regular expression.
+    *
+    * @param regex the regular expression to which this string is to be matched
+    * @return a predicate that tells whether a given string matches the given regular
+    *    expression
+    * @see String#matches(String)
+    */
+   public static Predicate<String> matches(final String regex)
+   {
+      return s -> (s != null) ? s.matches(regex) : regex == null;
+   }
 
 
 
