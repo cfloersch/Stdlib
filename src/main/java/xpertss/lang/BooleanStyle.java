@@ -38,10 +38,6 @@ public enum BooleanStyle {
          return CharSequences.equal("true", str);
       }
 
-      public String toString(boolean value)
-      {
-         return (value) ? "true" : "false";
-      }
    },
    /**
     * Parses <b>TRUE</b> into {@code true}, everything else into {@code false}.
@@ -71,10 +67,6 @@ public enum BooleanStyle {
          return CharSequences.equalIgnoreCase("true", str);
       }
 
-      public String toString(boolean value)
-      {
-         return (value) ? "true" : "false";
-      }
    },
    /**
     * Parses <b>T</b> into {@code true}, everything else into {@code false}.
@@ -331,10 +323,7 @@ public enum BooleanStyle {
     * @param str The string to parse
     * @return true or false
     */
-   public boolean parse(CharSequence str)
-   {
-      return CharSequences.equal("true", str);
-   }
+   public abstract boolean parse(CharSequence str);
 
    /**
     * Returns the given boolean as a string in the given style.
@@ -356,7 +345,6 @@ public enum BooleanStyle {
     * @param styles The set of styles to use to parse the string
     * @return {@code true} if any one of the styles returns {@code true}
     */
-   @SafeVarargs
    public static boolean parse(CharSequence str, BooleanStyle ... styles)
    {
       if(styles != null && !CharSequences.isEmpty(str)) {

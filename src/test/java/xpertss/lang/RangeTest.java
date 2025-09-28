@@ -630,4 +630,29 @@ public class RangeTest {
       assertEquals("0 - 1,000", ir.toString(null));
    }
 
+   @Test
+   public void testEqualsSameType()
+   {
+      Range<Integer> one = new Range<Integer>(-1000, 0);
+      Range<Integer> two = new Range<Integer>(0, 1000);
+      assertFalse(one.equals(two));
+
+      Range<Integer> three = new Range<Integer>(-1000, 0);
+      assertTrue(one.equals(three));
+   }
+
+   @Test
+   public void testEqualsDifferentTypes()
+   {
+      Range<Integer> one = new Range<Integer>(0, 10);
+      Range<BigDecimal> two = new Range<>(BigDecimal.ZERO, BigDecimal.TEN);
+      assertFalse(one.equals(two));
+
+      Range<Long> three = new Range<>(0L, 10L);
+      assertFalse(one.equals(three));
+   }
+
+
+
+
 }

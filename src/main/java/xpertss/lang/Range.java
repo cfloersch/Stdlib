@@ -19,6 +19,22 @@ import java.util.List;
  * An empty range is defined as one which has the same value for its minimum as it
  * does for its maximum. All ranges are guaranteed to have a minimum value less than
  * or equal to their maximum value.
+ * <p/>
+ * A range includes {@link #contains(Number)}, {@link #within(Number)}, and {@link
+ * #between(Number)} methods that allow for various inclusivity tests.
+ * <p/>
+ * A range also includes {@link #gap(Range)}, {@link #sum(Range)}, {@link #union(Range)},
+ * {@link #difference(Range)}, and {@link #intersection(Range)} methods that allow you
+ * to create new ranges from a given starting set.
+ * <p/>
+ * Finally, the {@link #compareTo(Range)} method will return various values indicating
+ * in what way the given range compares to this range. For example it might fall {@link
+ * #BEFORE} or {@link #AFTER} or it may {@link #PRECEEDS} or {@link #TRAILING}.
+ * <p/>
+ * Due to the type safety inherent in generic classes the equals method will return
+ * {@code true} if, and only if, the two ranges are of the same numeric TYPE and the
+ * {@link #getLower()}s and {@link #getUpper()}s match. An Integer based range will
+ * not equate to a Long based range even if their values are technically equal.
  */
 public class Range<T extends Number & Comparable<T>> implements Comparable<Range<T>>, Serializable {
 
@@ -74,10 +90,17 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
 
 
 
-   private T lower;
-   private T upper;
+   private final T lower;
+   private final T upper;
 
 
+   /**
+    * Constructs a Range from the given lower and upper bounds.
+    *
+    * @throws NullPointerException if either argument is {@code null}
+    * @throws IllegalArgumentException if lower is not less than or equal
+    *    to upper
+    */
    public Range(T lower, T upper)
    {
       if(upper.compareTo(lower) <= 0) throw new IllegalArgumentException();
@@ -247,7 +270,7 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
    }
 
    /**
-    * Returns a new Range that contains all of the values from both Ranges.  That is
+    * Returns a new Range that contains all the values from both Ranges.  That is
     * to say the returned range will have a lower = min(this.lower, other.lower) and
     * an upper = max(this.upper, other.upper).
     */
@@ -306,6 +329,7 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
 
 
 
+   @Override
    public boolean equals(Object o)
    {
       if(o instanceof Range) {
@@ -315,12 +339,14 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
       return false;
    }
 
+   @Override
    public int hashCode()
    {
       return Objects.hash(lower, upper);
    }
 
 
+   @Override
    public Range<T> clone()
    {
       return new Range<>(lower, upper);
@@ -330,6 +356,7 @@ public class Range<T extends Number & Comparable<T>> implements Comparable<Range
    /**
     * Converts this Range to a String format using the system's default NumberFormat.
     */
+   @Override
    public String toString()
    {
       return toString(null);

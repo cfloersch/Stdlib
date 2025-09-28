@@ -97,7 +97,7 @@ public enum Platform {
    WinRT(false, true),
 
    /**
-    * Windows 10, 11 and Server 2016. This value will be returned for all
+    * Windows 10, 11 and Server 2016+. This value will be returned for all
     * windows operating systems that have a version of 10.0 or higher until
     * this class is updated with newer operating systems.
     */
@@ -285,7 +285,7 @@ public enum Platform {
          } else if(osName.contains("ce")) {
             return WinCE;
          } else if(osVersion.isAtLeast(10, 0)) {
-            return Win10;
+            return Win10;  // Sometimes referred to as OneCore
          } else if(osVersion.isAtLeast(6, 2)) {
             return WinRT;
          } else if(osVersion.isAtLeast(6, 0)) {
@@ -294,7 +294,7 @@ public enum Platform {
          return WinNT;  // NT, 2000, 2003, and XP
       } else if(osName.contains("solaris") || osName.contains("sunos")) {
          return Solaris;
-      } else if(osName.contains("Linux")) {
+      } else if(osName.contains("linux")) {
          return (contains("java.vm.name", "dalvik")) ? Android : Linux;
       } else if(osName.contains("bsd")) {
          // NetBSD, OpenBSD, FreeBSD (possibly other BSDs)

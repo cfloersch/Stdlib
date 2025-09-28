@@ -26,7 +26,7 @@ import java.io.IOException;
  * PasswordCallback respectively.
  * <p>
  * Note it does not discern between callback types. For example a single
- * handler could be used for both a Proxy Auth and a HTTP Auth. If the
+ * handler could be used for both a Proxy Auth and an HTTP Auth. If the
  * passwords are different on the two machines then this class will fail.
  */
 public class AutoCallbackHandler implements CallbackHandler {

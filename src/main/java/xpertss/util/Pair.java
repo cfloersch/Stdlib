@@ -1,6 +1,5 @@
 /**
  * Copyright 2013 XpertSoftware
- *
  * Date: 2/11/14
  */
 package xpertss.util;
@@ -20,8 +19,8 @@ import java.io.Serializable;
 public class Pair<L,R>  implements Serializable, Cloneable {
 
 
-   private L left;
-   private R right;
+   private final L left;
+   private final R right;
 
    private Pair(L left, R right)
    {
